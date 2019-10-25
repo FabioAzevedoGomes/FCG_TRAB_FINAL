@@ -321,8 +321,8 @@ int main(int argc, char* argv[])
         printf("Erro inicializando a engine de som irrKlang");
         std::exit(EXIT_FAILURE);
     }
-    soundEngine->setSoundVolume(0.5);
-    soundEngine->play2D("../../media/arte.mp3",true);
+    soundEngine->setSoundVolume(0.2);
+    soundEngine->play2D("../../media/polkka.wav",true);
 
     // Ficamos em loop, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
