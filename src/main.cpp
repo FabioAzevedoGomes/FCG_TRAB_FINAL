@@ -399,7 +399,7 @@ int main(int argc, char* argv[])
 #define PLANE  2
 #define MIKU   3
 
-        //Desenhamos O personagem apenas se o usuário estiver em terceira pessoa
+        //Desenhamos o personagem apenas se o usuário estiver em terceira pessoa
         if (!firstPersonView)
         {
             model = Matrix_Translate(character_position.x,character_position.y - 4.0f,character_position.z)
@@ -1018,11 +1018,11 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         float dy = ypos - g_LastCursorPosY;
 
         // Atualizamos parâmetros da câmera com os deslocamentos
-        g_CameraTheta -= 0.01f*dx;
-        g_CameraPhi   += 0.01f*dy;
+        g_CameraTheta -= 0.02f*dx;
+        g_CameraPhi   += 0.02f*dy;
 
         // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
-        float phimax = 3.141592f/2;
+        float phimax = 3.141592f/2 - 0.1;
         float phimin = -phimax;
 
         if (g_CameraPhi > phimax)
@@ -1083,8 +1083,8 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
     // nunca pode ser zero. Versões anteriores deste código possuíam este bug,
     // o qual foi detectado pelo aluno Vinicius Fraga (2017/2).
     const float verysmallnumber = std::numeric_limits<float>::epsilon();
-    if (g_CameraDistance < verysmallnumber)
-        g_CameraDistance = verysmallnumber;
+    if (g_CameraDistance < 0.8)
+        g_CameraDistance = 0.8;
 }
 
 // Definição da função que será chamada sempre que o usuário pressionar alguma

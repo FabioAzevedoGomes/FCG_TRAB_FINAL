@@ -214,6 +214,7 @@ float dotproduct(glm::vec4 u, glm::vec4 v)
     if ( u4 != 0.0f || v4 != 0.0f )
     {
         fprintf(stderr, "ERROR: Produto escalar não definido para pontos.\n");
+        fprintf(stderr,"u: %f, v: %f",u4,v4);
         std::exit(EXIT_FAILURE);
     }
 
@@ -225,6 +226,8 @@ glm::mat4 Matrix_Camera_View(glm::vec4 position_c, glm::vec4 view_vector, glm::v
 {
     glm::vec4 w = -view_vector;
     glm::vec4 u = crossproduct(up_vector, w);
+
+    //fprintf(stdout,"\nu :%f %f %f %f\n",u.x,u.y,u.z,u.w);
 
     // Normalizamos os vetores u e w
     w = w / norm(w);
@@ -243,6 +246,10 @@ glm::mat4 Matrix_Camera_View(glm::vec4 position_c, glm::vec4 view_vector, glm::v
     float wx = w.x;
     float wy = w.y;
     float wz = w.z;
+
+    //fprintf(stdout,"\nu: %f %f %f %f",ux,uy,uz,u.w);
+    //fprintf(stdout,"\nv: %f %f %f %f",vx,vy,vz,v.w);
+    //fprintf(stdout,"\nw: %f %f %f %f\n",wx,wy,wz,w.w);
 
     return Matrix(
                ux, uy, uz, -dotproduct(u, position_c - origin_o),
