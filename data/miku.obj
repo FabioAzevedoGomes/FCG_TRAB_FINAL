@@ -1,4 +1,6 @@
-g miku
+# Blender v2.72 (sub 0) OBJ File: 'miku'
+o miku
+mtllib miku.mtl
 v -1.381440 2.285580 -0.085080
 v -1.368780 2.280700 -0.085780
 v -1.373780 2.285700 -0.089500
