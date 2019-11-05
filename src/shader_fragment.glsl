@@ -76,11 +76,25 @@ void main()
 
     if ( object_id == SPHERE )
     {
-        // Propriedades espectrais da esfera
-        Kd = vec3(0.8,0.4,0.08);
+
+        float radius = 1;
+        vec4 p_lin = camera_position + radius*((position_world - camera_position)/length(position_world - camera_position));
+        vec4 coord_vector = (p_lin - camera_position);
+        float theta = atan(coord_vector.x,coord_vector.z);
+        float phi = asin(coord_vector.y/radius);
+
+        U = (theta + M_PI)/(2*M_PI);
+        V = (phi + M_PI_2)/M_PI;
+
+        Kd = texture(TextureImage1, vec2(U,V)).rgb;
+
         Ks = vec3(0.0,0.0,0.0);
-        Ka = vec3(0.4,0.2,0.04);
+        Ka = vec3(0.0,0.0,0.0);
         q = 1.0;
+
+        //Formçamos l para que nenhuma equação de iluminação seja aplicada ao 'fundo'
+        // Desta maneira dot(n,l) resulta em 0 e portanto a esfera está sempre iluminada
+        l = n;
     }
     else if ( object_id == BUNNY )
     {
@@ -128,8 +142,6 @@ void main()
         Ka = vec3(0.0,0.0,0.0);
         q = 1.0;
     }
-
-    vec4 c = texture(TextureImage1,texcoords);
 
     // Espectro da fonte de iluminação
     vec3 I = vec3(1.0,1.0,1.0); // PREENCH AQUI o espectro da fonte de luz

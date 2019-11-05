@@ -1843,7 +1843,7 @@
 1571343355 source:c:\users\home\desktop\fcg\trab\src\tiny_obj_loader.cpp
 	"tiny_obj_loader.h"
 
-1571947415 source:c:\users\home\desktop\trab\src\glad.c
+1572960454 source:c:\users\home\desktop\trab\src\glad.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -1851,7 +1851,7 @@
 	<windows.h>
 	<dlfcn.h>
 
-1571947393 c:\users\home\desktop\trab\include\glad\glad.h
+1572960444 c:\users\home\desktop\trab\include\glad\glad.h
 	<windows.h>
 	<stddef.h>
 	<KHR/khrplatform.h>
@@ -1862,13 +1862,13 @@
 	<stdint.h>
 	<inttypes.h>
 
-1571947420 c:\users\home\desktop\trab\include\khr\khrplatform.h
+1572960442 c:\users\home\desktop\trab\include\khr\khrplatform.h
 	<sys/cdefs.h>
 	<stdint.h>
 	<inttypes.h>
 	<stdint.h>
 
-1572814863 source:c:\users\home\desktop\trab\src\main.cpp
+1572963820 source:c:\users\home\desktop\trab\src\main.cpp
 	<cmath>
 	<cstdio>
 	<cstdlib>
@@ -1892,7 +1892,7 @@
 	"matrices.h"
 	"irrKlang.h"
 
-1571947406 c:\users\home\desktop\trab\include\glfw\glfw3.h
+1572960442 c:\users\home\desktop\trab\include\glfw\glfw3.h
 	<stddef.h>
 	<stdint.h>
 	<OpenGL/gl3.h>
@@ -1913,39 +1913,39 @@
 	<GL/glext.h>
 	<GL/glu.h>
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat4x4.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat4x4.hpp
 	"./ext/matrix_double4x4.hpp"
 	"./ext/matrix_double4x4_precision.hpp"
 	"./ext/matrix_float4x4.hpp"
 	"./ext/matrix_float4x4_precision.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x4.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x4.hpp
 	"../detail/type_mat4x4.hpp"
 
-1571947420 c:\users\home\desktop\trab\include\glm\detail\type_mat4x4.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat4x4.hpp
 	"type_vec4.hpp"
 	<limits>
 	<cstddef>
 	"type_mat4x4.inl"
 
-1571947396 c:\users\home\desktop\trab\include\glm\detail\type_vec4.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\detail\type_vec4.hpp
 	"qualifier.hpp"
 	"_swizzle.hpp"
 	"_swizzle_func.hpp"
 	<cstddef>
 	"type_vec4.inl"
 
-1571343357 c:\users\home\desktop\trab\include\glm\detail\qualifier.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\qualifier.hpp
 	"setup.hpp"
 
-1571947417 c:\users\home\desktop\trab\include\glm\detail\setup.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\setup.hpp
 	<cassert>
 	<cstddef>
 	"../simd/platform.h"
 	<cstdint>
 	<type_traits>
 
-1571947404 c:\users\home\desktop\trab\include\glm\simd\platform.h
+1572960452 c:\users\home\desktop\trab\include\glm\simd\platform.h
 	<cuda.h>
 	<immintrin.h>
 	<immintrin.h>
@@ -1956,25 +1956,25 @@
 	<pmmintrin.h>
 	<emmintrin.h>
 
-1571947399 c:\users\home\desktop\trab\include\glm\detail\_swizzle.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\_swizzle.hpp
 
-1571343358 c:\users\home\desktop\trab\include\glm\detail\_swizzle_func.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\_swizzle_func.hpp
 
-1571947400 c:\users\home\desktop\trab\include\glm\detail\type_vec4.inl
+1572960446 c:\users\home\desktop\trab\include\glm\detail\type_vec4.inl
 	"compute_vector_relational.hpp"
 	"type_vec4_simd.inl"
 
-1571343358 c:\users\home\desktop\trab\include\glm\detail\compute_vector_relational.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\compute_vector_relational.hpp
 	"setup.hpp"
 	<limits>
 
-1571947393 c:\users\home\desktop\trab\include\glm\detail\type_vec4_simd.inl
+1572960446 c:\users\home\desktop\trab\include\glm\detail\type_vec4_simd.inl
 
-1571947416 c:\users\home\desktop\trab\include\glm\detail\type_mat4x4.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat4x4.inl
 	"../matrix.hpp"
 	"type_mat4x4_simd.inl"
 
-1571947414 c:\users\home\desktop\trab\include\glm\matrix.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\matrix.hpp
 	"detail/qualifier.hpp"
 	"detail/setup.hpp"
 	"vec2.hpp"
@@ -1991,7 +1991,7 @@
 	"mat4x4.hpp"
 	"detail/func_matrix.inl"
 
-1571343355 c:\users\home\desktop\trab\include\glm\vec2.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\vec2.hpp
 	"./ext/vector_bool2.hpp"
 	"./ext/vector_bool2_precision.hpp"
 	"./ext/vector_float2.hpp"
@@ -2003,47 +2003,47 @@
 	"./ext/vector_uint2.hpp"
 	"./ext/vector_uint2_precision.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_bool2.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_bool2.hpp
 	"../detail/type_vec2.hpp"
 
-1571947418 c:\users\home\desktop\trab\include\glm\detail\type_vec2.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\detail\type_vec2.hpp
 	"qualifier.hpp"
 	"_swizzle.hpp"
 	"_swizzle_func.hpp"
 	<cstddef>
 	"type_vec2.inl"
 
-1571947414 c:\users\home\desktop\trab\include\glm\detail\type_vec2.inl
+1572960446 c:\users\home\desktop\trab\include\glm\detail\type_vec2.inl
 	"./compute_vector_relational.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_bool2_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_bool2_precision.hpp
 	"../detail/type_vec2.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_float2.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_float2.hpp
 	"../detail/type_vec2.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_float2_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_float2_precision.hpp
 	"../detail/type_vec2.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_double2.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_double2.hpp
 	"../detail/type_vec2.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_double2_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_double2_precision.hpp
 	"../detail/type_vec2.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_int2.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_int2.hpp
 	"../detail/type_vec2.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_int2_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_int2_precision.hpp
 	"../detail/type_vec2.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_uint2.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_uint2.hpp
 	"../detail/type_vec2.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_uint2_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_uint2_precision.hpp
 	"../detail/type_vec2.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\vec3.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\vec3.hpp
 	"./ext/vector_bool3.hpp"
 	"./ext/vector_bool3_precision.hpp"
 	"./ext/vector_float3.hpp"
@@ -2055,47 +2055,47 @@
 	"./ext/vector_uint3.hpp"
 	"./ext/vector_uint3_precision.hpp"
 
-1571343361 c:\users\home\desktop\trab\include\glm\ext\vector_bool3.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_bool3.hpp
 	"../detail/type_vec3.hpp"
 
-1571947390 c:\users\home\desktop\trab\include\glm\detail\type_vec3.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\detail\type_vec3.hpp
 	"qualifier.hpp"
 	"_swizzle.hpp"
 	"_swizzle_func.hpp"
 	<cstddef>
 	"type_vec3.inl"
 
-1571947411 c:\users\home\desktop\trab\include\glm\detail\type_vec3.inl
+1572960446 c:\users\home\desktop\trab\include\glm\detail\type_vec3.inl
 	"compute_vector_relational.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_bool3_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_bool3_precision.hpp
 	"../detail/type_vec3.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_float3.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_float3.hpp
 	"../detail/type_vec3.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_float3_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_float3_precision.hpp
 	"../detail/type_vec3.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_double3.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_double3.hpp
 	"../detail/type_vec3.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_double3_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_double3_precision.hpp
 	"../detail/type_vec3.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_int3.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_int3.hpp
 	"../detail/type_vec3.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_int3_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_int3_precision.hpp
 	"../detail/type_vec3.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_uint3.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_uint3.hpp
 	"../detail/type_vec3.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_uint3_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_uint3_precision.hpp
 	"../detail/type_vec3.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\vec4.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\vec4.hpp
 	"./ext/vector_bool4.hpp"
 	"./ext/vector_bool4_precision.hpp"
 	"./ext/vector_float4.hpp"
@@ -2107,268 +2107,268 @@
 	"./ext/vector_uint4.hpp"
 	"./ext/vector_uint4_precision.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_bool4.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_bool4.hpp
 	"../detail/type_vec4.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_bool4_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_bool4_precision.hpp
 	"../detail/type_vec4.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_float4.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_float4.hpp
 	"../detail/type_vec4.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_float4_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_float4_precision.hpp
 	"../detail/type_vec4.hpp"
 
-1571343361 c:\users\home\desktop\trab\include\glm\ext\vector_double4.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_double4.hpp
 	"../detail/type_vec4.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_double4_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_double4_precision.hpp
 	"../detail/setup.hpp"
 	"../detail/type_vec4.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_int4.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_int4.hpp
 	"../detail/type_vec4.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_int4_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_int4_precision.hpp
 	"../detail/type_vec4.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_uint4.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_uint4.hpp
 	"../detail/type_vec4.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_uint4_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_uint4_precision.hpp
 	"../detail/type_vec4.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat2x2.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat2x2.hpp
 	"./ext/matrix_double2x2.hpp"
 	"./ext/matrix_double2x2_precision.hpp"
 	"./ext/matrix_float2x2.hpp"
 	"./ext/matrix_float2x2_precision.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x2.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x2.hpp
 	"../detail/type_mat2x2.hpp"
 
-1571947408 c:\users\home\desktop\trab\include\glm\detail\type_mat2x2.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat2x2.hpp
 	"type_vec2.hpp"
 	<limits>
 	<cstddef>
 	"type_mat2x2.inl"
 
-1571947397 c:\users\home\desktop\trab\include\glm\detail\type_mat2x2.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat2x2.inl
 	"../matrix.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x2_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x2_precision.hpp
 	"../detail/type_mat2x2.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x2.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x2.hpp
 	"../detail/type_mat2x2.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x2_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x2_precision.hpp
 	"../detail/type_mat2x2.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat2x3.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat2x3.hpp
 	"./ext/matrix_double2x3.hpp"
 	"./ext/matrix_double2x3_precision.hpp"
 	"./ext/matrix_float2x3.hpp"
 	"./ext/matrix_float2x3_precision.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x3.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x3.hpp
 	"../detail/type_mat2x3.hpp"
 
-1571947405 c:\users\home\desktop\trab\include\glm\detail\type_mat2x3.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat2x3.hpp
 	"type_vec2.hpp"
 	"type_vec3.hpp"
 	<limits>
 	<cstddef>
 	"type_mat2x3.inl"
 
-1571947419 c:\users\home\desktop\trab\include\glm\detail\type_mat2x3.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat2x3.inl
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x3_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x3_precision.hpp
 	"../detail/type_mat2x3.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x3.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x3.hpp
 	"../detail/type_mat2x3.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x3_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x3_precision.hpp
 	"../detail/type_mat2x3.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat2x4.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat2x4.hpp
 	"./ext/matrix_double2x4.hpp"
 	"./ext/matrix_double2x4_precision.hpp"
 	"./ext/matrix_float2x4.hpp"
 	"./ext/matrix_float2x4_precision.hpp"
 
-1571343361 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x4.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x4.hpp
 	"../detail/type_mat2x4.hpp"
 
-1571947392 c:\users\home\desktop\trab\include\glm\detail\type_mat2x4.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat2x4.hpp
 	"type_vec2.hpp"
 	"type_vec4.hpp"
 	<limits>
 	<cstddef>
 	"type_mat2x4.inl"
 
-1571947417 c:\users\home\desktop\trab\include\glm\detail\type_mat2x4.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat2x4.inl
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x4_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double2x4_precision.hpp
 	"../detail/type_mat2x4.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x4.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x4.hpp
 	"../detail/type_mat2x4.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x4_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float2x4_precision.hpp
 	"../detail/type_mat2x4.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat3x2.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat3x2.hpp
 	"./ext/matrix_double3x2.hpp"
 	"./ext/matrix_double3x2_precision.hpp"
 	"./ext/matrix_float3x2.hpp"
 	"./ext/matrix_float3x2_precision.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x2.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x2.hpp
 	"../detail/type_mat3x2.hpp"
 
-1571947394 c:\users\home\desktop\trab\include\glm\detail\type_mat3x2.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat3x2.hpp
 	"type_vec2.hpp"
 	"type_vec3.hpp"
 	<limits>
 	<cstddef>
 	"type_mat3x2.inl"
 
-1571947403 c:\users\home\desktop\trab\include\glm\detail\type_mat3x2.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat3x2.inl
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x2_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x2_precision.hpp
 	"../detail/type_mat3x2.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x2.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x2.hpp
 	"../detail/type_mat3x2.hpp"
 
-1571343361 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x2_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x2_precision.hpp
 	"../detail/type_mat3x2.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat3x3.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat3x3.hpp
 	"./ext/matrix_double3x3.hpp"
 	"./ext/matrix_double3x3_precision.hpp"
 	"./ext/matrix_float3x3.hpp"
 	"./ext/matrix_float3x3_precision.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x3.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x3.hpp
 	"../detail/type_mat3x3.hpp"
 
-1571947419 c:\users\home\desktop\trab\include\glm\detail\type_mat3x3.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat3x3.hpp
 	"type_vec3.hpp"
 	<limits>
 	<cstddef>
 	"type_mat3x3.inl"
 
-1571947398 c:\users\home\desktop\trab\include\glm\detail\type_mat3x3.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat3x3.inl
 	"../matrix.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x3_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x3_precision.hpp
 	"../detail/type_mat3x3.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x3.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x3.hpp
 	"../detail/type_mat3x3.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x3_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x3_precision.hpp
 	"../detail/type_mat3x3.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat3x4.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat3x4.hpp
 	"./ext/matrix_double3x4.hpp"
 	"./ext/matrix_double3x4_precision.hpp"
 	"./ext/matrix_float3x4.hpp"
 	"./ext/matrix_float3x4_precision.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x4.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x4.hpp
 	"../detail/type_mat3x4.hpp"
 
-1571947402 c:\users\home\desktop\trab\include\glm\detail\type_mat3x4.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat3x4.hpp
 	"type_vec3.hpp"
 	"type_vec4.hpp"
 	<limits>
 	<cstddef>
 	"type_mat3x4.inl"
 
-1571947399 c:\users\home\desktop\trab\include\glm\detail\type_mat3x4.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat3x4.inl
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x4_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double3x4_precision.hpp
 	"../detail/type_mat3x4.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x4.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x4.hpp
 	"../detail/type_mat3x4.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x4_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float3x4_precision.hpp
 	"../detail/type_mat3x4.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat4x2.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat4x2.hpp
 	"./ext/matrix_double4x2.hpp"
 	"./ext/matrix_double4x2_precision.hpp"
 	"./ext/matrix_float4x2.hpp"
 	"./ext/matrix_float4x2_precision.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x2.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x2.hpp
 	"../detail/type_mat4x2.hpp"
 
-1571947408 c:\users\home\desktop\trab\include\glm\detail\type_mat4x2.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat4x2.hpp
 	"type_vec2.hpp"
 	"type_vec4.hpp"
 	<limits>
 	<cstddef>
 	"type_mat4x2.inl"
 
-1571947413 c:\users\home\desktop\trab\include\glm\detail\type_mat4x2.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat4x2.inl
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x2_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x2_precision.hpp
 	"../detail/type_mat4x2.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x2.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x2.hpp
 	"../detail/type_mat4x2.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x2_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x2_precision.hpp
 	"../detail/type_mat2x2.hpp"
 
-1571343355 c:\users\home\desktop\trab\include\glm\mat4x3.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\mat4x3.hpp
 	"./ext/matrix_double4x3.hpp"
 	"./ext/matrix_double4x3_precision.hpp"
 	"./ext/matrix_float4x3.hpp"
 	"./ext/matrix_float4x3_precision.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x3.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x3.hpp
 	"../detail/type_mat4x3.hpp"
 
-1571947409 c:\users\home\desktop\trab\include\glm\detail\type_mat4x3.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat4x3.hpp
 	"type_vec3.hpp"
 	"type_vec4.hpp"
 	<limits>
 	<cstddef>
 	"type_mat4x3.inl"
 
-1571947392 c:\users\home\desktop\trab\include\glm\detail\type_mat4x3.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat4x3.inl
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x3_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x3_precision.hpp
 	"../detail/type_mat4x3.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x3.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x3.hpp
 	"../detail/type_mat4x3.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x3_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x3_precision.hpp
 	"../detail/type_mat4x3.hpp"
 
-1571947402 c:\users\home\desktop\trab\include\glm\detail\func_matrix.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_matrix.inl
 	"../geometric.hpp"
 	<limits>
 	"func_matrix_simd.inl"
 
-1571947409 c:\users\home\desktop\trab\include\glm\geometric.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\geometric.hpp
 	"detail/type_vec3.hpp"
 	"detail/func_geometric.inl"
 
-1571947422 c:\users\home\desktop\trab\include\glm\detail\func_geometric.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_geometric.inl
 	"../exponential.hpp"
 	"../common.hpp"
 	"func_geometric_simd.inl"
 
-1571947413 c:\users\home\desktop\trab\include\glm\exponential.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\exponential.hpp
 	"detail/type_vec1.hpp"
 	"detail/type_vec2.hpp"
 	"detail/type_vec3.hpp"
@@ -2376,17 +2376,17 @@
 	<cmath>
 	"detail/func_exponential.inl"
 
-1571947415 c:\users\home\desktop\trab\include\glm\detail\type_vec1.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_vec1.hpp
 	"qualifier.hpp"
 	"_swizzle.hpp"
 	"_swizzle_func.hpp"
 	<cstddef>
 	"type_vec1.inl"
 
-1571947411 c:\users\home\desktop\trab\include\glm\detail\type_vec1.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_vec1.inl
 	"./compute_vector_relational.hpp"
 
-1571947391 c:\users\home\desktop\trab\include\glm\detail\func_exponential.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_exponential.inl
 	"../vector_relational.hpp"
 	"_vectorize.hpp"
 	<limits>
@@ -2394,33 +2394,33 @@
 	<cassert>
 	"func_exponential_simd.inl"
 
-1571947409 c:\users\home\desktop\trab\include\glm\vector_relational.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\vector_relational.hpp
 	"detail/qualifier.hpp"
 	"detail/setup.hpp"
 	"detail/func_vector_relational.inl"
 
-1571947398 c:\users\home\desktop\trab\include\glm\detail\func_vector_relational.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_vector_relational.inl
 	"func_vector_relational_simd.inl"
 
-1571947397 c:\users\home\desktop\trab\include\glm\detail\func_vector_relational_simd.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_vector_relational_simd.inl
 
-1571947395 c:\users\home\desktop\trab\include\glm\detail\_vectorize.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\_vectorize.hpp
 
-1571947409 c:\users\home\desktop\trab\include\glm\detail\func_exponential_simd.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_exponential_simd.inl
 	"../simd/exponential.h"
 
-1571947416 c:\users\home\desktop\trab\include\glm\simd\exponential.h
+1572960452 c:\users\home\desktop\trab\include\glm\simd\exponential.h
 	"platform.h"
 
-1571947414 c:\users\home\desktop\trab\include\glm\common.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\common.hpp
 	"detail/qualifier.hpp"
 	"detail/_fixes.hpp"
 	"detail/func_common.inl"
 
-1571343357 c:\users\home\desktop\trab\include\glm\detail\_fixes.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\_fixes.hpp
 	<cmath>
 
-1571947421 c:\users\home\desktop\trab\include\glm\detail\func_common.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_common.inl
 	"../vector_relational.hpp"
 	"compute_common.hpp"
 	"type_vec1.hpp"
@@ -2431,44 +2431,44 @@
 	<limits>
 	"func_common_simd.inl"
 
-1571343357 c:\users\home\desktop\trab\include\glm\detail\compute_common.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\compute_common.hpp
 	"setup.hpp"
 	<limits>
 
-1571947410 c:\users\home\desktop\trab\include\glm\detail\func_common_simd.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_common_simd.inl
 	"../simd/common.h"
 	<immintrin.h>
 
-1571947410 c:\users\home\desktop\trab\include\glm\simd\common.h
+1572960452 c:\users\home\desktop\trab\include\glm\simd\common.h
 	"platform.h"
 
-1571947396 c:\users\home\desktop\trab\include\glm\detail\func_geometric_simd.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_geometric_simd.inl
 	"../simd/geometric.h"
 
-1571947395 c:\users\home\desktop\trab\include\glm\simd\geometric.h
+1572960452 c:\users\home\desktop\trab\include\glm\simd\geometric.h
 	"common.h"
 
-1571947419 c:\users\home\desktop\trab\include\glm\detail\func_matrix_simd.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_matrix_simd.inl
 	"type_mat4x4.hpp"
 	"../geometric.hpp"
 	"../simd/matrix.h"
 	<cstring>
 
-1571947422 c:\users\home\desktop\trab\include\glm\simd\matrix.h
+1572960452 c:\users\home\desktop\trab\include\glm\simd\matrix.h
 	"geometric.h"
 
-1571343358 c:\users\home\desktop\trab\include\glm\detail\type_mat4x4_simd.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_mat4x4_simd.inl
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x4_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_double4x4_precision.hpp
 	"../detail/type_mat4x4.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x4.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x4.hpp
 	"../detail/type_mat4x4.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x4_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_float4x4_precision.hpp
 	"../detail/type_mat4x4.hpp"
 
-1571947419 c:\users\home\desktop\trab\include\glm\gtc\type_ptr.hpp
+1572960450 c:\users\home\desktop\trab\include\glm\gtc\type_ptr.hpp
 	"../gtc/quaternion.hpp"
 	"../gtc/vec1.hpp"
 	"../vec2.hpp"
@@ -2486,7 +2486,7 @@
 	<cstring>
 	"type_ptr.inl"
 
-1571947415 c:\users\home\desktop\trab\include\glm\gtc\quaternion.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\quaternion.hpp
 	"../gtc/constants.hpp"
 	"../gtc/matrix_transform.hpp"
 	"../ext/vector_relational.hpp"
@@ -2505,20 +2505,20 @@
 	"../detail/type_vec4.hpp"
 	"quaternion.inl"
 
-1571947421 c:\users\home\desktop\trab\include\glm\gtc\constants.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\constants.hpp
 	"../ext/scalar_constants.hpp"
 	"constants.inl"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\scalar_constants.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\scalar_constants.hpp
 	"../detail/setup.hpp"
 	"scalar_constants.inl"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\scalar_constants.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\scalar_constants.inl
 	<limits>
 
-1571947408 c:\users\home\desktop\trab\include\glm\gtc\constants.inl
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\constants.inl
 
-1571343356 c:\users\home\desktop\trab\include\glm\gtc\matrix_transform.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\matrix_transform.hpp
 	"../mat4x4.hpp"
 	"../vec2.hpp"
 	"../vec3.hpp"
@@ -2528,64 +2528,64 @@
 	"../ext/matrix_transform.hpp"
 	"matrix_transform.inl"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\matrix_projection.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_projection.hpp
 	"../gtc/constants.hpp"
 	"../geometric.hpp"
 	"../trigonometric.hpp"
 	"../matrix.hpp"
 	"matrix_projection.inl"
 
-1571947400 c:\users\home\desktop\trab\include\glm\trigonometric.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\trigonometric.hpp
 	"detail/setup.hpp"
 	"detail/qualifier.hpp"
 	"detail/func_trigonometric.inl"
 
-1571947416 c:\users\home\desktop\trab\include\glm\detail\func_trigonometric.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_trigonometric.inl
 	"_vectorize.hpp"
 	<cmath>
 	<limits>
 	"func_trigonometric_simd.inl"
 
-1571343357 c:\users\home\desktop\trab\include\glm\detail\func_trigonometric_simd.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\func_trigonometric_simd.inl
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\matrix_projection.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_projection.inl
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_clip_space.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_clip_space.hpp
 	"../ext/scalar_constants.hpp"
 	"../geometric.hpp"
 	"../trigonometric.hpp"
 	"matrix_clip_space.inl"
 
-1571343361 c:\users\home\desktop\trab\include\glm\ext\matrix_clip_space.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_clip_space.inl
 
-1571343361 c:\users\home\desktop\trab\include\glm\ext\matrix_transform.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_transform.hpp
 	"../gtc/constants.hpp"
 	"../geometric.hpp"
 	"../trigonometric.hpp"
 	"../matrix.hpp"
 	"matrix_transform.inl"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\matrix_transform.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\matrix_transform.inl
 
-1571343356 c:\users\home\desktop\trab\include\glm\gtc\matrix_transform.inl
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\matrix_transform.inl
 	"../geometric.hpp"
 	"../trigonometric.hpp"
 	"../matrix.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\vector_relational.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_relational.hpp
 	"../detail/qualifier.hpp"
 	"vector_relational.inl"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_relational.inl
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_relational.inl
 	"../vector_relational.hpp"
 	"../common.hpp"
 	"../detail/qualifier.hpp"
 	"../detail/type_float.hpp"
 
-1571947418 c:\users\home\desktop\trab\include\glm\detail\type_float.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_float.hpp
 	"setup.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\quaternion_common.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_common.hpp
 	"../ext/scalar_constants.hpp"
 	"../ext/quaternion_geometric.hpp"
 	"../common.hpp"
@@ -2594,23 +2594,23 @@
 	<limits>
 	"quaternion_common.inl"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\quaternion_geometric.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_geometric.hpp
 	"../geometric.hpp"
 	"../exponential.hpp"
 	"../ext/vector_relational.hpp"
 	"quaternion_geometric.inl"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\quaternion_geometric.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_geometric.inl
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\quaternion_common.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_common.inl
 	"quaternion_common_simd.inl"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\quaternion_common_simd.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_common_simd.inl
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\quaternion_float.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_float.hpp
 	"../detail/type_quat.hpp"
 
-1571343357 c:\users\home\desktop\trab\include\glm\detail\type_quat.hpp
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_quat.hpp
 	"../detail/type_mat3x3.hpp"
 	"../detail/type_mat4x4.hpp"
 	"../detail/type_vec3.hpp"
@@ -2621,31 +2621,31 @@
 	"../gtc/matrix_transform.hpp"
 	"type_quat.inl"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\quaternion_relational.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_relational.hpp
 	"../vector_relational.hpp"
 	"quaternion_relational.inl"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\quaternion_relational.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_relational.inl
 
-1571343357 c:\users\home\desktop\trab\include\glm\detail\type_quat.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_quat.inl
 	"../trigonometric.hpp"
 	"../exponential.hpp"
 	"../ext/quaternion_geometric.hpp"
 	<limits>
 	"type_quat_simd.inl"
 
-1571343357 c:\users\home\desktop\trab\include\glm\detail\type_quat_simd.inl
+1572960444 c:\users\home\desktop\trab\include\glm\detail\type_quat_simd.inl
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\quaternion_float_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_float_precision.hpp
 	"../detail/type_quat.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\quaternion_double.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_double.hpp
 	"../detail/type_quat.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\quaternion_double_precision.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_double_precision.hpp
 	"../detail/type_quat.hpp"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\quaternion_trigonometric.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_trigonometric.hpp
 	"../trigonometric.hpp"
 	"../exponential.hpp"
 	"scalar_constants.hpp"
@@ -2653,17 +2653,17 @@
 	<limits>
 	"quaternion_trigonometric.inl"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\quaternion_trigonometric.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_trigonometric.inl
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\quaternion_transform.hpp
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_transform.hpp
 	"../common.hpp"
 	"../trigonometric.hpp"
 	"../geometric.hpp"
 	"quaternion_transform.inl"
 
-1571343359 c:\users\home\desktop\trab\include\glm\ext\quaternion_transform.inl
+1572960446 c:\users\home\desktop\trab\include\glm\ext\quaternion_transform.inl
 
-1571947414 c:\users\home\desktop\trab\include\glm\gtc\quaternion.inl
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\quaternion.inl
 	"../trigonometric.hpp"
 	"../geometric.hpp"
 	"../exponential.hpp"
@@ -2671,18 +2671,18 @@
 	<limits>
 	"quaternion_simd.inl"
 
-1571947391 c:\users\home\desktop\trab\include\glm\gtc\epsilon.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\epsilon.hpp
 	"../detail/setup.hpp"
 	"../detail/qualifier.hpp"
 	"epsilon.inl"
 
-1571947392 c:\users\home\desktop\trab\include\glm\gtc\epsilon.inl
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\epsilon.inl
 	"../vector_relational.hpp"
 	"../common.hpp"
 
-1571343356 c:\users\home\desktop\trab\include\glm\gtc\quaternion_simd.inl
+1572960448 c:\users\home\desktop\trab\include\glm\gtc\quaternion_simd.inl
 
-1571343356 c:\users\home\desktop\trab\include\glm\gtc\vec1.hpp
+1572960450 c:\users\home\desktop\trab\include\glm\gtc\vec1.hpp
 	"../ext/vector_bool1.hpp"
 	"../ext/vector_bool1_precision.hpp"
 	"../ext/vector_float1.hpp"
@@ -2694,40 +2694,40 @@
 	"../ext/vector_uint1.hpp"
 	"../ext/vector_uint1_precision.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_bool1.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_bool1.hpp
 	"../detail/type_vec1.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_bool1_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_bool1_precision.hpp
 	"../detail/type_vec1.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_float1.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_float1.hpp
 	"../detail/type_vec1.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_float1_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_float1_precision.hpp
 	"../detail/type_vec1.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_double1.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_double1.hpp
 	"../detail/type_vec1.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_double1_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_double1_precision.hpp
 	"../detail/type_vec1.hpp"
 
-1571343358 c:\users\home\desktop\trab\include\glm\ext\vector_int1.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_int1.hpp
 	"../detail/type_vec1.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_int1_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_int1_precision.hpp
 	"../detail/type_vec1.hpp"
 
-1571343361 c:\users\home\desktop\trab\include\glm\ext\vector_uint1.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_uint1.hpp
 	"../detail/type_vec1.hpp"
 
-1571343360 c:\users\home\desktop\trab\include\glm\ext\vector_uint1_precision.hpp
+1572960448 c:\users\home\desktop\trab\include\glm\ext\vector_uint1_precision.hpp
 	"../detail/type_vec1.hpp"
 
-1571947402 c:\users\home\desktop\trab\include\glm\gtc\type_ptr.inl
+1572960450 c:\users\home\desktop\trab\include\glm\gtc\type_ptr.inl
 	<cstring>
 
-1571947420 c:\users\home\desktop\trab\include\tiny_obj_loader.h
+1572960442 c:\users\home\desktop\trab\include\tiny_obj_loader.h
 	<map>
 	<string>
 	<vector>
@@ -2741,17 +2741,17 @@
 	<fstream>
 	<sstream>
 
-1571947418 c:\users\home\desktop\trab\include\utils.h
+1572960442 c:\users\home\desktop\trab\include\utils.h
 	<cstdio>
 
-1572111700 c:\users\home\desktop\trab\include\matrices.h
+1572960442 c:\users\home\desktop\trab\include\matrices.h
 	<cstdio>
 	<cstdlib>
 	<glm/mat4x4.hpp>
 	<glm/vec4.hpp>
 	<glm/gtc/matrix_transform.hpp>
 
-1571947398 source:c:\users\home\desktop\trab\src\textrendering.cpp
+1572960454 source:c:\users\home\desktop\trab\src\textrendering.cpp
 	<string>
 	<glad/glad.h>
 	<GLFW/glfw3.h>
@@ -2760,11 +2760,11 @@
 	"utils.h"
 	"dejavufont.h"
 
-1571947411 c:\users\home\desktop\trab\include\dejavufont.h
+1572960442 c:\users\home\desktop\trab\include\dejavufont.h
 	<stddef.h>
 	<stdint.h>
 
-1571343355 source:c:\users\home\desktop\trab\src\tiny_obj_loader.cpp
+1572960454 source:c:\users\home\desktop\trab\src\tiny_obj_loader.cpp
 	"tiny_obj_loader.h"
 
 1571949875 c:\users\home\desktop\trab\include\irrklang\irrklang.h
@@ -2864,7 +2864,7 @@
 	"ik_IRefCounted.h"
 	"ik_ISoundSource.h"
 
-1571949875 c:\users\home\desktop\trab\include\irrklang.h
+1572960442 c:\users\home\desktop\trab\include\irrklang.h
 	"ik_irrKlangTypes.h"
 	"ik_vec3d.h"
 	"ik_IRefCounted.h"
@@ -2886,29 +2886,29 @@
 	"ik_IAudioRecorder.h"
 	"ik_ISoundMixedOutputReceiver.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_irrklangtypes.h
+1572960442 c:\users\home\desktop\trab\include\ik_irrklangtypes.h
 	<wchar.h>
 
-1571949875 c:\users\home\desktop\trab\include\ik_vec3d.h
+1572960442 c:\users\home\desktop\trab\include\ik_vec3d.h
 	<math.h>
 	"ik_irrKlangTypes.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_irefcounted.h
+1572960442 c:\users\home\desktop\trab\include\ik_irefcounted.h
 	"ik_irrKlangTypes.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_ivirtualrefcounted.h
+1572960442 c:\users\home\desktop\trab\include\ik_ivirtualrefcounted.h
 	"ik_irrKlangTypes.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_esoundoutputdrivers.h
+1572960442 c:\users\home\desktop\trab\include\ik_esoundoutputdrivers.h
 
-1571949875 c:\users\home\desktop\trab\include\ik_esoundengineoptions.h
+1572960442 c:\users\home\desktop\trab\include\ik_esoundengineoptions.h
 
-1571949875 c:\users\home\desktop\trab\include\ik_estreammodes.h
+1572960442 c:\users\home\desktop\trab\include\ik_estreammodes.h
 
-1571949875 c:\users\home\desktop\trab\include\ik_saudiostreamformat.h
+1572960442 c:\users\home\desktop\trab\include\ik_saudiostreamformat.h
 	"ik_IRefCounted.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_isoundengine.h
+1572960442 c:\users\home\desktop\trab\include\ik_isoundengine.h
 	"ik_IRefCounted.h"
 	"ik_vec3d.h"
 	"ik_ISoundSource.h"
@@ -2917,51 +2917,51 @@
 	"ik_IFileFactory.h"
 	"ik_ISoundMixedOutputReceiver.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_isoundsource.h
+1572960442 c:\users\home\desktop\trab\include\ik_isoundsource.h
 	"ik_IVirtualRefCounted.h"
 	"ik_vec3d.h"
 	"ik_EStreamModes.h"
 	"ik_SAudioStreamFormat.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_isound.h
+1572960442 c:\users\home\desktop\trab\include\ik_isound.h
 	"ik_IVirtualRefCounted.h"
 	"ik_ISoundEffectControl.h"
 	"ik_vec3d.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_isoundeffectcontrol.h
+1572960442 c:\users\home\desktop\trab\include\ik_isoundeffectcontrol.h
 	"ik_IVirtualRefCounted.h"
 	"ik_vec3d.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_ifilefactory.h
+1572960442 c:\users\home\desktop\trab\include\ik_ifilefactory.h
 	"ik_IRefCounted.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_isoundmixedoutputreceiver.h
-	"ik_IRefCounted.h"
-	"ik_SAudioStreamFormat.h"
-
-1571949875 c:\users\home\desktop\trab\include\ik_iaudiostream.h
+1572960442 c:\users\home\desktop\trab\include\ik_isoundmixedoutputreceiver.h
 	"ik_IRefCounted.h"
 	"ik_SAudioStreamFormat.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_iaudiostreamloader.h
+1572960442 c:\users\home\desktop\trab\include\ik_iaudiostream.h
+	"ik_IRefCounted.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960442 c:\users\home\desktop\trab\include\ik_iaudiostreamloader.h
 	"ik_IRefCounted.h"
 	"ik_IFileReader.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_ifilereader.h
+1572960442 c:\users\home\desktop\trab\include\ik_ifilereader.h
 	"ik_IRefCounted.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_isoundstopeventreceiver.h
+1572960442 c:\users\home\desktop\trab\include\ik_isoundstopeventreceiver.h
 	"ik_IRefCounted.h"
 	"ik_SAudioStreamFormat.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_isounddevicelist.h
+1572960442 c:\users\home\desktop\trab\include\ik_isounddevicelist.h
 	"ik_IRefCounted.h"
 
-1571949875 c:\users\home\desktop\trab\include\ik_iaudiorecorder.h
+1572960442 c:\users\home\desktop\trab\include\ik_iaudiorecorder.h
 	"ik_IRefCounted.h"
 	"ik_ISoundSource.h"
 
-1572551084 c:\users\home\desktop\trab\include\stb_image.h
+1572960442 c:\users\home\desktop\trab\include\stb_image.h
 	"stb_image.h"
 	<stdio.h>
 	<stdarg.h>
@@ -2976,4 +2976,2078 @@
 	<emmintrin.h>
 	<intrin.h>
 	<arm_neon.h>
+
+1572960453 source:c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\src\glad.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<glad/glad.h>
+	<windows.h>
+	<dlfcn.h>
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glad\glad.h
+	<windows.h>
+	<stddef.h>
+	<KHR/khrplatform.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\khr\khrplatform.h
+	<sys/cdefs.h>
+	<stdint.h>
+	<inttypes.h>
+	<stdint.h>
+
+1572963818 source:c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\src\main.cpp
+	<cmath>
+	<cstdio>
+	<cstdlib>
+	<map>
+	<stack>
+	<string>
+	<vector>
+	<limits>
+	<fstream>
+	<sstream>
+	<stdexcept>
+	<algorithm>
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<glm/mat4x4.hpp>
+	<glm/vec4.hpp>
+	<glm/gtc/type_ptr.hpp>
+	<tiny_obj_loader.h>
+	"stb_image.h"
+	"utils.h"
+	"matrices.h"
+	"irrKlang.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glfw\glfw3.h
+	<stddef.h>
+	<stdint.h>
+	<OpenGL/gl3.h>
+	<OpenGL/gl3ext.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/glcorearb.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl3.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl31.h>
+	<GLES2/gl2ext.h>
+	<vulkan/vulkan.h>
+	<GL/gl.h>
+	<GL/glext.h>
+	<GL/glu.h>
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat4x4.hpp
+	"./ext/matrix_double4x4.hpp"
+	"./ext/matrix_double4x4_precision.hpp"
+	"./ext/matrix_float4x4.hpp"
+	"./ext/matrix_float4x4_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat4x4.hpp
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec4.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\qualifier.hpp
+	"setup.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\setup.hpp
+	<cassert>
+	<cstddef>
+	"../simd/platform.h"
+	<cstdint>
+	<type_traits>
+
+1572960451 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\simd\platform.h
+	<cuda.h>
+	<immintrin.h>
+	<immintrin.h>
+	<popcntintrin.h>
+	<nmmintrin.h>
+	<smmintrin.h>
+	<tmmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\_swizzle.hpp
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\_swizzle_func.hpp
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec4.inl
+	"compute_vector_relational.hpp"
+	"type_vec4_simd.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\compute_vector_relational.hpp
+	"setup.hpp"
+	<limits>
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec4_simd.inl
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat4x4.inl
+	"../matrix.hpp"
+	"type_mat4x4_simd.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\matrix.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"detail/func_matrix.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\vec2.hpp
+	"./ext/vector_bool2.hpp"
+	"./ext/vector_bool2_precision.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float2_precision.hpp"
+	"./ext/vector_double2.hpp"
+	"./ext/vector_double2_precision.hpp"
+	"./ext/vector_int2.hpp"
+	"./ext/vector_int2_precision.hpp"
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_uint2_precision.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_bool2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec2.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec2.inl
+	"./compute_vector_relational.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_bool2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_float2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_float2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_double2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_double2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_int2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_int2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_uint2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_uint2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\vec3.hpp
+	"./ext/vector_bool3.hpp"
+	"./ext/vector_bool3_precision.hpp"
+	"./ext/vector_float3.hpp"
+	"./ext/vector_float3_precision.hpp"
+	"./ext/vector_double3.hpp"
+	"./ext/vector_double3_precision.hpp"
+	"./ext/vector_int3.hpp"
+	"./ext/vector_int3_precision.hpp"
+	"./ext/vector_uint3.hpp"
+	"./ext/vector_uint3_precision.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_bool3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec3.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec3.inl
+	"compute_vector_relational.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_bool3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_float3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_float3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_double3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_double3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_int3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_int3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_uint3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_uint3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\vec4.hpp
+	"./ext/vector_bool4.hpp"
+	"./ext/vector_bool4_precision.hpp"
+	"./ext/vector_float4.hpp"
+	"./ext/vector_float4_precision.hpp"
+	"./ext/vector_double4.hpp"
+	"./ext/vector_double4_precision.hpp"
+	"./ext/vector_int4.hpp"
+	"./ext/vector_int4_precision.hpp"
+	"./ext/vector_uint4.hpp"
+	"./ext/vector_uint4_precision.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_bool4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_bool4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_float4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_float4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_double4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_double4_precision.hpp
+	"../detail/setup.hpp"
+	"../detail/type_vec4.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_int4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_int4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_uint4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_uint4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat2x2.hpp
+	"./ext/matrix_double2x2.hpp"
+	"./ext/matrix_double2x2_precision.hpp"
+	"./ext/matrix_float2x2.hpp"
+	"./ext/matrix_float2x2_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat2x2.hpp
+	"type_vec2.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x2.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat2x2.inl
+	"../matrix.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat2x3.hpp
+	"./ext/matrix_double2x3.hpp"
+	"./ext/matrix_double2x3_precision.hpp"
+	"./ext/matrix_float2x3.hpp"
+	"./ext/matrix_float2x3_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat2x3.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x3.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat2x3.inl
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat2x4.hpp
+	"./ext/matrix_double2x4.hpp"
+	"./ext/matrix_double2x4_precision.hpp"
+	"./ext/matrix_float2x4.hpp"
+	"./ext/matrix_float2x4_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat2x4.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x4.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat2x4.inl
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat3x2.hpp
+	"./ext/matrix_double3x2.hpp"
+	"./ext/matrix_double3x2_precision.hpp"
+	"./ext/matrix_float3x2.hpp"
+	"./ext/matrix_float3x2_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat3x2.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x2.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat3x2.inl
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat3x3.hpp
+	"./ext/matrix_double3x3.hpp"
+	"./ext/matrix_double3x3_precision.hpp"
+	"./ext/matrix_float3x3.hpp"
+	"./ext/matrix_float3x3_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat3x3.hpp
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x3.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat3x3.inl
+	"../matrix.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat3x4.hpp
+	"./ext/matrix_double3x4.hpp"
+	"./ext/matrix_double3x4_precision.hpp"
+	"./ext/matrix_float3x4.hpp"
+	"./ext/matrix_float3x4_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat3x4.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x4.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat3x4.inl
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat4x2.hpp
+	"./ext/matrix_double4x2.hpp"
+	"./ext/matrix_double4x2_precision.hpp"
+	"./ext/matrix_float4x2.hpp"
+	"./ext/matrix_float4x2_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat4x2.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x2.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat4x2.inl
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double4x2_precision.hpp
+	"../detail/type_mat4x2.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float4x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\mat4x3.hpp
+	"./ext/matrix_double4x3.hpp"
+	"./ext/matrix_double4x3_precision.hpp"
+	"./ext/matrix_float4x3.hpp"
+	"./ext/matrix_float4x3_precision.hpp"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat4x3.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x3.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat4x3.inl
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+	"func_matrix_simd.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\geometric.hpp
+	"detail/type_vec3.hpp"
+	"detail/func_geometric.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_geometric.inl
+	"../exponential.hpp"
+	"../common.hpp"
+	"func_geometric_simd.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\exponential.hpp
+	"detail/type_vec1.hpp"
+	"detail/type_vec2.hpp"
+	"detail/type_vec3.hpp"
+	"detail/type_vec4.hpp"
+	<cmath>
+	"detail/func_exponential.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec1.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_vec1.inl
+	"./compute_vector_relational.hpp"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_exponential.inl
+	"../vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cmath>
+	<cassert>
+	"func_exponential_simd.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\vector_relational.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"detail/func_vector_relational.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_vector_relational.inl
+	"func_vector_relational_simd.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_vector_relational_simd.inl
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\_vectorize.hpp
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_exponential_simd.inl
+	"../simd/exponential.h"
+
+1572960451 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\simd\exponential.h
+	"platform.h"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\common.hpp
+	"detail/qualifier.hpp"
+	"detail/_fixes.hpp"
+	"detail/func_common.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\_fixes.hpp
+	<cmath>
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_common.inl
+	"../vector_relational.hpp"
+	"compute_common.hpp"
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+	"func_common_simd.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\compute_common.hpp
+	"setup.hpp"
+	<limits>
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_common_simd.inl
+	"../simd/common.h"
+	<immintrin.h>
+
+1572960451 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\simd\common.h
+	"platform.h"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_geometric_simd.inl
+	"../simd/geometric.h"
+
+1572960451 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\simd\geometric.h
+	"common.h"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_matrix_simd.inl
+	"type_mat4x4.hpp"
+	"../geometric.hpp"
+	"../simd/matrix.h"
+	<cstring>
+
+1572960451 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\simd\matrix.h
+	"geometric.h"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_mat4x4_simd.inl
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_double4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_float4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1572960448 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\type_ptr.hpp
+	"../gtc/quaternion.hpp"
+	"../gtc/vec1.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	<cstring>
+	"type_ptr.inl"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\quaternion.hpp
+	"../gtc/constants.hpp"
+	"../gtc/matrix_transform.hpp"
+	"../ext/vector_relational.hpp"
+	"../ext/quaternion_common.hpp"
+	"../ext/quaternion_float.hpp"
+	"../ext/quaternion_float_precision.hpp"
+	"../ext/quaternion_double.hpp"
+	"../ext/quaternion_double_precision.hpp"
+	"../ext/quaternion_relational.hpp"
+	"../ext/quaternion_geometric.hpp"
+	"../ext/quaternion_trigonometric.hpp"
+	"../ext/quaternion_transform.hpp"
+	"../detail/type_mat3x3.hpp"
+	"../detail/type_mat4x4.hpp"
+	"../detail/type_vec3.hpp"
+	"../detail/type_vec4.hpp"
+	"quaternion.inl"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\constants.hpp
+	"../ext/scalar_constants.hpp"
+	"constants.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\scalar_constants.hpp
+	"../detail/setup.hpp"
+	"scalar_constants.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\scalar_constants.inl
+	<limits>
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\constants.inl
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\matrix_transform.hpp
+	"../mat4x4.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../ext/matrix_projection.hpp"
+	"../ext/matrix_clip_space.hpp"
+	"../ext/matrix_transform.hpp"
+	"matrix_transform.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_projection.hpp
+	"../gtc/constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+	"matrix_projection.inl"
+
+1572960442 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\trigonometric.hpp
+	"detail/setup.hpp"
+	"detail/qualifier.hpp"
+	"detail/func_trigonometric.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+	"func_trigonometric_simd.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\func_trigonometric_simd.inl
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_projection.inl
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_clip_space.hpp
+	"../ext/scalar_constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"matrix_clip_space.inl"
+
+1572960444 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_clip_space.inl
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_transform.hpp
+	"../gtc/constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+	"matrix_transform.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\matrix_transform.inl
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\matrix_transform.inl
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_relational.hpp
+	"../detail/qualifier.hpp"
+	"vector_relational.inl"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_relational.inl
+	"../vector_relational.hpp"
+	"../common.hpp"
+	"../detail/qualifier.hpp"
+	"../detail/type_float.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_float.hpp
+	"setup.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_common.hpp
+	"../ext/scalar_constants.hpp"
+	"../ext/quaternion_geometric.hpp"
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	<limits>
+	"quaternion_common.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_geometric.hpp
+	"../geometric.hpp"
+	"../exponential.hpp"
+	"../ext/vector_relational.hpp"
+	"quaternion_geometric.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_geometric.inl
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_common.inl
+	"quaternion_common_simd.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_common_simd.inl
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_float.hpp
+	"../detail/type_quat.hpp"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_quat.hpp
+	"../detail/type_mat3x3.hpp"
+	"../detail/type_mat4x4.hpp"
+	"../detail/type_vec3.hpp"
+	"../detail/type_vec4.hpp"
+	"../ext/vector_relational.hpp"
+	"../ext/quaternion_relational.hpp"
+	"../gtc/constants.hpp"
+	"../gtc/matrix_transform.hpp"
+	"type_quat.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_relational.hpp
+	"../vector_relational.hpp"
+	"quaternion_relational.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_relational.inl
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_quat.inl
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	"../ext/quaternion_geometric.hpp"
+	<limits>
+	"type_quat_simd.inl"
+
+1572960443 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\detail\type_quat_simd.inl
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_float_precision.hpp
+	"../detail/type_quat.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_double.hpp
+	"../detail/type_quat.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_double_precision.hpp
+	"../detail/type_quat.hpp"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_trigonometric.hpp
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	"scalar_constants.hpp"
+	"vector_relational.hpp"
+	<limits>
+	"quaternion_trigonometric.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_trigonometric.inl
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_transform.hpp
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"quaternion_transform.inl"
+
+1572960445 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\quaternion_transform.inl
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\quaternion.inl
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../exponential.hpp"
+	"epsilon.hpp"
+	<limits>
+	"quaternion_simd.inl"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\epsilon.hpp
+	"../detail/setup.hpp"
+	"../detail/qualifier.hpp"
+	"epsilon.inl"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\epsilon.inl
+	"../vector_relational.hpp"
+	"../common.hpp"
+
+1572960447 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\quaternion_simd.inl
+
+1572960448 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\vec1.hpp
+	"../ext/vector_bool1.hpp"
+	"../ext/vector_bool1_precision.hpp"
+	"../ext/vector_float1.hpp"
+	"../ext/vector_float1_precision.hpp"
+	"../ext/vector_double1.hpp"
+	"../ext/vector_double1_precision.hpp"
+	"../ext/vector_int1.hpp"
+	"../ext/vector_int1_precision.hpp"
+	"../ext/vector_uint1.hpp"
+	"../ext/vector_uint1_precision.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_bool1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_bool1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_float1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_float1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_double1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_double1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_int1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_int1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_uint1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960446 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\ext\vector_uint1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\glm\gtc\type_ptr.inl
+	<cstring>
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\tiny_obj_loader.h
+	<map>
+	<string>
+	<vector>
+	<cassert>
+	<cctype>
+	<cmath>
+	<cstddef>
+	<cstdlib>
+	<cstring>
+	<utility>
+	<fstream>
+	<sstream>
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\utils.h
+	<cstdio>
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\matrices.h
+	<cstdio>
+	<cstdlib>
+	<glm/mat4x4.hpp>
+	<glm/vec4.hpp>
+	<glm/gtc/matrix_transform.hpp>
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\irrklang.h
+	"ik_irrKlangTypes.h"
+	"ik_vec3d.h"
+	"ik_IRefCounted.h"
+	"ik_IVirtualRefCounted.h"
+	"ik_ESoundOutputDrivers.h"
+	"ik_ESoundEngineOptions.h"
+	"ik_EStreamModes.h"
+	"ik_SAudioStreamFormat.h"
+	"ik_ISoundEngine.h"
+	"ik_ISoundSource.h"
+	"ik_ISound.h"
+	"ik_IAudioStream.h"
+	"ik_IAudioStreamLoader.h"
+	"ik_ISoundEffectControl.h"
+	"ik_ISoundStopEventReceiver.h"
+	"ik_IFileFactory.h"
+	"ik_IFileReader.h"
+	"ik_ISoundDeviceList.h"
+	"ik_IAudioRecorder.h"
+	"ik_ISoundMixedOutputReceiver.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_irrklangtypes.h
+	<wchar.h>
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_vec3d.h
+	<math.h>
+	"ik_irrKlangTypes.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_irefcounted.h
+	"ik_irrKlangTypes.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_ivirtualrefcounted.h
+	"ik_irrKlangTypes.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_esoundoutputdrivers.h
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_esoundengineoptions.h
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_estreammodes.h
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_saudiostreamformat.h
+	"ik_IRefCounted.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_isoundengine.h
+	"ik_IRefCounted.h"
+	"ik_vec3d.h"
+	"ik_ISoundSource.h"
+	"ik_ISound.h"
+	"ik_EStreamModes.h"
+	"ik_IFileFactory.h"
+	"ik_ISoundMixedOutputReceiver.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_isoundsource.h
+	"ik_IVirtualRefCounted.h"
+	"ik_vec3d.h"
+	"ik_EStreamModes.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_isound.h
+	"ik_IVirtualRefCounted.h"
+	"ik_ISoundEffectControl.h"
+	"ik_vec3d.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_isoundeffectcontrol.h
+	"ik_IVirtualRefCounted.h"
+	"ik_vec3d.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_ifilefactory.h
+	"ik_IRefCounted.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_isoundmixedoutputreceiver.h
+	"ik_IRefCounted.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_iaudiostream.h
+	"ik_IRefCounted.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_iaudiostreamloader.h
+	"ik_IRefCounted.h"
+	"ik_IFileReader.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_ifilereader.h
+	"ik_IRefCounted.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_isoundstopeventreceiver.h
+	"ik_IRefCounted.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_isounddevicelist.h
+	"ik_IRefCounted.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\ik_iaudiorecorder.h
+	"ik_IRefCounted.h"
+	"ik_ISoundSource.h"
+
+1572960453 source:c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\src\textrendering.cpp
+	<string>
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<glm/mat4x4.hpp>
+	<glm/vec4.hpp>
+	"utils.h"
+	"dejavufont.h"
+
+1572960441 c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\include\dejavufont.h
+	<stddef.h>
+	<stdint.h>
+
+1572960453 source:c:\users\aluno\desktop\fcg\fcg_trab_final-master\fcg_trab_final-master\src\tiny_obj_loader.cpp
+	"tiny_obj_loader.h"
+
+1572960454 source:c:\users\home\desktop\trab2\src\glad.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<glad/glad.h>
+	<windows.h>
+	<dlfcn.h>
+
+1572960444 c:\users\home\desktop\trab2\include\glad\glad.h
+	<windows.h>
+	<stddef.h>
+	<KHR/khrplatform.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1572960442 c:\users\home\desktop\trab2\include\khr\khrplatform.h
+	<sys/cdefs.h>
+	<stdint.h>
+	<inttypes.h>
+	<stdint.h>
+
+1572963820 source:c:\users\home\desktop\trab2\src\main.cpp
+	<cmath>
+	<cstdio>
+	<cstdlib>
+	<map>
+	<stack>
+	<string>
+	<vector>
+	<limits>
+	<fstream>
+	<sstream>
+	<stdexcept>
+	<algorithm>
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<glm/mat4x4.hpp>
+	<glm/vec4.hpp>
+	<glm/gtc/type_ptr.hpp>
+	<tiny_obj_loader.h>
+	"stb_image.h"
+	"utils.h"
+	"matrices.h"
+	"irrKlang.h"
+
+1572960442 c:\users\home\desktop\trab2\include\glfw\glfw3.h
+	<stddef.h>
+	<stdint.h>
+	<OpenGL/gl3.h>
+	<OpenGL/gl3ext.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/glcorearb.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl3.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl31.h>
+	<GLES2/gl2ext.h>
+	<vulkan/vulkan.h>
+	<GL/gl.h>
+	<GL/glext.h>
+	<GL/glu.h>
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat4x4.hpp
+	"./ext/matrix_double4x4.hpp"
+	"./ext/matrix_double4x4_precision.hpp"
+	"./ext/matrix_float4x4.hpp"
+	"./ext/matrix_float4x4_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat4x4.hpp
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\detail\type_vec4.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\qualifier.hpp
+	"setup.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\setup.hpp
+	<cassert>
+	<cstddef>
+	"../simd/platform.h"
+	<cstdint>
+	<type_traits>
+
+1572960452 c:\users\home\desktop\trab2\include\glm\simd\platform.h
+	<cuda.h>
+	<immintrin.h>
+	<immintrin.h>
+	<popcntintrin.h>
+	<nmmintrin.h>
+	<smmintrin.h>
+	<tmmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\_swizzle.hpp
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\_swizzle_func.hpp
+
+1572960446 c:\users\home\desktop\trab2\include\glm\detail\type_vec4.inl
+	"compute_vector_relational.hpp"
+	"type_vec4_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\compute_vector_relational.hpp
+	"setup.hpp"
+	<limits>
+
+1572960446 c:\users\home\desktop\trab2\include\glm\detail\type_vec4_simd.inl
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat4x4.inl
+	"../matrix.hpp"
+	"type_mat4x4_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\matrix.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"detail/func_matrix.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\vec2.hpp
+	"./ext/vector_bool2.hpp"
+	"./ext/vector_bool2_precision.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float2_precision.hpp"
+	"./ext/vector_double2.hpp"
+	"./ext/vector_double2_precision.hpp"
+	"./ext/vector_int2.hpp"
+	"./ext/vector_int2_precision.hpp"
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_uint2_precision.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_bool2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\detail\type_vec2.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\detail\type_vec2.inl
+	"./compute_vector_relational.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_bool2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_float2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_float2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_double2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_double2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_int2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_int2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_uint2.hpp
+	"../detail/type_vec2.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_uint2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\vec3.hpp
+	"./ext/vector_bool3.hpp"
+	"./ext/vector_bool3_precision.hpp"
+	"./ext/vector_float3.hpp"
+	"./ext/vector_float3_precision.hpp"
+	"./ext/vector_double3.hpp"
+	"./ext/vector_double3_precision.hpp"
+	"./ext/vector_int3.hpp"
+	"./ext/vector_int3_precision.hpp"
+	"./ext/vector_uint3.hpp"
+	"./ext/vector_uint3_precision.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_bool3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\detail\type_vec3.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\detail\type_vec3.inl
+	"compute_vector_relational.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_bool3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_float3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_float3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_double3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_double3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_int3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_int3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_uint3.hpp
+	"../detail/type_vec3.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_uint3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\vec4.hpp
+	"./ext/vector_bool4.hpp"
+	"./ext/vector_bool4_precision.hpp"
+	"./ext/vector_float4.hpp"
+	"./ext/vector_float4_precision.hpp"
+	"./ext/vector_double4.hpp"
+	"./ext/vector_double4_precision.hpp"
+	"./ext/vector_int4.hpp"
+	"./ext/vector_int4_precision.hpp"
+	"./ext/vector_uint4.hpp"
+	"./ext/vector_uint4_precision.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_bool4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_bool4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_float4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_float4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_double4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_double4_precision.hpp
+	"../detail/setup.hpp"
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_int4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_int4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_uint4.hpp
+	"../detail/type_vec4.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_uint4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat2x2.hpp
+	"./ext/matrix_double2x2.hpp"
+	"./ext/matrix_double2x2_precision.hpp"
+	"./ext/matrix_float2x2.hpp"
+	"./ext/matrix_float2x2_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat2x2.hpp
+	"type_vec2.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x2.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat2x2.inl
+	"../matrix.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat2x3.hpp
+	"./ext/matrix_double2x3.hpp"
+	"./ext/matrix_double2x3_precision.hpp"
+	"./ext/matrix_float2x3.hpp"
+	"./ext/matrix_float2x3_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat2x3.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x3.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat2x3.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat2x4.hpp
+	"./ext/matrix_double2x4.hpp"
+	"./ext/matrix_double2x4_precision.hpp"
+	"./ext/matrix_float2x4.hpp"
+	"./ext/matrix_float2x4_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat2x4.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x4.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat2x4.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat3x2.hpp
+	"./ext/matrix_double3x2.hpp"
+	"./ext/matrix_double3x2_precision.hpp"
+	"./ext/matrix_float3x2.hpp"
+	"./ext/matrix_float3x2_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat3x2.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x2.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat3x2.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat3x3.hpp
+	"./ext/matrix_double3x3.hpp"
+	"./ext/matrix_double3x3_precision.hpp"
+	"./ext/matrix_float3x3.hpp"
+	"./ext/matrix_float3x3_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat3x3.hpp
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x3.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat3x3.inl
+	"../matrix.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat3x4.hpp
+	"./ext/matrix_double3x4.hpp"
+	"./ext/matrix_double3x4_precision.hpp"
+	"./ext/matrix_float3x4.hpp"
+	"./ext/matrix_float3x4_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat3x4.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x4.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat3x4.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat4x2.hpp
+	"./ext/matrix_double4x2.hpp"
+	"./ext/matrix_double4x2_precision.hpp"
+	"./ext/matrix_float4x2.hpp"
+	"./ext/matrix_float4x2_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat4x2.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x2.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat4x2.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double4x2_precision.hpp
+	"../detail/type_mat4x2.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float4x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\mat4x3.hpp
+	"./ext/matrix_double4x3.hpp"
+	"./ext/matrix_double4x3_precision.hpp"
+	"./ext/matrix_float4x3.hpp"
+	"./ext/matrix_float4x3_precision.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat4x3.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x3.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat4x3.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+	"func_matrix_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\geometric.hpp
+	"detail/type_vec3.hpp"
+	"detail/func_geometric.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_geometric.inl
+	"../exponential.hpp"
+	"../common.hpp"
+	"func_geometric_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\exponential.hpp
+	"detail/type_vec1.hpp"
+	"detail/type_vec2.hpp"
+	"detail/type_vec3.hpp"
+	"detail/type_vec4.hpp"
+	<cmath>
+	"detail/func_exponential.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_vec1.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_vec1.inl
+	"./compute_vector_relational.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_exponential.inl
+	"../vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cmath>
+	<cassert>
+	"func_exponential_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\vector_relational.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"detail/func_vector_relational.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_vector_relational.inl
+	"func_vector_relational_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_vector_relational_simd.inl
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\_vectorize.hpp
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_exponential_simd.inl
+	"../simd/exponential.h"
+
+1572960452 c:\users\home\desktop\trab2\include\glm\simd\exponential.h
+	"platform.h"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\common.hpp
+	"detail/qualifier.hpp"
+	"detail/_fixes.hpp"
+	"detail/func_common.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\_fixes.hpp
+	<cmath>
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_common.inl
+	"../vector_relational.hpp"
+	"compute_common.hpp"
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+	"func_common_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\compute_common.hpp
+	"setup.hpp"
+	<limits>
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_common_simd.inl
+	"../simd/common.h"
+	<immintrin.h>
+
+1572960452 c:\users\home\desktop\trab2\include\glm\simd\common.h
+	"platform.h"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_geometric_simd.inl
+	"../simd/geometric.h"
+
+1572960452 c:\users\home\desktop\trab2\include\glm\simd\geometric.h
+	"common.h"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_matrix_simd.inl
+	"type_mat4x4.hpp"
+	"../geometric.hpp"
+	"../simd/matrix.h"
+	<cstring>
+
+1572960452 c:\users\home\desktop\trab2\include\glm\simd\matrix.h
+	"geometric.h"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_mat4x4_simd.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_double4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_float4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1572960450 c:\users\home\desktop\trab2\include\glm\gtc\type_ptr.hpp
+	"../gtc/quaternion.hpp"
+	"../gtc/vec1.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	<cstring>
+	"type_ptr.inl"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\quaternion.hpp
+	"../gtc/constants.hpp"
+	"../gtc/matrix_transform.hpp"
+	"../ext/vector_relational.hpp"
+	"../ext/quaternion_common.hpp"
+	"../ext/quaternion_float.hpp"
+	"../ext/quaternion_float_precision.hpp"
+	"../ext/quaternion_double.hpp"
+	"../ext/quaternion_double_precision.hpp"
+	"../ext/quaternion_relational.hpp"
+	"../ext/quaternion_geometric.hpp"
+	"../ext/quaternion_trigonometric.hpp"
+	"../ext/quaternion_transform.hpp"
+	"../detail/type_mat3x3.hpp"
+	"../detail/type_mat4x4.hpp"
+	"../detail/type_vec3.hpp"
+	"../detail/type_vec4.hpp"
+	"quaternion.inl"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\constants.hpp
+	"../ext/scalar_constants.hpp"
+	"constants.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\scalar_constants.hpp
+	"../detail/setup.hpp"
+	"scalar_constants.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\scalar_constants.inl
+	<limits>
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\constants.inl
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\matrix_transform.hpp
+	"../mat4x4.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../ext/matrix_projection.hpp"
+	"../ext/matrix_clip_space.hpp"
+	"../ext/matrix_transform.hpp"
+	"matrix_transform.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_projection.hpp
+	"../gtc/constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+	"matrix_projection.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\trigonometric.hpp
+	"detail/setup.hpp"
+	"detail/qualifier.hpp"
+	"detail/func_trigonometric.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+	"func_trigonometric_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\func_trigonometric_simd.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_projection.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_clip_space.hpp
+	"../ext/scalar_constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"matrix_clip_space.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_clip_space.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_transform.hpp
+	"../gtc/constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+	"matrix_transform.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\matrix_transform.inl
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\matrix_transform.inl
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_relational.hpp
+	"../detail/qualifier.hpp"
+	"vector_relational.inl"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_relational.inl
+	"../vector_relational.hpp"
+	"../common.hpp"
+	"../detail/qualifier.hpp"
+	"../detail/type_float.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_float.hpp
+	"setup.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_common.hpp
+	"../ext/scalar_constants.hpp"
+	"../ext/quaternion_geometric.hpp"
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	<limits>
+	"quaternion_common.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_geometric.hpp
+	"../geometric.hpp"
+	"../exponential.hpp"
+	"../ext/vector_relational.hpp"
+	"quaternion_geometric.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_geometric.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_common.inl
+	"quaternion_common_simd.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_common_simd.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_float.hpp
+	"../detail/type_quat.hpp"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_quat.hpp
+	"../detail/type_mat3x3.hpp"
+	"../detail/type_mat4x4.hpp"
+	"../detail/type_vec3.hpp"
+	"../detail/type_vec4.hpp"
+	"../ext/vector_relational.hpp"
+	"../ext/quaternion_relational.hpp"
+	"../gtc/constants.hpp"
+	"../gtc/matrix_transform.hpp"
+	"type_quat.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_relational.hpp
+	"../vector_relational.hpp"
+	"quaternion_relational.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_relational.inl
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_quat.inl
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	"../ext/quaternion_geometric.hpp"
+	<limits>
+	"type_quat_simd.inl"
+
+1572960444 c:\users\home\desktop\trab2\include\glm\detail\type_quat_simd.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_float_precision.hpp
+	"../detail/type_quat.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_double.hpp
+	"../detail/type_quat.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_double_precision.hpp
+	"../detail/type_quat.hpp"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_trigonometric.hpp
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	"scalar_constants.hpp"
+	"vector_relational.hpp"
+	<limits>
+	"quaternion_trigonometric.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_trigonometric.inl
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_transform.hpp
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"quaternion_transform.inl"
+
+1572960446 c:\users\home\desktop\trab2\include\glm\ext\quaternion_transform.inl
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\quaternion.inl
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../exponential.hpp"
+	"epsilon.hpp"
+	<limits>
+	"quaternion_simd.inl"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\epsilon.hpp
+	"../detail/setup.hpp"
+	"../detail/qualifier.hpp"
+	"epsilon.inl"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\epsilon.inl
+	"../vector_relational.hpp"
+	"../common.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\gtc\quaternion_simd.inl
+
+1572960450 c:\users\home\desktop\trab2\include\glm\gtc\vec1.hpp
+	"../ext/vector_bool1.hpp"
+	"../ext/vector_bool1_precision.hpp"
+	"../ext/vector_float1.hpp"
+	"../ext/vector_float1_precision.hpp"
+	"../ext/vector_double1.hpp"
+	"../ext/vector_double1_precision.hpp"
+	"../ext/vector_int1.hpp"
+	"../ext/vector_int1_precision.hpp"
+	"../ext/vector_uint1.hpp"
+	"../ext/vector_uint1_precision.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_bool1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_bool1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_float1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_float1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_double1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_double1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_int1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_int1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_uint1.hpp
+	"../detail/type_vec1.hpp"
+
+1572960448 c:\users\home\desktop\trab2\include\glm\ext\vector_uint1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1572960450 c:\users\home\desktop\trab2\include\glm\gtc\type_ptr.inl
+	<cstring>
+
+1572960442 c:\users\home\desktop\trab2\include\tiny_obj_loader.h
+	<map>
+	<string>
+	<vector>
+	<cassert>
+	<cctype>
+	<cmath>
+	<cstddef>
+	<cstdlib>
+	<cstring>
+	<utility>
+	<fstream>
+	<sstream>
+
+1572960442 c:\users\home\desktop\trab2\include\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1572960442 c:\users\home\desktop\trab2\include\utils.h
+	<cstdio>
+
+1572960442 c:\users\home\desktop\trab2\include\matrices.h
+	<cstdio>
+	<cstdlib>
+	<glm/mat4x4.hpp>
+	<glm/vec4.hpp>
+	<glm/gtc/matrix_transform.hpp>
+
+1572960442 c:\users\home\desktop\trab2\include\irrklang.h
+	"ik_irrKlangTypes.h"
+	"ik_vec3d.h"
+	"ik_IRefCounted.h"
+	"ik_IVirtualRefCounted.h"
+	"ik_ESoundOutputDrivers.h"
+	"ik_ESoundEngineOptions.h"
+	"ik_EStreamModes.h"
+	"ik_SAudioStreamFormat.h"
+	"ik_ISoundEngine.h"
+	"ik_ISoundSource.h"
+	"ik_ISound.h"
+	"ik_IAudioStream.h"
+	"ik_IAudioStreamLoader.h"
+	"ik_ISoundEffectControl.h"
+	"ik_ISoundStopEventReceiver.h"
+	"ik_IFileFactory.h"
+	"ik_IFileReader.h"
+	"ik_ISoundDeviceList.h"
+	"ik_IAudioRecorder.h"
+	"ik_ISoundMixedOutputReceiver.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_irrklangtypes.h
+	<wchar.h>
+
+1572960442 c:\users\home\desktop\trab2\include\ik_vec3d.h
+	<math.h>
+	"ik_irrKlangTypes.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_irefcounted.h
+	"ik_irrKlangTypes.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_ivirtualrefcounted.h
+	"ik_irrKlangTypes.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_esoundoutputdrivers.h
+
+1572960442 c:\users\home\desktop\trab2\include\ik_esoundengineoptions.h
+
+1572960442 c:\users\home\desktop\trab2\include\ik_estreammodes.h
+
+1572960442 c:\users\home\desktop\trab2\include\ik_saudiostreamformat.h
+	"ik_IRefCounted.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_isoundengine.h
+	"ik_IRefCounted.h"
+	"ik_vec3d.h"
+	"ik_ISoundSource.h"
+	"ik_ISound.h"
+	"ik_EStreamModes.h"
+	"ik_IFileFactory.h"
+	"ik_ISoundMixedOutputReceiver.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_isoundsource.h
+	"ik_IVirtualRefCounted.h"
+	"ik_vec3d.h"
+	"ik_EStreamModes.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_isound.h
+	"ik_IVirtualRefCounted.h"
+	"ik_ISoundEffectControl.h"
+	"ik_vec3d.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_isoundeffectcontrol.h
+	"ik_IVirtualRefCounted.h"
+	"ik_vec3d.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_ifilefactory.h
+	"ik_IRefCounted.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_isoundmixedoutputreceiver.h
+	"ik_IRefCounted.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_iaudiostream.h
+	"ik_IRefCounted.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_iaudiostreamloader.h
+	"ik_IRefCounted.h"
+	"ik_IFileReader.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_ifilereader.h
+	"ik_IRefCounted.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_isoundstopeventreceiver.h
+	"ik_IRefCounted.h"
+	"ik_SAudioStreamFormat.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_isounddevicelist.h
+	"ik_IRefCounted.h"
+
+1572960442 c:\users\home\desktop\trab2\include\ik_iaudiorecorder.h
+	"ik_IRefCounted.h"
+	"ik_ISoundSource.h"
+
+1572960454 source:c:\users\home\desktop\trab2\src\textrendering.cpp
+	<string>
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<glm/mat4x4.hpp>
+	<glm/vec4.hpp>
+	"utils.h"
+	"dejavufont.h"
+
+1572960442 c:\users\home\desktop\trab2\include\dejavufont.h
+	<stddef.h>
+	<stdint.h>
+
+1572960454 source:c:\users\home\desktop\trab2\src\tiny_obj_loader.cpp
+	"tiny_obj_loader.h"
 
