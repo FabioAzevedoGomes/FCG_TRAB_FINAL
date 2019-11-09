@@ -119,7 +119,7 @@ void TextRendering_ShowFramesPerSecond(GLFWwindow* window);
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void ErrorCallback(int error, const char* description);
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
-void ProcessUserMovement(glm::vec4 camera_view_vector, glm::vec4 camera_up_vector);
+void ProcessUserMovement(glm::vec4 camera_view_vector, glm::vec4 camera_up_vector,float delta_time);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void CursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
@@ -160,7 +160,7 @@ float g_AngleZ = 0.0f;
 glm::vec4 character_position(10.0f,3.0f,10.0f,1.0f);
 
 //Velocidade com a qual a câmera se move na cena
-float camera_speed = 0.1;
+float camera_speed = 10;
 
 //Teclas pressionadas pelo usuário
 bool pressed[GLFW_KEY_MENU];
@@ -327,7 +327,7 @@ int main(int argc, char* argv[])
 
     //Controle de movimentação do 'pet'
     float pet_curve_t = 0.0f;             //Parâmetro para a curva de Bézier do 'pet'
-    float pet_update_speed = 0.01;        //Velocidade de variação do t do 'pet'
+    float pet_update_speed = 1;        //Velocidade de variação do t do 'pet'
     float pet_random_movement = 1;
 
     irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
@@ -339,6 +339,8 @@ int main(int argc, char* argv[])
     soundEngine->setSoundVolume(0.2);
     soundEngine->play2D("../../media/polkka.wav",true);
 
+    float previous_time = glfwGetTime();
+    float current_time = glfwGetTime();
     // Ficamos em loop, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
     {
@@ -431,7 +433,7 @@ int main(int argc, char* argv[])
             glm::vec4 d = glm::vec4( character_position.x + 0.0, character_position.y + 1.0, character_position.z - 0.5, 1.0f);
 
             //Atualizamos T do 'pet'
-            pet_curve_t = pet_curve_t + pet_update_speed;
+            pet_curve_t = pet_curve_t + pet_update_speed*(glfwGetTime() - previous_time);
 
             //Invertemos se chegamos ao final da curva
             if (pet_curve_t >= 1)
@@ -499,8 +501,11 @@ int main(int argc, char* argv[])
         // usuário (teclado, mouse, ...). Caso positivo, as funções de callback
         // definidas anteriormente usando glfwSet*Callback() serão chamadas
         // pela biblioteca GLFW.
-        ProcessUserMovement(camera_view_vector,camera_up_vector);
+        current_time = glfwGetTime();
+        ProcessUserMovement(camera_view_vector,camera_up_vector,current_time - previous_time);
         glfwPollEvents();
+
+        previous_time = current_time;
     }
 
     soundEngine->drop();
@@ -1274,7 +1279,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
 }
 
 //Função que processa os comandos de movimentação do usuário
-void ProcessUserMovement(glm::vec4 camera_view_vector,glm::vec4 camera_up_vector)
+void ProcessUserMovement(glm::vec4 camera_view_vector,glm::vec4 camera_up_vector,float delta_time)
 {
     glm::vec4 view_projection = camera_view_vector*glm::vec4(1.0f,0.0f,1.0f,0.0f)/norm(camera_view_vector*glm::vec4(1.0f,0.0f,1.0f,0.0f));
     glm::vec4 side_vector = crossproduct(camera_up_vector,-camera_view_vector)/norm(crossproduct(camera_up_vector,-camera_view_vector));
@@ -1285,16 +1290,16 @@ void ProcessUserMovement(glm::vec4 camera_view_vector,glm::vec4 camera_up_vector
         switch(i)
         {
         case GLFW_KEY_W:
-            character_position = character_position + camera_speed*view_projection;
+            character_position = character_position + delta_time*camera_speed*view_projection;
             break;
         case GLFW_KEY_A:
-            character_position = character_position - camera_speed*side_vector;
+            character_position = character_position - delta_time*camera_speed*side_vector;
             break;
         case GLFW_KEY_S:
-            character_position = character_position - camera_speed*view_projection;
+            character_position = character_position - delta_time*camera_speed*view_projection;
             break;
         case GLFW_KEY_D:
-            character_position = character_position + camera_speed*side_vector;
+            character_position = character_position + delta_time*camera_speed*side_vector;
             break;
         }
     }
