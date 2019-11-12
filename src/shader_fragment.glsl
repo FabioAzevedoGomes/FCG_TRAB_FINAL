@@ -20,6 +20,8 @@ uniform mat4 projection;
 #define BUNNY  1
 #define FLOOR  2
 #define MIKU   3
+#define BULLET 4
+#define WALL   5
 
 uniform int object_id;
 
@@ -30,6 +32,7 @@ uniform vec4 bbox_max;
 //Textures
 uniform sampler2D TextureImage0;
 uniform sampler2D TextureImage1;
+uniform sampler2D TextureImage2;
 
 // O valor de saída ("out") de um Fragment Shader é a cor final do fragmento.
 out vec3 color;
@@ -56,8 +59,10 @@ void main()
     // normais de cada vértice.
     vec4 n = normalize(normal);
 
+    vec4 light_pos = vec4(0.0f,10.0f,0.0f,1.0f);
+
     // Vetor que define o sentido da fonte de luz em relação ao ponto atual.
-    vec4 l = normalize(vec4(1.0,1.0,0.5,0.0));
+    vec4 l = normalize(light_pos - p);//normalize(vec4(0.5,1.0,0.5,0.0));
 
     // Vetor que define o sentido da câmera em relação ao ponto atual.
     vec4 v = normalize(camera_position - p);
@@ -107,12 +112,6 @@ void main()
     else if ( object_id == FLOOR )
     {
 
-        float minx = bbox_min.x;
-        float maxx = bbox_max.x;
-
-        float minz = bbox_min.z;
-        float maxz = bbox_max.z;
-
         U = position_model.x;// - minx)/(maxx - minx);
         V = position_model.z;// - minz)/(maxz - minz);
 
@@ -129,6 +128,18 @@ void main()
         Ka = vec3(0.05,0.2,0.3);
         q = 30.0;
     }
+    else if (object_id == WALL) {
+
+        U = position_model.x;// - minx)/(maxx - minx);
+        V = position_model.y;// - minz)/(maxz - minz);
+
+        //Computa a cor da textura neste ponto
+        Kd = texture(TextureImage2, vec2(U,V)).rgb;
+
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.05,0.2,0.3);
+        q = 30.0;
+    }
     else // Objeto desconhecido = preto
     {
         Kd = vec3(0.0,0.0,0.0);
@@ -141,7 +152,7 @@ void main()
     vec3 I = vec3(1.0,1.0,1.0); // PREENCH AQUI o espectro da fonte de luz
 
     // Espectro da luz ambiente
-    vec3 Ia = vec3(0.2,0.2,0.2); // PREENCHA AQUI o espectro da luz ambiente
+    vec3 Ia = vec3(1.0,1.0,1.0); // PREENCHA AQUI o espectro da luz ambiente
 
     // Termo difuso utilizando a lei dos cossenos de Lambert
     vec3 lambert_diffuse_term = Kd*I*max(0,dot(n,l));//vec3(0.0,0.0,0.0); // PREENCHA AQUI o termo difuso de Lambert

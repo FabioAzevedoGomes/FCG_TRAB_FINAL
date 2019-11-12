@@ -152,7 +152,7 @@ float g_AngleZ = 0.0f;
 glm::vec4 character_position(10.0f,3.0f,10.0f,1.0f);
 
 //Velocidade com a qual a câmera se move na cena
-float camera_speed = 10;
+float camera_speed = 100;
 
 //Teclas pressionadas pelo usuário
 bool pressed[GLFW_KEY_MENU];
@@ -222,7 +222,7 @@ struct BulletObject {
 /*Um inimigo do jogo. Pode ser interpretado como uma source de bullets*/
 struct EnemyObject {
     int id;                     /*Identificação única deste inimigo*/
-    float health_points         /*Vida atual do inimigo*/
+    float health_points;         /*Vida atual do inimigo*/
     glm::vec4 position_world;   /*Posição deste inimigo atualmente*/
     int attack_patterns[3];     /*Tipo de ataques possíveis do inimigo*/
     ObjModel* model;            /*Modelo deste inimigo*/
@@ -345,6 +345,7 @@ int main(int argc, char* argv[])
 
     LoadTextureImage("../../data/textures/grass_texture.jpg");      // TextureImage0
     LoadTextureImage("../../data/textures/background_texture.jpg"); //TextureImage1
+    LoadTextureImage("../../data/textures/wall.bpm");   // TextureImage2
 
     ObjModel backgroundmodel("../../data/sphere.obj");
     ComputeNormals(&backgroundmodel);
@@ -361,6 +362,10 @@ int main(int argc, char* argv[])
     ObjModel mikumodel("../../data/miku.obj");
     ComputeNormals(&mikumodel);
     BuildTrianglesAndAddToVirtualScene(&mikumodel);
+
+    ObjModel wallmodel("../../data/wall.obj");
+    ComputeNormals(&wallmodel);
+    BuildTrianglesAndAddToVirtualScene(&wallmodel);
 
     if ( argc > 1 )
     {
@@ -475,7 +480,8 @@ int main(int argc, char* argv[])
         // Note que, no sistema de coordenadas da câmera, os planos near e far
         // estão no sentido negativo! Veja slides 190-193 do documento "Aula_09_Projecoes.pdf".
         float nearplane = -0.1f;  // Posição do "near plane"
-        float farplane  = -60.0f; // Posição do "far plane"
+        float farplane  = -500.0f; // Posição do "far plane"
+
 
         // Projeção Perspectiva.
         float field_of_view = 3.141592 / 3.0f;
@@ -499,6 +505,7 @@ int main(int argc, char* argv[])
         #define FLOOR  2
         #define MIKU   3
         #define BULLET 4
+        #define WALL 5
 
         //Desenhamos o personagem apenas se o usuário estiver em terceira pessoa
         if (!firstPersonView)
@@ -551,13 +558,50 @@ int main(int argc, char* argv[])
         /*-------------------------------------------
                     MODELO DO CHÃO
         -------------------------------------------*/
-        model = Matrix_Translate(0.0f,-1.0f,0.0f)
-                * Matrix_Scale(30.0f,1.0f,30.0f);
+        float arena_size = -farplane/(2*sqrt(2));
+
+        //Desenhamos o modelo do chão
+        model = Matrix_Scale(arena_size,1.0f,arena_size)
+                * Matrix_Translate(0.0f,-1.0f,0.0f);
         glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
         glUniform1i(object_id_uniform, FLOOR);
         DrawVirtualObject("plane");
 
         /*-------------------------------------------
+                    MODELO DAS PAREDES
+        -------------------------------------------*/
+        //Desenhamos as paredes
+        model  = Matrix_Translate(arena_size/2,2.0f,0.0f)
+                * Matrix_Rotate_Y(3.14/2)
+                * Matrix_Scale(arena_size/4,5.0f,1.0f);
+        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(object_id_uniform, WALL);
+        DrawVirtualObject("wall");
+
+        //Desenhamos as paredes
+        model  = Matrix_Translate(-arena_size/2,2.0f,0.0f)
+                * Matrix_Rotate_Y(-3.14/2)
+                * Matrix_Scale(arena_size/4,5.0f,1.0f);
+        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(object_id_uniform, WALL);
+        DrawVirtualObject("wall");
+
+        //Desenhamos as paredes
+        model  = Matrix_Translate(0.0f,2.0f,arena_size/2)
+                * Matrix_Scale(arena_size/4,5.0f,1.0f);
+        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(object_id_uniform, WALL);
+        DrawVirtualObject("wall");
+
+        //Desenhamos as paredes
+        model  = Matrix_Translate(1.0f,2.0f,-arena_size/2)
+                * Matrix_Rotate_Y(3.14)
+                * Matrix_Scale(arena_size/4,5.0f,1.0f);
+        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(object_id_uniform, WALL);
+        DrawVirtualObject("wall");
+
+       /*-------------------------------------------
                  MODELO DA SKYBOX (SPHERE)
         -------------------------------------------*/
         model = Matrix_Translate(camera_position_c.x,camera_position_c.y,camera_position_c.z)
@@ -734,7 +778,7 @@ void LoadShadersFromFiles()
     glUseProgram(program_id);
     glUniform1i(glGetUniformLocation(program_id, "TextureImage0"), 0);
     glUniform1i(glGetUniformLocation(program_id, "TextureImage1"), 1);
-    //glUniform1i(glGetUniformLocation(program_id, "TextureImage2"), 2);
+    glUniform1i(glGetUniformLocation(program_id, "TextureImage2"), 2);
     glUseProgram(0);
 }
 
