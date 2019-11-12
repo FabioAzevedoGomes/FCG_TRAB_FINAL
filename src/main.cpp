@@ -8,18 +8,10 @@
 //                   LABORATÓRIO 4
 //
 
-// Arquivos "headers" padrões de C podem ser incluídos em um
-// programa C++, sendo necessário somente adicionar o caractere
-// "c" antes de seu nome, e remover o sufixo ".h". Exemplo:
-//    #include <stdio.h> // Em C
-//  vira
-//    #include <cstdio> // Em C++
-//
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 
-// Headers abaixo são específicos de C++
 #include <map>
 #include <stack>
 #include <string>
@@ -208,6 +200,76 @@ GLint bbox_max_uniform;
 // Número de texturas carregadas pela função LoadTextureImage()
 GLuint g_NumLoadedTextures = 0;
 
+
+/*---------------------------------------------------------------------------------------------------------
+                            ESTRUTURAS REFERENTES À LÓGICA DO JOGO
+---------------------------------------------------------------------------------------------------------*/
+
+/* Uma bullet do jogo. Representa um objeto que danifica o jogador caso se encostem */
+struct BulletObject {
+    int id;                     /*Identificação única desta bullet*/
+    glm::vec4 position_world;   /*Posição desta bullet atualmente*/
+    glm::vec4 color;            /*Cor desta bullet ( + 'glow')*/
+    float damage;               /*Dano que esta bullet da ao encostar no jogador*/
+    float bullet_t;             /*t caso ela esteja em uma curva de bezier? (N sei se vai ser usado)*/
+};
+
+/*Attack patterns dos inimigos*/
+#define ATK_EXPANDING_CIRCLE 0
+#define ATK_EXPANDING_SPIRAL 1
+        /* etc */
+
+/*Um inimigo do jogo. Pode ser interpretado como uma source de bullets*/
+struct EnemyObject {
+    int id;                     /*Identificação única deste inimigo*/
+    float health_points         /*Vida atual do inimigo*/
+    glm::vec4 position_world;   /*Posição deste inimigo atualmente*/
+    int attack_patterns[3];     /*Tipo de ataques possíveis do inimigo*/
+    ObjModel* model;            /*Modelo deste inimigo*/
+
+    /*Construtor TODO*/
+    EnemyObject (int enemyId,ObjModel* enemyModel) {
+        id = enemyId;
+        model = enemyModel;
+        position_world = glm::vec4(0.0f,0.0f,0.0f,0.0f);    /*Posição default*/
+
+        /*Definimos as attack patterns e vida total com base em qual inimigo é*/
+        switch (enemyId) {
+        case 0:
+            attack_patterns[0] = ATK_EXPANDING_CIRCLE;
+            attack_patterns[1] = ATK_EXPANDING_CIRCLE;
+            attack_patterns[2] = ATK_EXPANDING_CIRCLE;
+            health_points = 100.0;
+            break;
+        default:
+            break;
+        }
+    }
+
+    /*Executar o ataque descrito por pattern TODO*/
+    int attack (int pattern) {
+        switch (pattern) {
+        case ATK_EXPANDING_CIRCLE:
+            /*TODO*/
+            break;
+        case ATK_EXPANDING_SPIRAL:
+            /*TODO*/
+            break;
+        default:
+            fprintf(stderr,"Invalid attack pattern");
+            break;
+        }
+    }
+};
+
+/*Vetor com todas as bullets que estão 'ativas' atualmente*/
+std::vector<struct BulletObject> g_BulletsOnPlay;
+
+
+/*---------------------------------------------------------------------------------------------------------
+                                        INÍCIO DO PROGRAMA
+---------------------------------------------------------------------------------------------------------*/
+
 int main(int argc, char* argv[])
 {
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
@@ -276,27 +338,25 @@ int main(int argc, char* argv[])
 
     printf("GPU: %s, %s, OpenGL %s, GLSL %s\n", vendor, renderer, glversion, glslversion);
 
-    // Carregamos os shaders de vértices e de fragmentos que serão utilizados
-    // para renderização. Veja slides 217-219 do documento "Aula_03_Rendering_Pipeline_Grafico.pdf".
-    //
+    /*---------------------------------------------------------------------------------------------------------
+                                CARREGANDO SHADERS, TEXTURAS E MODELOS
+    ---------------------------------------------------------------------------------------------------------*/
     LoadShadersFromFiles();
 
-    // Carregamos as imagens para serem utilizadas como textura
     LoadTextureImage("../../data/textures/grass_texture.jpg");      // TextureImage0
     LoadTextureImage("../../data/textures/background_texture.jpg"); //TextureImage1
 
-    // Construímos a representação de objetos geométricos através de malhas de triângulos
-    ObjModel spheremodel("../../data/sphere.obj");
-    ComputeNormals(&spheremodel);
-    BuildTrianglesAndAddToVirtualScene(&spheremodel);
+    ObjModel backgroundmodel("../../data/sphere.obj");
+    ComputeNormals(&backgroundmodel);
+    BuildTrianglesAndAddToVirtualScene(&backgroundmodel);
 
     ObjModel bunnymodel("../../data/bunny.obj");
     ComputeNormals(&bunnymodel);
     BuildTrianglesAndAddToVirtualScene(&bunnymodel);
 
-    ObjModel planemodel("../../data/plane.obj");
-    ComputeNormals(&planemodel);
-    BuildTrianglesAndAddToVirtualScene(&planemodel);
+    ObjModel floormodel("../../data/plane.obj");
+    ComputeNormals(&floormodel);
+    BuildTrianglesAndAddToVirtualScene(&floormodel);
 
     ObjModel mikumodel("../../data/miku.obj");
     ComputeNormals(&mikumodel);
@@ -307,6 +367,10 @@ int main(int argc, char* argv[])
         ObjModel model(argv[1]);
         BuildTrianglesAndAddToVirtualScene(&model);
     }
+
+    /*---------------------------------------------------------------------------------------------------------
+                                HABILITANDO RENDERING DE TEXTO E BACKFACE CULLING
+    ---------------------------------------------------------------------------------------------------------*/
 
     // Inicializamos o código para renderização de texto.
     TextRendering_Init();
@@ -326,9 +390,13 @@ int main(int argc, char* argv[])
     glm::mat4 the_view;
 
     //Controle de movimentação do 'pet'
-    float pet_curve_t = 0.0f;             //Parâmetro para a curva de Bézier do 'pet'
-    float pet_update_speed = 1;        //Velocidade de variação do t do 'pet'
+    float pet_curve_t = 0.0f;           //Parâmetro para a curva de Bézier do 'pet'
+    float pet_update_speed = 10;        //Velocidade de variação do t do 'pet'
     float pet_random_movement = 1;
+
+    /*---------------------------------------------------------------------------------------------------------
+                                        INICIALIZAÇÃO DA ENGINE DE SOM
+    ---------------------------------------------------------------------------------------------------------*/
 
     irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
     if (!soundEngine)
@@ -339,11 +407,20 @@ int main(int argc, char* argv[])
     soundEngine->setSoundVolume(0.2);
     soundEngine->play2D("../../media/polkka.wav",true);
 
+    /*---------------------------------------------------------------------------------------------------------
+                                            VARIÁVEIS DE TEMPO
+    ---------------------------------------------------------------------------------------------------------*/
+
     float previous_time = glfwGetTime();
     float current_time = glfwGetTime();
+
     // Ficamos em loop, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
     {
+        /*---------------------------------------------------------------------------------------------------------
+                                            INÍCIO DO FRAME
+        ---------------------------------------------------------------------------------------------------------*/
+
         // Aqui executamos as operações de renderização
 
         // Definimos a cor do "fundo" do framebuffer como branco.  Tal cor é
@@ -367,10 +444,9 @@ int main(int argc, char* argv[])
         glm::vec4 camera_view_vector;
         glm::vec4 camera_lookat_l;
 
-        // Computamos a posição da câmera utilizando coordenadas esféricas.  As
-        // variáveis g_CameraDistance, g_CameraPhi, e g_CameraTheta são
-        // controladas pelo mouse do usuário. Veja as funções CursorPosCallback()
-        // e ScrollCallback().
+        /*---------------------------------------------------------------------------------------------------------
+                                    COMPUTANDO OS VETORES DA CAMERA E PROJEÇÃO
+        ---------------------------------------------------------------------------------------------------------*/
 
         if (!firstPersonView)
         {
@@ -389,7 +465,6 @@ int main(int argc, char* argv[])
             camera_view_vector = (Matrix_Rotate_Y(g_CameraTheta)*Matrix_Rotate_X(-g_CameraPhi))*glm::vec4(0.0f,0.0f,-1.0f,0.0f);
         }
 
-
         // Computamos a matriz "View" utilizando os parâmetros da câmera para
         // definir o sistema de coordenadas da câmera.  Veja slide 186 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
         glm::mat4 view = Matrix_Camera_View(camera_position_c, camera_view_vector, camera_up_vector);
@@ -400,7 +475,7 @@ int main(int argc, char* argv[])
         // Note que, no sistema de coordenadas da câmera, os planos near e far
         // estão no sentido negativo! Veja slides 190-193 do documento "Aula_09_Projecoes.pdf".
         float nearplane = -0.1f;  // Posição do "near plane"
-        float farplane  = -50.0f; // Posição do "far plane"
+        float farplane  = -60.0f; // Posição do "far plane"
 
         // Projeção Perspectiva.
         float field_of_view = 3.141592 / 3.0f;
@@ -411,14 +486,26 @@ int main(int argc, char* argv[])
         glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(projection));
 
-#define SPHERE 0
-#define BUNNY  1
-#define PLANE  2
-#define MIKU   3
+        /*---------------------------------------------------------------------------------------------------------
+                                            LÓGICA DO JOGO
+        ---------------------------------------------------------------------------------------------------------*/
+                                                /*TODO*/
+
+        /*---------------------------------------------------------------------------------------------------------
+                                        DESENHANDO OS OBJETOS DA CENA
+        ---------------------------------------------------------------------------------------------------------*/
+        #define BACKGROUND 0
+        #define BUNNY  1
+        #define FLOOR  2
+        #define MIKU   3
+        #define BULLET 4
 
         //Desenhamos o personagem apenas se o usuário estiver em terceira pessoa
         if (!firstPersonView)
         {
+            /*-------------------------------------------
+                        PERSONAGEM DO USUÀRIO
+            -------------------------------------------*/
             model = Matrix_Translate(character_position.x,character_position.y - 4.0f,character_position.z)
                     *Matrix_Rotate_Y(g_CameraTheta)
                     *Matrix_Scale(-1.0f,1.0f,-1.0f);
@@ -448,7 +535,9 @@ int main(int argc, char* argv[])
             float point_y = (pow((1-pet_curve_t),3) * a.y) + (3*pet_curve_t*pow((1-pet_curve_t),2) * b.y) + (3*pow(pet_curve_t,2)*(1-pet_curve_t) * c.y) + (pow(pet_curve_t,3) * d.y);
             float point_z = (pow((1-pet_curve_t),3) * a.z) + (3*pet_curve_t*pow((1-pet_curve_t),2) * b.z) + (3*pow(pet_curve_t,2)*(1-pet_curve_t) * c.z) + (pow(pet_curve_t,3) * d.z);
 
-            // Desenhamos o modelo do 'pet' apenas se o usuário estiver em terceira pessoa
+            /*-------------------------------------------
+                        PET DO PERSONGEM
+            -------------------------------------------*/
             model = Matrix_Translate(point_x,point_y,point_z)
                     * Matrix_Scale(0.5,0.5,0.5)
                     * Matrix_Rotate_Z(g_AngleZ)
@@ -459,31 +548,24 @@ int main(int argc, char* argv[])
             DrawVirtualObject("bunny");
         }
 
-        //Desenhamos o modelo do chão
+        /*-------------------------------------------
+                    MODELO DO CHÃO
+        -------------------------------------------*/
         model = Matrix_Translate(0.0f,-1.0f,0.0f)
-                * Matrix_Scale(20.0f,1.0f,20.0f);
+                * Matrix_Scale(30.0f,1.0f,30.0f);
         glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(object_id_uniform, PLANE);
+        glUniform1i(object_id_uniform, FLOOR);
         DrawVirtualObject("plane");
 
-        //Desenhamos o 'fundo'
+        /*-------------------------------------------
+                 MODELO DA SKYBOX (SPHERE)
+        -------------------------------------------*/
         model = Matrix_Translate(camera_position_c.x,camera_position_c.y,camera_position_c.z)
                 * Matrix_Scale(farplane,farplane,farplane);
         glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(object_id_uniform, SPHERE);
+        glUniform1i(object_id_uniform, BACKGROUND);
         DrawVirtualObject("sphere");
 
-
-        // Pegamos um vértice com coordenadas de modelo (0.5, 0.5, 0.5, 1) e o
-        // passamos por todos os sistemas de coordenadas armazenados nas
-        // matrizes the_model, the_view, e the_projection; e escrevemos na tela
-        // as matrizes e pontos resultantes dessas transformações.
-        //glm::vec4 p_model(0.5f, 0.5f, 0.5f, 1.0f);
-        //TextRendering_ShowModelViewProjection(window, projection, view, model, p_model);
-
-        // Imprimimos na tela os ângulos de Euler que controlam a rotação do
-        // terceiro cubo.
-        //TextRendering_ShowEulerAngles(window);
 
         // Imprimimos na tela informação sobre o número de quadros renderizados
         // por segundo (frames per second).
@@ -507,7 +589,10 @@ int main(int argc, char* argv[])
 
         previous_time = current_time;
     }
-
+    /*---------------------------------------------------------------------------------------------------------
+                                        FIM DO PROGRAMA
+    ---------------------------------------------------------------------------------------------------------*/
+    /*Encerramos a engine de som IrrKlang*/
     soundEngine->drop();
 
     // Finalizamos o uso dos recursos do sistema operacional

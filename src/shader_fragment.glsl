@@ -16,9 +16,9 @@ uniform mat4 view;
 uniform mat4 projection;
 
 // Identificador que define qual objeto está sendo desenhado no momento
-#define SPHERE 0
+#define BACKGROUND 0
 #define BUNNY  1
-#define PLANE  2
+#define FLOOR  2
 #define MIKU   3
 
 uniform int object_id;
@@ -74,14 +74,13 @@ void main()
     float U;    //Coordenadas de textura u e v
     float V;
 
-    if ( object_id == SPHERE )
+    if ( object_id == BACKGROUND )
     {
 
-        float radius = 1;
-        vec4 p_lin = camera_position + radius*((position_world - camera_position)/length(position_world - camera_position));
+        vec4 p_lin = camera_position + ((position_world - camera_position)/length(position_world - camera_position));
         vec4 coord_vector = (p_lin - camera_position);
         float theta = atan(coord_vector.x,coord_vector.z);
-        float phi = asin(coord_vector.y/radius);
+        float phi = asin(coord_vector.y);
 
         U = (theta + M_PI)/(2*M_PI);
         V = (phi + M_PI_2)/M_PI;
@@ -105,16 +104,11 @@ void main()
         Ka = vec3(0.04,0.2,0.4);
         q = 32.0;
     }
-    else if ( object_id == PLANE )
+    else if ( object_id == FLOOR )
     {
-        // Propriedades espectrais do plano
-        //Kd = vec3(0.2,0.2,0.2);
 
         float minx = bbox_min.x;
         float maxx = bbox_max.x;
-
-        float miny = bbox_min.y;
-        float maxy = bbox_max.y;
 
         float minz = bbox_min.z;
         float maxz = bbox_max.z;
