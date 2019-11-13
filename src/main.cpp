@@ -141,8 +141,8 @@ struct PlacedObject {
 /*-------------------------------------------
     FUNÇÕES RELATIVAS À LÓGICA DO JOGO
 -------------------------------------------*/
-bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1,
-                   SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2);
+bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, glm::vec3 rttn_obj1,
+                   SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2,glm::vec3 rttn_obj2);
 
 
 // Abaixo definimos variáveis globais utilizadas em várias funções do código.
@@ -596,9 +596,11 @@ int main(int argc, char* argv[])
             if (hasCollision( g_VirtualScene[it->name],
                               it->position_world,
                               it->scale,
+                              it->rotation,
                               mikuSceneObj,
                               character_position,
-                              glm::vec3(1.0f,1.0f,1.0f))
+                              glm::vec3(1.0f,1.0f,1.0f),
+                              glm::vec3(0.0f, g_CameraTheta, g_CameraPhi))
                 ) {
                 character_position = last_character_position;
             }
@@ -733,15 +735,21 @@ int main(int argc, char* argv[])
 /*-------------------------------------------
     FUNÇÕES RELATIVAS À LÓGICA DO JOGO
 -------------------------------------------*/
-bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1,
-                   SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2)
+bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, glm::vec3 rttn_obj1,
+                   SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2, glm::vec3 rttn_obj2)
 {
-    return
+
+    bool has;
+
+    if (( rttn_obj1.y >=    3.14/4 && rttn_obj1.y <=  3*3.14/4)
+     || ( rttn_obj1.y >= 3*-3.14/4 && rttn_obj1.y <=   -3.14/4))
+    {
+    has =
         //X
-           ((obj1.bbox_min.x*scale_obj1.x) + pos_obj1.x
+           ((obj1.bbox_min.z*scale_obj1.x) + pos_obj1.x
                                                         <=
                                                             (obj2.bbox_max.x*scale_obj2.x) + pos_obj2.x
-         && (obj1.bbox_max.x*scale_obj1.x) + pos_obj1.x
+         && (obj1.bbox_max.z*scale_obj1.x) + pos_obj1.x
                                                         >=
                                                             (obj2.bbox_min.x*scale_obj2.x) + pos_obj2.x)
         //Y
@@ -752,12 +760,42 @@ bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1,
                                                         >=
                                                             (obj2.bbox_min.y*scale_obj2.y) + pos_obj2.y)
         //Z
-        && ((obj1.bbox_min.z*scale_obj1.z) + pos_obj1.z
+        && ((obj1.bbox_min.x*scale_obj1.z) + pos_obj1.z
                                                         <=
                                                             (obj2.bbox_max.z*scale_obj2.z) + pos_obj2.z
-         && (obj1.bbox_max.z*scale_obj1.z) + pos_obj1.z
+         && (obj1.bbox_max.x*scale_obj1.z) + pos_obj1.z
                                                         >=
                                                             (obj2.bbox_min.z*scale_obj2.z) + pos_obj2.z);
+
+    }
+    else
+    {
+
+        has =
+            //X
+               ((obj1.bbox_min.x*scale_obj1.x) + pos_obj1.x
+                                                            <=
+                                                                (obj2.bbox_max.x*scale_obj2.x) + pos_obj2.x
+             && (obj1.bbox_max.x*scale_obj1.x) + pos_obj1.x
+                                                            >=
+                                                                (obj2.bbox_min.x*scale_obj2.x) + pos_obj2.x)
+            //Y
+            && ((obj1.bbox_min.y*scale_obj1.y) + pos_obj1.y
+                                                            <=
+                                                                (obj2.bbox_max.y*scale_obj2.y) + pos_obj2.y
+             && (obj1.bbox_max.y*scale_obj1.y) + pos_obj1.y
+                                                            >=
+                                                                (obj2.bbox_min.y*scale_obj2.y) + pos_obj2.y)
+            //Z
+            && ((obj1.bbox_min.z*scale_obj1.z) + pos_obj1.z
+                                                            <=
+                                                                (obj2.bbox_max.z*scale_obj2.z) + pos_obj2.z
+             && (obj1.bbox_max.z*scale_obj1.z) + pos_obj1.z
+                                                            >=
+                                                                (obj2.bbox_min.z*scale_obj2.z) + pos_obj2.z);
+    }
+
+    return has;
 }
 
 // Função que carrega uma imagem para ser utilizada como textura
