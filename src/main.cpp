@@ -129,6 +129,22 @@ struct SceneObject
     glm::vec3    bbox_max;
 };
 
+//Estrutura que representa um objeto posicionado físicamente na cena
+struct PlacedObject {
+    int id;                     //ID do objeto
+    std::string name;           //Nome do objeto
+    glm::vec3 scale;            //Escala do objeto
+    glm::vec4 position_world;   //Posição do objeto na cena
+    glm::vec3 rotation;         //Rotação do objeto na cena (x,y e z)
+};
+
+/*-------------------------------------------
+    FUNÇÕES RELATIVAS À LÓGICA DO JOGO
+-------------------------------------------*/
+bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1,
+                   SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2);
+
+
 // Abaixo definimos variáveis globais utilizadas em várias funções do código.
 
 // A cena virtual é uma lista de objetos nomeados, guardados em um dicionário
@@ -136,6 +152,9 @@ struct SceneObject
 // objetos dentro da variável g_VirtualScene, e veja na função main() como
 // estes são acessados.
 std::map<std::string, SceneObject> g_VirtualScene;
+
+//Vetor com informações de todos os objetos que estão na cena
+std::vector<PlacedObject> g_PlacedObjects;
 
 // Pilha que guardará as matrizes de modelagem.
 std::stack<glm::mat4>  g_MatrixStack;
@@ -150,6 +169,8 @@ float g_AngleZ = 0.0f;
 
 //Posição inicial do personagem
 glm::vec4 character_position(10.0f,3.0f,10.0f,1.0f);
+//Posição do frame anterior do personagem
+glm::vec4 last_character_position(10.0f,3.0f,10.0f,1.0f);
 
 //Velocidade com a qual a câmera se move na cena
 float camera_speed = 100;
@@ -396,11 +417,11 @@ int main(int argc, char* argv[])
 
     //Controle de movimentação do 'pet'
     float pet_curve_t = 0.0f;           //Parâmetro para a curva de Bézier do 'pet'
-    float pet_update_speed = 10;        //Velocidade de variação do t do 'pet'
+    float pet_update_speed = 1;        //Velocidade de variação do t do 'pet'
     float pet_random_movement = 1;
 
     /*---------------------------------------------------------------------------------------------------------
-                                        INICIALIZAÇÃO DA ENGINE DE SOM
+                                    INICIALIZAÇÃO DA ENGINE DE SOM
     ---------------------------------------------------------------------------------------------------------*/
 
     irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
@@ -418,6 +439,78 @@ int main(int argc, char* argv[])
 
     float previous_time = glfwGetTime();
     float current_time = glfwGetTime();
+
+    /*---------------------------------------------------------------------------------------------------------
+                                            INICIALIZANDO OBJETOS FIXOS NA CENA
+    ---------------------------------------------------------------------------------------------------------*/
+        #define BACKGROUND 0
+        #define BUNNY  1
+        #define FLOOR  2
+        #define MIKU   3
+        #define BULLET 4
+        #define WALL 5
+
+        float farplane = -500.0f;
+        /*-------------------------------------------
+                    MODELO DO CHÃO
+        -------------------------------------------*/
+        float arena_size = -farplane/(2*sqrt(2));
+        PlacedObject object = {
+            FLOOR,
+            "plane",
+            glm::vec3(arena_size,1.0f,arena_size),
+            glm::vec4(0.0f,-1.0f,0.0f,1.0f),
+            glm::vec3(0.0f,0.0f,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+
+        /*-------------------------------------------
+                    MODELO DAS PAREDES
+        -------------------------------------------*/
+        object = {
+            WALL,
+            "wall",
+            glm::vec3(3.0f,5.0f,arena_size/4),
+            glm::vec4(arena_size/2,2.0f,0.0f,1.0f),
+            glm::vec3(0.0f,3.14/2,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+        object = {
+            WALL,
+            "wall",
+            glm::vec3(3.0f,5.0f,arena_size/4),
+            glm::vec4(-arena_size/2,2.0f,0.0f,1.0f),
+            glm::vec3(0.0f,-3.14/2,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+        object = {
+            WALL,
+            "wall",
+            glm::vec3(arena_size/4,5.0f,3.0f),
+            glm::vec4(0.0f,2.0f,arena_size/2,1.0f),
+            glm::vec3(0.0f,0.0f,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+        object = {
+            WALL,
+            "wall",
+            glm::vec3(arena_size/4,5.0f,3.0f),
+            glm::vec4(0.0f,2.0f,-arena_size/2,1.0f),
+            glm::vec3(0.0f,3.14,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+
+        /*-------------------------------------------
+                    ESFERA DE TESTES
+        -------------------------------------------*/
+        object = {
+            BACKGROUND,
+            "sphere",
+            glm::vec3(1.0f,1.0f,1.0f),
+            glm::vec4(0.0f,3.0f,0.0f,1.0f),
+            glm::vec3(0.0f,0.0f,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
 
     // Ficamos em loop, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
@@ -493,19 +586,34 @@ int main(int argc, char* argv[])
         glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(projection));
 
         /*---------------------------------------------------------------------------------------------------------
+                                    VERIFICANDO COLISÕES COM OS OBJETOS FIXOS DA CENA
+        ---------------------------------------------------------------------------------------------------------*/
+        SceneObject mikuSceneObj = g_VirtualScene["miku"];
+
+        std::vector<PlacedObject>::iterator it;
+        for (it = g_PlacedObjects.begin(); it != g_PlacedObjects.end(); it++ )
+        {
+            if (hasCollision( g_VirtualScene[it->name],
+                              it->position_world,
+                              it->scale,
+                              mikuSceneObj,
+                              character_position,
+                              glm::vec3(1.0f,1.0f,1.0f))
+                ) {
+                character_position = last_character_position;
+            }
+        }
+
+        /*---------------------------------------------------------------------------------------------------------
                                             LÓGICA DO JOGO
         ---------------------------------------------------------------------------------------------------------*/
                                                 /*TODO*/
 
+
+        current_time = glfwGetTime();
         /*---------------------------------------------------------------------------------------------------------
                                         DESENHANDO OS OBJETOS DA CENA
         ---------------------------------------------------------------------------------------------------------*/
-        #define BACKGROUND 0
-        #define BUNNY  1
-        #define FLOOR  2
-        #define MIKU   3
-        #define BULLET 4
-        #define WALL 5
 
         //Desenhamos o personagem apenas se o usuário estiver em terceira pessoa
         if (!firstPersonView)
@@ -527,7 +635,7 @@ int main(int argc, char* argv[])
             glm::vec4 d = glm::vec4( character_position.x + 0.0, character_position.y + 1.0, character_position.z - 0.5, 1.0f);
 
             //Atualizamos T do 'pet'
-            pet_curve_t = pet_curve_t + pet_update_speed*(glfwGetTime() - previous_time);
+            pet_curve_t = pet_curve_t + pet_update_speed*(current_time - previous_time);
 
             //Invertemos se chegamos ao final da curva
             if (pet_curve_t >= 1)
@@ -556,50 +664,20 @@ int main(int argc, char* argv[])
         }
 
         /*-------------------------------------------
-                    MODELO DO CHÃO
+                 MODELOS DE OBJETOS FIXOS
         -------------------------------------------*/
-        float arena_size = -farplane/(2*sqrt(2));
-
-        //Desenhamos o modelo do chão
-        model = Matrix_Scale(arena_size,1.0f,arena_size)
-                * Matrix_Translate(0.0f,-1.0f,0.0f);
-        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(object_id_uniform, FLOOR);
-        DrawVirtualObject("plane");
-
-        /*-------------------------------------------
-                    MODELO DAS PAREDES
-        -------------------------------------------*/
-        //Desenhamos as paredes
-        model  = Matrix_Translate(arena_size/2,2.0f,0.0f)
-                * Matrix_Rotate_Y(3.14/2)
-                * Matrix_Scale(arena_size/4,5.0f,1.0f);
-        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(object_id_uniform, WALL);
-        DrawVirtualObject("wall");
-
-        //Desenhamos as paredes
-        model  = Matrix_Translate(-arena_size/2,2.0f,0.0f)
-                * Matrix_Rotate_Y(-3.14/2)
-                * Matrix_Scale(arena_size/4,5.0f,1.0f);
-        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(object_id_uniform, WALL);
-        DrawVirtualObject("wall");
-
-        //Desenhamos as paredes
-        model  = Matrix_Translate(0.0f,2.0f,arena_size/2)
-                * Matrix_Scale(arena_size/4,5.0f,1.0f);
-        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(object_id_uniform, WALL);
-        DrawVirtualObject("wall");
-
-        //Desenhamos as paredes
-        model  = Matrix_Translate(1.0f,2.0f,-arena_size/2)
-                * Matrix_Rotate_Y(3.14)
-                * Matrix_Scale(arena_size/4,5.0f,1.0f);
-        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(object_id_uniform, WALL);
-        DrawVirtualObject("wall");
+        //Desenhamos todos os objetos fixos da cena que estão presentes em g_PlacedObjects
+        for (std::vector<PlacedObject>::iterator it = g_PlacedObjects.begin(); it != g_PlacedObjects.end(); it++)
+        {
+            model = Matrix_Translate(it->position_world.x,it->position_world.y,it->position_world.z)
+                * Matrix_Scale(it->scale.x,it->scale.y,it->scale.z)
+                * Matrix_Rotate_Z(it->rotation.z)
+                * Matrix_Rotate_Y(it->rotation.y)
+                * Matrix_Rotate_X(it->rotation.x);
+            glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+            glUniform1i(object_id_uniform, it->id);
+            DrawVirtualObject(it->name.c_str());
+        }
 
        /*-------------------------------------------
                  MODELO DA SKYBOX (SPHERE)
@@ -610,6 +688,9 @@ int main(int argc, char* argv[])
         glUniform1i(object_id_uniform, BACKGROUND);
         DrawVirtualObject("sphere");
 
+        /*---------------------------------------------------------------------------------------------------------
+                                        ESCREVENDO TEXTO NA TELA
+        ---------------------------------------------------------------------------------------------------------*/
 
         // Imprimimos na tela informação sobre o número de quadros renderizados
         // por segundo (frames per second).
@@ -627,9 +708,12 @@ int main(int argc, char* argv[])
         // usuário (teclado, mouse, ...). Caso positivo, as funções de callback
         // definidas anteriormente usando glfwSet*Callback() serão chamadas
         // pela biblioteca GLFW.
-        current_time = glfwGetTime();
-        ProcessUserMovement(camera_view_vector,camera_up_vector,current_time - previous_time);
+
+        //Atualizamos a referência da útlima posição onde o personagem estava
+        last_character_position = character_position;
+
         glfwPollEvents();
+        ProcessUserMovement(camera_view_vector,camera_up_vector,current_time - previous_time);
 
         previous_time = current_time;
     }
@@ -644,6 +728,36 @@ int main(int argc, char* argv[])
 
     // Fim do programa
     return 0;
+}
+
+/*-------------------------------------------
+    FUNÇÕES RELATIVAS À LÓGICA DO JOGO
+-------------------------------------------*/
+bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1,
+                   SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2)
+{
+    return
+        //X
+           ((obj1.bbox_min.x*scale_obj1.x) + pos_obj1.x
+                                                        <=
+                                                            (obj2.bbox_max.x*scale_obj2.x) + pos_obj2.x
+         && (obj1.bbox_max.x*scale_obj1.x) + pos_obj1.x
+                                                        >=
+                                                            (obj2.bbox_min.x*scale_obj2.x) + pos_obj2.x)
+        //Y
+        && ((obj1.bbox_min.y*scale_obj1.y) + pos_obj1.y
+                                                        <=
+                                                            (obj2.bbox_max.y*scale_obj2.y) + pos_obj2.y
+         && (obj1.bbox_max.y*scale_obj1.y) + pos_obj1.y
+                                                        >=
+                                                            (obj2.bbox_min.y*scale_obj2.y) + pos_obj2.y)
+        //Z
+        && ((obj1.bbox_min.z*scale_obj1.z) + pos_obj1.z
+                                                        <=
+                                                            (obj2.bbox_max.z*scale_obj2.z) + pos_obj2.z
+         && (obj1.bbox_max.z*scale_obj1.z) + pos_obj1.z
+                                                        >=
+                                                            (obj2.bbox_min.z*scale_obj2.z) + pos_obj2.z);
 }
 
 // Função que carrega uma imagem para ser utilizada como textura
@@ -1515,21 +1629,6 @@ void TextRendering_ShowEulerAngles(GLFWwindow* window)
     snprintf(buffer, 80, "Euler Angles rotation matrix = Z(%.2f)*Y(%.2f)*X(%.2f)\n", g_AngleZ, g_AngleY, g_AngleX);
 
     TextRendering_PrintString(window, buffer, -1.0f+pad/10, -1.0f+2*pad/10, 1.0f);
-}
-
-// Escrevemos na tela qual matriz de projeção está sendo utilizada.
-void TextRendering_ShowProjection(GLFWwindow* window)
-{
-    if ( !g_ShowInfoText )
-        return;
-
-    float lineheight = TextRendering_LineHeight(window);
-    float charwidth = TextRendering_CharWidth(window);
-
-    if ( g_UsePerspectiveProjection )
-        TextRendering_PrintString(window, "Perspective", 1.0f-13*charwidth, -1.0f+2*lineheight/10, 1.0f);
-    else
-        TextRendering_PrintString(window, "Orthographic", 1.0f-13*charwidth, -1.0f+2*lineheight/10, 1.0f);
 }
 
 // Escrevemos na tela o número de quadros renderizados por segundo (frames per
