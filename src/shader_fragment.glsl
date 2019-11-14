@@ -22,6 +22,7 @@ uniform mat4 projection;
 #define MIKU   3
 #define BULLET 4
 #define WALL   5
+#define ENEMY  6
 
 uniform int object_id;
 
@@ -33,6 +34,7 @@ uniform vec4 bbox_max;
 uniform sampler2D TextureImage0;
 uniform sampler2D TextureImage1;
 uniform sampler2D TextureImage2;
+uniform sampler2D TextureImage3;
 
 // O valor de saída ("out") de um Fragment Shader é a cor final do fragmento.
 out vec3 color;
@@ -139,6 +141,34 @@ void main()
         Ks = vec3(0.0,0.0,0.0);
         Ka = vec3(0.05,0.2,0.3);
         q = 30.0;
+    }
+    else if (object_id == ENEMY) {
+
+        vec4 bbox_mid = (bbox_max + bbox_min) / 2;
+
+        vec4 p_lin = bbox_mid + ((position_model - bbox_mid)/length(position_model - bbox_mid));
+        vec4 coord_vector = (p_lin - bbox_mid);
+        float theta = atan(coord_vector.x,coord_vector.z);
+        float phi = asin(coord_vector.y);
+
+        U = (theta + M_PI)/(2*M_PI);
+        V = (phi + M_PI_2)/M_PI;
+
+        Kd = texture(TextureImage3, vec2(U,V)).rgb;
+
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 20.0;
+
+
+    }
+    else if (object_id == BULLET) {
+
+        Kd = vec3(1.0f,0.0f,0.0f);
+        Ks = vec3(0.0f,0.0f,0.0f);
+        Ka = vec3(0.0f,0.0f,0.0f);
+        q = 1.0;
+
     }
     else // Objeto desconhecido = preto
     {
