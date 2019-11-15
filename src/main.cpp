@@ -239,6 +239,18 @@ struct BulletObject {
 /*Vetor com todas as bullets que estão 'ativas' atualmente*/
 std::vector<struct BulletObject> g_BulletsOnPlay;
 
+/* Um projétil lançado pelo jogador*/
+struct ProjectileObject {
+    int id;
+    float damage;
+    glm::vec4 velocity;
+    PlacedObject* model;
+    float traveled_distance;
+};
+
+/*Vetor com todos os projeteis do jogador que estão 'ativos' atualmente*/
+std::vector<struct ProjectileObject> g_ProjectilesOnPlay;
+
 /*Attack patterns dos inimigos*/
 #define ATK_EXPANDING_CIRCLE 0  /*Gera N bullets ao mesmo tempo em um circulo, com vetores velocidade perpendiculares ao círculo*/
 #define ATK_RANDOM_SPREAD    1
@@ -534,7 +546,8 @@ int main(int argc, char* argv[])
 
     float previous_time = glfwGetTime();
     float current_time = glfwGetTime();
-    float last_attack_time = glfwGetTime();
+    float last_enemy_attack_time = glfwGetTime();
+    float last_player_attack_time = glfwGetTime();
 
     /*---------------------------------------------------------------------------------------------------------
                                             INICIALIZANDO OBJETOS FIXOS NA CENA
@@ -546,6 +559,7 @@ int main(int argc, char* argv[])
         #define BULLET     4
         #define WALL       5
         #define ENEMY      6
+        #define PROJECTILE 7
 
         float farplane = -500.0f;
         /*-------------------------------------------
@@ -610,6 +624,7 @@ int main(int argc, char* argv[])
         };
         g_PlacedObjects.push_back(object);
         */
+
     /*---------------------------------------------------------------------------------------------------------
                                 INICIALIZANDO ESTRUTURA REFERENTES À LÓGICA DE JOGO
     ---------------------------------------------------------------------------------------------------------*/
@@ -622,9 +637,7 @@ int main(int argc, char* argv[])
     testEnemyObject->scale = glm::vec3(5.0f,5.0f,5.0f);
     testEnemyObject->rotation = glm::vec3(0.0f,0.0f,0.0f);
 
-    EnemyObject* testEnemy = new EnemyObject(0,testEnemyObject);//EnemyObject*)malloc(sizeof(EnemyObject));
-    //testEnemy->EnemyObject(0,testEnemyObject);
-
+    EnemyObject* testEnemy = new EnemyObject(0,testEnemyObject);
 
     // Ficamos em loop, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
@@ -726,16 +739,49 @@ int main(int argc, char* argv[])
                                                     LÓGICA DO JOGO
         ---------------------------------------------------------------------------------------------------------*/
         /*-------------------------------------------
+          PROCESSA O ATAQUE DO JOGADOR SE HOUVER UM
+        -------------------------------------------*/
+        if (g_LeftMouseButtonPressed)
+        {
+            //Se o jogar puder atacar
+            if (current_time - last_player_attack_time >= 0.2)
+            {
+
+                float projectile_speed = 20.0;
+                //Cria um novo projétil
+                PlacedObject* new_proj_obj = new PlacedObject();
+                new_proj_obj->id = PROJECTILE;
+                new_proj_obj->name = "miku";
+                new_proj_obj->position_world = character_position;
+                new_proj_obj->rotation = glm::vec4(0.0f,0.0f,0.0f,1.0f);
+                new_proj_obj->scale = glm::vec3(0.5f,0.5f,0.5f);
+
+                //Inicializa um ProjectileObject
+                ProjectileObject new_projectile =
+                    {g_ProjectilesOnPlay.size(),
+                     1.0f,
+                     projectile_speed*(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f)/norm(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f))),
+                     new_proj_obj,
+                     0.0f};
+                //Adiciona à lista de projéteis
+                g_ProjectilesOnPlay.push_back(new_projectile);
+
+                //Reseta o tempo de ataque
+                last_player_attack_time = current_time;
+            }
+        }
+
+        /*-------------------------------------------
                 PROCESSA O ATAQUE DO INIMIGO
         -------------------------------------------*/
         //Testando ataques
-        if (current_time - last_attack_time >= 0.8)
+        if (current_time - last_enemy_attack_time >= 0.8)
         {
             //Executa o ataque de acordo com o cycle em que o inimigo se encontra
             testEnemy->attack(testEnemy->attack_patterns[(int)(testEnemy->attack_cycle/10)]);
             sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
             //Atualiza a contagem de tempo desde o ultimo ataque
-            last_attack_time = current_time;
+            last_enemy_attack_time = current_time;
             testEnemy->attack_cycle ++;
 
             //Ao chegar no final tem uma pequena pausa e volta ao primeiro
@@ -748,10 +794,33 @@ int main(int argc, char* argv[])
          testEnemy->compute_movement((current_time - previous_time),arena_size);
 
         /*-------------------------------------------
+         PROCESSA O MOVIMENTO DOS PROJÉTEIS DO JOGADOR
+        -------------------------------------------*/
+        int ctr = 0;    //Contador para evitar segmentation fault ao deletar o ultimo elemento
+        for (std::vector<ProjectileObject>::iterator it = g_ProjectilesOnPlay.begin();ctr < g_ProjectilesOnPlay.size() && it != g_ProjectilesOnPlay.end(); it ++)
+        {
+            ctr++;
+            it->model->position_world = it->model->position_world + it->velocity*(float)(current_time - previous_time);
+
+            //Projeteis que chegaram na distancia máxima são descartados
+            it->traveled_distance = it->traveled_distance + norm(it->velocity*(float)(current_time - previous_time));
+            if (it->traveled_distance > 20)
+            {
+                g_ProjectilesOnPlay.erase(it);
+            }
+            else
+            {
+                //TODO Teste de colisao com o inimigo
+                continue;
+
+            }
+        }
+
+        /*-------------------------------------------
                 PROCESSA MOVIMENTO DAS BULLETS
         -------------------------------------------*/
         bool collided;
-        int ctr = 0;
+        ctr = 0;
         for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); ctr < g_BulletsOnPlay.size() && it != g_BulletsOnPlay.end(); it++)
         {
             ctr++;
@@ -779,6 +848,13 @@ int main(int argc, char* argv[])
                     }
                 }
             }
+
+            if (!collided)
+            {
+                //TODO Teste de colisão com o personagem
+                continue;
+            }
+
         }
 
         /*---------------------------------------------------------------------------------------------------------
@@ -798,6 +874,7 @@ int main(int argc, char* argv[])
             glUniform1i(object_id_uniform, MIKU);
             DrawVirtualObject("miku");
 
+            /*
             //Atualizamos os pontos da curva de Beziér do 'pet':
             glm::vec4 a = glm::vec4( character_position.x + 0.0, character_position.y + 1.0, character_position.z - 0.5, 1.0f);
             glm::vec4 b = glm::vec4( character_position.x + 6.0, character_position.y - pet_random_movement, character_position.z + 1.0, 1.0f);
@@ -820,9 +897,9 @@ int main(int argc, char* argv[])
             float point_y = (pow((1-pet_curve_t),3) * a.y) + (3*pet_curve_t*pow((1-pet_curve_t),2) * b.y) + (3*pow(pet_curve_t,2)*(1-pet_curve_t) * c.y) + (pow(pet_curve_t,3) * d.y);
             float point_z = (pow((1-pet_curve_t),3) * a.z) + (3*pet_curve_t*pow((1-pet_curve_t),2) * b.z) + (3*pow(pet_curve_t,2)*(1-pet_curve_t) * c.z) + (pow(pet_curve_t,3) * d.z);
 
-            /*-------------------------------------------
+            -------------------------------------------
                         PET DO PERSONGEM
-            -------------------------------------------*/
+            -------------------------------------------
             model = Matrix_Translate(point_x,point_y,point_z)
                     * Matrix_Scale(0.5,0.5,0.5)
                     * Matrix_Rotate_Z(g_AngleZ)
@@ -831,8 +908,8 @@ int main(int argc, char* argv[])
             glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
             glUniform1i(object_id_uniform, BUNNY);
             DrawVirtualObject("bunny");
+            */
         }
-
         /*-------------------------------------------
                  MODELOS DE OBJETOS FIXOS
         -------------------------------------------*/
@@ -849,7 +926,7 @@ int main(int argc, char* argv[])
             DrawVirtualObject(it->name.c_str());
         }
        /*-------------------------------------------
-            MODELOS DO JOGO (INIMIGOS E BULLETS)
+        MODELOS DO JOGO (INIMIGOS, BULLETS E PROJÉTEIS)
         -------------------------------------------*/
 
         //Inimigo
@@ -866,10 +943,23 @@ int main(int argc, char* argv[])
         for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); it != g_BulletsOnPlay.end(); it++)
         {
             model = Matrix_Translate(it->position_world.x,it->position_world.y,it->position_world.z)
-                    *Matrix_Scale(1.0f,1.0f,1.0f);
+                    * Matrix_Scale(1.0f,1.0f,1.0f);
             glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
             glUniform1i(object_id_uniform, BULLET);
             DrawVirtualObject("sphere");
+        }
+
+        //Projéteis
+        for (std::vector<ProjectileObject>::iterator it = g_ProjectilesOnPlay.begin(); it != g_ProjectilesOnPlay.end(); it++)
+        {
+            model = Matrix_Translate(it->model->position_world.x,it->model->position_world.y,it->model->position_world.z)
+                    * Matrix_Scale(it->model->scale.x,it->model->scale.y,it->model->scale.z)
+                    * Matrix_Rotate_X(it->model->rotation.x)
+                    * Matrix_Rotate_Y(it->model->rotation.y)
+                    * Matrix_Rotate_Z(it->model->rotation.z);
+            glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
+            glUniform1i(object_id_uniform, it->model->id);
+            DrawVirtualObject(it->model->name.c_str());
         }
 
        /*-------------------------------------------
@@ -1601,31 +1691,29 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
     // parâmetros que definem a posição da câmera dentro da cena virtual.
     // Assim, temos que o usuário consegue controlar a câmera.
 
-    if (g_LeftMouseButtonPressed)
-    {
-        // Deslocamento do cursor do mouse em x e y de coordenadas de tela!
-        float dx = xpos - g_LastCursorPosX;
-        float dy = ypos - g_LastCursorPosY;
 
-        // Atualizamos parâmetros da câmera com os deslocamentos
-        g_CameraTheta -= 0.02f*dx;
-        g_CameraPhi   += 0.02f*dy;
+    // Deslocamento do cursor do mouse em x e y de coordenadas de tela!
+    float dx = xpos - g_LastCursorPosX;
+    float dy = ypos - g_LastCursorPosY;
 
-        // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
-        float phimax = 3.141592f/2 - 0.1;
-        float phimin = -phimax;
+    // Atualizamos parâmetros da câmera com os deslocamentos
+    g_CameraTheta -= 0.02f*dx;
+    g_CameraPhi   += 0.02f*dy;
 
-        if (g_CameraPhi > phimax)
-            g_CameraPhi = phimax;
+    // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
+    float phimax = 3.141592f/2 - 0.1;
+    float phimin = -phimax;
 
-        if (g_CameraPhi < phimin)
-            g_CameraPhi = phimin;
+    if (g_CameraPhi > phimax)
+        g_CameraPhi = phimax;
 
-        // Atualizamos as variáveis globais para armazenar a posição atual do
-        // cursor como sendo a última posição conhecida do cursor.
-        g_LastCursorPosX = xpos;
-        g_LastCursorPosY = ypos;
-    }
+    if (g_CameraPhi < phimin)
+        g_CameraPhi = phimin;
+
+    // Atualizamos as variáveis globais para armazenar a posição atual do
+    // cursor como sendo a última posição conhecida do cursor.
+    g_LastCursorPosX = xpos;
+    g_LastCursorPosY = ypos;
 
     if (g_RightMouseButtonPressed)
     {
@@ -1783,6 +1871,7 @@ void ProcessUserMovement(glm::vec4 camera_view_vector,glm::vec4 camera_up_vector
     }
 
 }
+
 // Definimos o callback para impressão de erros da GLFW no terminal
 void ErrorCallback(int error, const char* description)
 {
