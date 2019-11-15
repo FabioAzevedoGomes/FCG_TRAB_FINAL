@@ -141,9 +141,9 @@ struct PlacedObject {
 /*-------------------------------------------
     FUNÇÕES RELATIVAS À LÓGICA DO JOGO
 -------------------------------------------*/
-bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, glm::vec3 rttn_obj1,
+bool hasBoxBoxCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, glm::vec3 rttn_obj1,
                    SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2,glm::vec3 rttn_obj2);
-
+bool hasPointBoxCollision(glm::vec4 point,SceneObject obj, glm::vec4 pos_obj, glm::vec3 scale_obj, glm::vec3 rttn_obj);
 
 // Abaixo definimos variáveis globais utilizadas em várias funções do código.
 
@@ -252,12 +252,16 @@ struct EnemyObject {
     int attack_patterns[3];     /*Tipo de ataques possíveis do inimigo*/
     int attack_cycle;           /*Ciclo do ataque atual no qual o inimigo se encontra*/
     PlacedObject* body;         /*Informações espaciais sobre este inimigo (modelo, posição, rotação, etc)*/
+    float bezier_t;             /*Posiçao atual na curva de beziér em que este inimigo se move*/
+    float movement_speed;       /*Velocidade com a qual o inimigo se move na curva*/
 
     /*Construtor TODO*/
     EnemyObject (int enemyId,PlacedObject* enemyBody) {
         id = enemyId;
         body = enemyBody;
-        attack_cycle = 0;
+        attack_cycle = 0;   //Inicia no primeiro ciclo de ataques
+        bezier_t = 0.5;     // Inicia no meio da curva
+        movement_speed = 0.3;
 
         /*Definimos as attack patterns e vida total com base em qual inimigo é*/
         switch (enemyId) {
@@ -273,34 +277,39 @@ struct EnemyObject {
     }
 
     /*Executa o ataque descrito por pattern*/
-    int attack (int pattern) {
+    void attack (int pattern) {
 
+        BulletObject bullet;
+
+        //fprintf(stderr,"Bullet vector size: %d\n",g_BulletsOnPlay.size());
         float angle = rand();
-        glm::vec4 vel = glm::vec4(10.0f,0.0f,0.0f,0.0f);
+        glm::vec4 vel = glm::vec4(20.0f,0.0f,0.0f,0.0f);
 
         switch (pattern) {
         case ATK_EXPANDING_CIRCLE:
             for (int i = 0; i < 50; i++)
             {
-                BulletObject bullet = {g_BulletsOnPlay.size(),
+                bullet = {g_BulletsOnPlay.size(),
                                        glm::vec4(body->position_world.x,body->position_world.y,body->position_world.z,0.0f),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
                                        0.0f,
                                        Matrix_Rotate_Y(angle*i)*vel};
 
+                //fprintf(stderr,"Pushing bullet %d ...",i);
                 g_BulletsOnPlay.push_back(bullet);
+                //fprintf(stderr,"Pushed bullet\n");
             }
             break;
         case ATK_RANDOM_SPREAD:
             for (int i = 0; i < 50; i++)
             {
-                BulletObject bullet = {g_BulletsOnPlay.size(),
+                bullet = {g_BulletsOnPlay.size(),
                                        glm::vec4(body->position_world.x + (i/10),body->position_world.y,body->position_world.z + (i/10),0.0f),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
                                        0.0f,
-                                       Matrix_Rotate_Y(angle*i)*vel};
+                                       Matrix_Rotate_Y(angle*i)*glm::vec4(rand()%50 +10,0.0f,0.0f,0.0f)};
                 g_BulletsOnPlay.push_back(bullet);
             }
             break;
@@ -309,14 +318,14 @@ struct EnemyObject {
             for (int i=0; i < 50; i++)
             {
                 vel = normalize(character_position - body->position_world);
-                vel = vel*Matrix_Scale(25.0f,25.0f,25.0f);
-                BulletObject bullet = {g_BulletsOnPlay.size(),
+                vel = vel*Matrix_Scale(30.0f,30.0f,30.0f);
+                bullet = {g_BulletsOnPlay.size(),
                                         glm::vec4(body->position_world.x,body->position_world.y,body->position_world.z,0.0f),
                                         glm::vec4(1.0f,1.0f,1.0f,0.0f),
                                         10.0f,
                                         0.0f,
                                         Matrix_Rotate_Y(angle)*vel};
-                angle = angle - ((3.14/2)/50);
+                angle = angle - ((3.14/2)/40);
                 g_BulletsOnPlay.push_back(bullet);
             }
             break;
@@ -324,9 +333,44 @@ struct EnemyObject {
             /*TODO*/
             break;
         default:
-            fprintf(stderr,"Invalid attack pattern");
+            //fprintf(stderr,"Invalid attack pattern\n");
             break;
         }
+    }
+
+    /*Computa a Movimentação deste inimigo sobre sua curva de beziér de grau t*/
+    void compute_movement(double delta_t,float arena_size)
+    {
+
+            //fprintf(stderr,"\ncomputing movement");
+            //Atualizamos T do inimigo
+            bezier_t = bezier_t + movement_speed*delta_t;
+
+            glm::vec4 a = glm::vec4(  (arena_size/3 ), 2.0f,  arena_size/3, 1.0f);
+            glm::vec4 b = glm::vec4(  (arena_size/3 ), 2.0f, -arena_size/3, 1.0f);
+            glm::vec4 c = glm::vec4( -(arena_size/3 ), 2.0f,  arena_size/3, 1.0f);
+            glm::vec4 d = glm::vec4( -(arena_size/3 ), 2.0f, -arena_size/3, 1.0f);
+
+            //Invertemos se chegamos ao final da curva
+            if (bezier_t > 1 || bezier_t < 0)
+            {
+                movement_speed = -movement_speed;
+            }
+
+            //glm::vec4 pos = ((float)pow((1-bezier_t),3) * a) + ((float)(3*bezier_t*pow((1-bezier_t),2)) * b) + ((float)(3*pow(bezier_t,2)*(1-bezier_t)) * c) + ((float)pow(bezier_t,3) * d);
+            //Calculamos a curva de Bézier de grau 3:
+            //c(t) = (1-t)^3 * p1 + 3t(1-t)^2 * p2 + 3t^2(1-t) * p3 + t^3 * p4
+            float point_x = (pow((1-bezier_t),3) * a.x) + (3*bezier_t*pow((1-bezier_t),2) * b.x) + (3*pow(bezier_t,2)*(1-bezier_t) * c.x) + (pow(bezier_t,3) * d.x);
+            float point_y = (pow((1-bezier_t),3) * a.y) + (3*bezier_t*pow((1-bezier_t),2) * b.y) + (3*pow(bezier_t,2)*(1-bezier_t) * c.y) + (pow(bezier_t,3) * d.y);
+            float point_z = (pow((1-bezier_t),3) * a.z) + (3*bezier_t*pow((1-bezier_t),2) * b.z) + (3*pow(bezier_t,2)*(1-bezier_t) * c.z) + (pow(bezier_t,3) * d.z);
+            //fprintf(stderr,"%f | %f | %f\n",body->position_world.x,body->position_world.y,body->position_world.z);
+            //body->position_world = glm::vec4(point_x,point_y,point_z,1.0f);
+            body->position_world.x = point_x;
+            body->position_world.y = point_y;
+            body->position_world.z = point_z;
+            body->position_world.w = 1.0f;//(point_x,point_y,point_z,1.0f);
+
+            //fprintf(stderr,"\nDONE\n");
     }
 };
 
@@ -474,14 +518,16 @@ int main(int argc, char* argv[])
     ---------------------------------------------------------------------------------------------------------*/
 
     irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
-    if (!soundEngine)
+    irrklang::ISoundEngine* sfxEngine = irrklang::createIrrKlangDevice();
+    if (!soundEngine || !sfxEngine)
     {
         printf("Erro inicializando a engine de som irrKlang");
         std::exit(EXIT_FAILURE);
     }
-    soundEngine->setSoundVolume(0.2);
-    soundEngine->play2D("../../media/polkka.wav",true);
-
+    sfxEngine->setSoundVolume(0.01);
+    soundEngine->setSoundVolume(0.1);
+    //soundEngine->play2D("../../media/polkka.wav",true);
+    soundEngine->play2D("../../media/polkka.wav",true,false,false,irrklang::ESM_AUTO_DETECT,true);
     /*---------------------------------------------------------------------------------------------------------
                                             VARIÁVEIS DE TEMPO
     ---------------------------------------------------------------------------------------------------------*/
@@ -521,7 +567,7 @@ int main(int argc, char* argv[])
         object = {
             WALL,
             "wall",
-            glm::vec3(3.0f,5.0f,arena_size/4),
+            glm::vec3(5.0f,5.0f,arena_size/4),
             glm::vec4(arena_size/2,2.0f,0.0f,1.0f),
             glm::vec3(0.0f,3.14/2,0.0f)
         };
@@ -529,7 +575,7 @@ int main(int argc, char* argv[])
         object = {
             WALL,
             "wall",
-            glm::vec3(3.0f,5.0f,arena_size/4),
+            glm::vec3(5.0f,5.0f,arena_size/4),
             glm::vec4(-arena_size/2,2.0f,0.0f,1.0f),
             glm::vec3(0.0f,-3.14/2,0.0f)
         };
@@ -537,7 +583,7 @@ int main(int argc, char* argv[])
         object = {
             WALL,
             "wall",
-            glm::vec3(arena_size/4,5.0f,3.0f),
+            glm::vec3(arena_size/4,5.0f,5.0f),
             glm::vec4(0.0f,2.0f,arena_size/2,1.0f),
             glm::vec3(0.0f,0.0f,0.0f)
         };
@@ -545,7 +591,7 @@ int main(int argc, char* argv[])
         object = {
             WALL,
             "wall",
-            glm::vec3(arena_size/4,5.0f,3.0f),
+            glm::vec3(arena_size/4,5.0f,5.0f),
             glm::vec4(0.0f,2.0f,-arena_size/2,1.0f),
             glm::vec3(0.0f,3.14,0.0f)
         };
@@ -554,6 +600,7 @@ int main(int argc, char* argv[])
         /*-------------------------------------------
                     ESFERA DE TESTES
         -------------------------------------------*/
+        /*
         object = {
             BACKGROUND,
             "sphere",
@@ -562,20 +609,21 @@ int main(int argc, char* argv[])
             glm::vec3(0.0f,0.0f,0.0f)
         };
         g_PlacedObjects.push_back(object);
-
+        */
     /*---------------------------------------------------------------------------------------------------------
                                 INICIALIZANDO ESTRUTURA REFERENTES À LÓGICA DE JOGO
     ---------------------------------------------------------------------------------------------------------*/
 
     /*Inicializamos um inimigo para teste*/
-    PlacedObject testEnemyObject = {
-        ENEMY,
-        "cow",
-        glm::vec3(5.0f,5.0f,5.0f),
-        glm::vec4(-5.0f,2.0f,-5.0f,1.0f),
-        glm::vec3(0.0f,0.0f,0.0f)
-    };
-    EnemyObject testEnemy(0,&testEnemyObject);
+    PlacedObject* testEnemyObject = new PlacedObject();//(PlacedObject*)malloc(sizeof(PlacedObject));
+    testEnemyObject->id = ENEMY;
+    testEnemyObject->name = "cow";
+    testEnemyObject->position_world = glm::vec4(-5.0,2.0,-5.0,1.0);
+    testEnemyObject->scale = glm::vec3(5.0f,5.0f,5.0f);
+    testEnemyObject->rotation = glm::vec3(0.0f,0.0f,0.0f);
+
+    EnemyObject* testEnemy = new EnemyObject(0,testEnemyObject);//EnemyObject*)malloc(sizeof(EnemyObject));
+    //testEnemy->EnemyObject(0,testEnemyObject);
 
 
     // Ficamos em loop, renderizando, até que o usuário feche a janela
@@ -660,7 +708,7 @@ int main(int argc, char* argv[])
         std::vector<PlacedObject>::iterator it;
         for (it = g_PlacedObjects.begin(); it != g_PlacedObjects.end(); it++ )
         {
-            if (hasCollision( g_VirtualScene[it->name],
+            if (hasBoxBoxCollision( g_VirtualScene[it->name],
                               it->position_world,
                               it->scale,
                               it->rotation,
@@ -684,31 +732,52 @@ int main(int argc, char* argv[])
         if (current_time - last_attack_time >= 0.8)
         {
             //Executa o ataque de acordo com o cycle em que o inimigo se encontra
-            testEnemy.attack(testEnemy.attack_patterns[(int)(testEnemy.attack_cycle/10)]);
-
+            testEnemy->attack(testEnemy->attack_patterns[(int)(testEnemy->attack_cycle/10)]);
+            sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
             //Atualiza a contagem de tempo desde o ultimo ataque
             last_attack_time = current_time;
-            testEnemy.attack_cycle ++;
+            testEnemy->attack_cycle ++;
 
             //Ao chegar no final tem uma pequena pausa e volta ao primeiro
-            if (testEnemy.attack_cycle > 30) testEnemy.attack_cycle = 0;
+            if (testEnemy->attack_cycle > 30) testEnemy->attack_cycle = 0;
         }
 
         /*-------------------------------------------
                 PROCESSA A MOVIMENTAÇÃO DO INIMIGO
         -------------------------------------------*/
-                        /*TODO*/
+         testEnemy->compute_movement((current_time - previous_time),arena_size);
 
         /*-------------------------------------------
                 PROCESSA MOVIMENTO DAS BULLETS
         -------------------------------------------*/
-        for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); it != g_BulletsOnPlay.end(); it++)
+        bool collided;
+        int ctr = 0;
+        for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); ctr < g_BulletsOnPlay.size() && it != g_BulletsOnPlay.end(); it++)
         {
-            it->position_world = it->position_world + it->velocity*(current_time-previous_time);
-            if (norm(it->position_world - glm::vec4(0.0f,0.0f,0.0f,1.0f)) > arena_size)
+            ctr++;
+            collided = false;
+
+            //Bullets que saíram do ambiente são descartadas
+            it->position_world = it->position_world + it->velocity*(float)(current_time-previous_time);
+            if (norm(it->position_world - glm::vec4(0.0f,0.0f,0.0f,1.0f)) >= arena_size)
             {
-                //Bullets que saíram do ambiente são descartadas
                 g_BulletsOnPlay.erase(it);
+                collided = true;
+            }
+            else
+            {
+                for (std::vector<PlacedObject>::iterator obj_it = g_PlacedObjects.begin(); !collided && obj_it != g_PlacedObjects.end(); obj_it++)
+                {
+                    if (hasPointBoxCollision(it->position_world,
+                                             g_VirtualScene[obj_it->name],
+                                             obj_it->position_world,
+                                             obj_it->scale,
+                                             obj_it->rotation))
+                    {
+                        g_BulletsOnPlay.erase(it);
+                        collided  = true;
+                    }
+                }
             }
         }
 
@@ -784,14 +853,14 @@ int main(int argc, char* argv[])
         -------------------------------------------*/
 
         //Inimigo
-        model = Matrix_Translate(testEnemy.body->position_world.x,testEnemy.body->position_world.y,testEnemy.body->position_world.z)
-                * Matrix_Scale(testEnemy.body->scale.x,testEnemy.body->scale.y,testEnemy.body->scale.z)
-                * Matrix_Rotate_Z(testEnemy.body->rotation.x)
-                * Matrix_Rotate_Y(testEnemy.body->rotation.y)
-                * Matrix_Rotate_X(testEnemy.body->rotation.z);
+        model = Matrix_Translate(testEnemy->body->position_world.x,testEnemy->body->position_world.y,testEnemy->body->position_world.z)
+                * Matrix_Scale(testEnemy->body->scale.x,testEnemy->body->scale.y,testEnemy->body->scale.z)
+                * Matrix_Rotate_Z(testEnemy->body->rotation.x)
+                * Matrix_Rotate_Y(testEnemy->body->rotation.y)
+                * Matrix_Rotate_X(testEnemy->body->rotation.z);
         glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
         glUniform1i(object_id_uniform, ENEMY);
-        DrawVirtualObject(testEnemy.body->name.c_str());
+        DrawVirtualObject(testEnemy->body->name.c_str());
 
         //Bullets
         for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); it != g_BulletsOnPlay.end(); it++)
@@ -857,11 +926,9 @@ int main(int argc, char* argv[])
 /*-------------------------------------------
     FUNÇÕES RELATIVAS À LÓGICA DO JOGO
 -------------------------------------------*/
-bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, glm::vec3 rttn_obj1,
+bool hasBoxBoxCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, glm::vec3 rttn_obj1,
                    SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2, glm::vec3 rttn_obj2)
 {
-
-    bool has;
 
     if (( rttn_obj1.y >=    3.14/4 && rttn_obj1.y <=  3*3.14/4)
      || ( rttn_obj1.y >= 3*-3.14/4 && rttn_obj1.y <=   -3.14/4))
@@ -899,6 +966,26 @@ bool hasCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, gl
              && (obj1.bbox_max.y*scale_obj1.y) + pos_obj1.y >= (obj2.bbox_min.y*scale_obj2.y) + pos_obj2.y)
              &&((obj1.bbox_min.z*scale_obj1.z) + pos_obj1.z <= (obj2.bbox_max.z*scale_obj2.z) + pos_obj2.z
              && (obj1.bbox_max.z*scale_obj1.z) + pos_obj1.z >= (obj2.bbox_min.z*scale_obj2.z) + pos_obj2.z);
+    }
+
+}
+
+bool hasPointBoxCollision(glm::vec4 point,SceneObject obj, glm::vec4 pos_obj, glm::vec3 scale_obj, glm::vec3 rttn_obj)
+{
+
+    if (( rttn_obj.y >=    3.14/4 && rttn_obj.y <=  3*3.14/4)
+     || ( rttn_obj.y >= 3*-3.14/4 && rttn_obj.y <=   -3.14/4))
+    {
+        return (point.x > (obj.bbox_min.z*scale_obj.x) + pos_obj.x && point.x < (obj.bbox_max.z*scale_obj.x) + pos_obj.x)
+            && (point.y > (obj.bbox_min.y*scale_obj.y) + pos_obj.y && point.y < (obj.bbox_max.y*scale_obj.y) + pos_obj.y)
+            && (point.z > (obj.bbox_min.x*scale_obj.z) + pos_obj.z && point.z < (obj.bbox_max.x*scale_obj.z) + pos_obj.z);
+    }
+    else
+    {
+        return (point.x > (obj.bbox_min.x*scale_obj.x) + pos_obj.x && point.x < (obj.bbox_max.x*scale_obj.x) + pos_obj.x)
+            && (point.y > (obj.bbox_min.y*scale_obj.y) + pos_obj.y && point.y < (obj.bbox_max.y*scale_obj.y) + pos_obj.y)
+            && (point.z > (obj.bbox_min.z*scale_obj.z) + pos_obj.z && point.z < (obj.bbox_max.z*scale_obj.z) + pos_obj.z);
+
     }
 
 }
@@ -1585,7 +1672,7 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
     // definição do sistema de coordenadas da câmera. Isto é, a variável abaixo
     // nunca pode ser zero. Versões anteriores deste código possuíam este bug,
     // o qual foi detectado pelo aluno Vinicius Fraga (2017/2).
-    const float verysmallnumber = std::numeric_limits<float>::epsilon();
+    //const float verysmallnumber = std::numeric_limits<float>::epsilon();
     if (g_CameraDistance < 0.8)
         g_CameraDistance = 0.8;
 }
