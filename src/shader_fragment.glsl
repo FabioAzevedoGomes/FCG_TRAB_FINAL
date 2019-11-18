@@ -102,9 +102,8 @@ void main()
         Ka = vec3(0.0,0.0,0.0);
         q = 1.0;
 
-        //Formçamos l para que nenhuma equação de iluminação seja aplicada ao 'fundo'
-        // Desta maneira dot(n,l) resulta em 0 e portanto a esfera está sempre iluminada
-        l = n;
+        //nvertemos a normal da esfera, para que ela esteja "virada para dentro"
+        n = -n;
     }
     else if ( object_id == BUNNY )
     {
@@ -184,10 +183,10 @@ void main()
     }
     else if (object_id == MEDAL)
     {
-        Kd = vec3(1.,223/255,0.0);
-        Ks = vec3(0.5,0.5,0.5);
-        Ka = vec3(1.0,1.0,1.0);
-        q = 20.0;
+        Kd = vec3(0.8431f,0.7176f,0.25f);
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 10.0;
     }
     else if (object_id == DOOR)
     {

@@ -202,7 +202,7 @@ float g_TorsoPositionY = 0.0f;
 
 // Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
 bool g_UsePerspectiveProjection = true;
-bool firstPersonView = false;
+bool firstPersonView = true;
 
 // Variável que controla se o texto informativo será mostrado na tela.
 bool g_ShowInfoText = true;
@@ -438,6 +438,9 @@ int main(int argc, char* argv[])
     // ... ou rolar a "rodinha" do mouse.
     glfwSetScrollCallback(window, ScrollCallback);
 
+    // Podemos?
+    glfwSetInputMode(window,GLFW_CURSOR,GLFW_CURSOR_DISABLED);
+
     // Indicamos que as chamadas OpenGL deverão renderizar nesta janela
     glfwMakeContextCurrent(window);
 
@@ -538,8 +541,6 @@ int main(int argc, char* argv[])
     }
     sfxEngine->setSoundVolume(0.01);
     soundEngine->setSoundVolume(0.1);
-    //soundEngine->play2D("../../media/polkka.wav",true);
-    soundEngine->play2D("../../media/polkka.wav",true,false,false,irrklang::ESM_AUTO_DETECT,true);
     /*---------------------------------------------------------------------------------------------------------
                                             VARIÁVEIS DE TEMPO
     ---------------------------------------------------------------------------------------------------------*/
@@ -603,24 +604,20 @@ int main(int argc, char* argv[])
         g_PlacedObjects.push_back(object);
 
         float farplane = -500.0f;
-        /*-------------------------------------------
-                    MODELO DO CHÃO
-        -------------------------------------------*/
         float arena_size = -farplane/(2*sqrt(2));
 
     /*---------------------------------------------------------------------------------------------------------
                                 INICIALIZANDO ESTRUTURA REFERENTES À LÓGICA DE JOGO
     ---------------------------------------------------------------------------------------------------------*/
 
-    /*Inicializamos um inimigo para teste*/
-    PlacedObject* testEnemyObject = new PlacedObject();//(PlacedObject*)malloc(sizeof(PlacedObject));
+    /*Inicializamos um inimigo de placeholder*/
+    PlacedObject* testEnemyObject = new PlacedObject();
     testEnemyObject->id = ENEMY;
-    testEnemyObject->name = "cow";
-    testEnemyObject->position_world = glm::vec4(-5.0,2.0,-5.0,1.0);
-    testEnemyObject->scale = glm::vec3(5.0f,5.0f,5.0f);
+    testEnemyObject->name = "placeholder";
+    testEnemyObject->position_world = glm::vec4(0.0,0.0,0.0,0.0);
+    testEnemyObject->scale = glm::vec3(1.0f,1.0f,1.0f);
     testEnemyObject->rotation = glm::vec3(0.0f,0.0f,0.0f);
-
-    EnemyObject* testEnemy = new EnemyObject(0,testEnemyObject);
+    EnemyObject* activeEnemy = new EnemyObject(0,testEnemyObject);
 
     // Ficamos em loop, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
@@ -722,7 +719,9 @@ int main(int argc, char* argv[])
                                                     LÓGICA DO JOGO
         ---------------------------------------------------------------------------------------------------------*/
 
-        //Apenas processa ataques caso esteja fora do "menu"
+        /*-------------------------------------------
+              PROCESSAMENTO DENTRO DE UM NIVEL
+        -------------------------------------------*/
         if (current_level != 0)
         {
             if (enemy_alive) {
@@ -766,20 +765,20 @@ int main(int argc, char* argv[])
                 if (current_time - last_enemy_attack_time >= 0.8)
                 {
                     //Executa o ataque de acordo com o cycle em que o inimigo se encontra
-                    testEnemy->attack(testEnemy->attack_patterns[(int)(testEnemy->attack_cycle/10)]);
+                    activeEnemy->attack(activeEnemy->attack_patterns[(int)(activeEnemy->attack_cycle/10)]);
                     sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
                     //Atualiza a contagem de tempo desde o ultimo ataque
                     last_enemy_attack_time = current_time;
-                    testEnemy->attack_cycle ++;
+                    activeEnemy->attack_cycle ++;
 
                     //Ao chegar no final tem uma pequena pausa e volta ao primeiro
-                    if (testEnemy->attack_cycle > 30) testEnemy->attack_cycle = 0;
+                    if (activeEnemy->attack_cycle > 30) activeEnemy->attack_cycle = 0;
                 }
 
                 /*-------------------------------------------
                         PROCESSA A MOVIMENTAÇÃO DO INIMIGO
                 -------------------------------------------*/
-                //testEnemy->compute_movement((current_time - previous_time),arena_size);
+                activeEnemy->compute_movement((current_time - previous_time),arena_size);
 
                 /*-------------------------------------------
                  PROCESSA O MOVIMENTO DOS PROJÉTEIS DO JOGADOR
@@ -797,15 +796,15 @@ int main(int argc, char* argv[])
                         g_ProjectilesOnPlay.erase(it);
                     }
                     else if (hasPointBoxCollision(it->model->position_world,
-                                                  g_VirtualScene[testEnemy->body->name],
-                                                  testEnemy->body->position_world,
-                                                  testEnemy->body->scale,
-                                                  testEnemy->body->rotation))
+                                                  g_VirtualScene[activeEnemy->body->name],
+                                                  activeEnemy->body->position_world,
+                                                  activeEnemy->body->scale,
+                                                  activeEnemy->body->rotation))
                     {
                         //Remove vida do inimigo e deleta o projetil
-                        testEnemy->health_points = testEnemy->health_points - it->damage;
+                        activeEnemy->health_points = activeEnemy->health_points - it->damage;
                         g_ProjectilesOnPlay.erase(it);
-                        fprintf(stderr,"Vida do inimigo: %.2f\n",testEnemy->health_points);
+                        fprintf(stderr,"Vida do inimigo: %.2f\n",activeEnemy->health_points);
                     }
                 }
 
@@ -857,7 +856,7 @@ int main(int argc, char* argv[])
                 }
 
                 //Verificamos se o inimigo morreu
-                if (testEnemy->health_points <= 0)
+                if (activeEnemy->health_points <= 0)
                 {
                     enemy_alive = false;
                 }
@@ -882,6 +881,8 @@ int main(int argc, char* argv[])
 
                     /*Limpamos os objetos deste nível*/
                     g_PlacedObjects.clear();
+                    g_BulletsOnPlay.clear();
+                    g_ProjectilesOnPlay.clear();
 
                     /*Recarregamos os objetos do menu principal*/
                     PlacedObject object = {
@@ -917,16 +918,21 @@ int main(int argc, char* argv[])
                     /*Voltamos ao menu*/
                     soundEngine->stopAllSounds();
                     current_level = 0;
-
                     character_position = glm::vec4(0.0f,3.0f,5.0f,1.0f);
+
                 }
         }
 
         }
-        //Se o jogador está no menu
+
+        /*-------------------------------------------
+              PROCESSAMENTO DENTRO DO LEVEL HUB
+        -------------------------------------------*/
         else
         {
             //Esperamos pela escolha de nível, e carregamos estruturas do nível de acordo com a escolha feita
+
+            //Porta 1 - VACA
             if  (hasBoxBoxCollision( g_VirtualScene["plane"],
                                   glm::vec4(5.0f,3.0f,-2.0f,1.0f),
                                   glm::vec3(2.0f,5.0f,2.0f),
@@ -949,10 +955,6 @@ int main(int argc, char* argv[])
                     glm::vec3(0.0f,0.0f,0.0f)
                 };
                 g_PlacedObjects.push_back(object);
-
-                /*-------------------------------------------
-                            MODELO DAS PAREDES
-                -------------------------------------------*/
                 object = {
                     WALL,
                     "wall",
@@ -986,18 +988,30 @@ int main(int argc, char* argv[])
                 };
                 g_PlacedObjects.push_back(object);
 
-                //Atualizamos o nível atual
+                /*Atualizamos o nivel atual, status do inimigo, posição do personagem, vida e câmera*/
                 current_level = 1;
-
-                //Atualizamos os staus do inimigo
                 enemy_alive = true;
+                character_position = glm::vec4(20.0f,3.0f,20.0f,1.0f);
+                player_health = 100;
+                firstPersonView = false;
+                g_CameraDistance = 100;
 
-                /*TODO Aqui iremos incializar o inimigo também para manter o corpo de processamento da lógica de jogo modularizado,
-                permitindo implementar múltiplos inimigos*/
+                /*Inicializamos o inimigo COW*/
+                testEnemyObject->id = ENEMY;
+                testEnemyObject->name = "cow";
+                testEnemyObject->position_world = glm::vec4(-5.0,2.0,-5.0,1.0);
+                testEnemyObject->scale = glm::vec3(5.0f,5.0f,5.0f);
+                testEnemyObject->rotation = glm::vec3(0.0f,0.0f,0.0f);
+                activeEnemy = new EnemyObject(0,testEnemyObject);
+                activeEnemy->attack_cycle = -10;
+
+                /*Começamos a música*/
+                soundEngine->play2D("../../media/polkka.wav",true,false,false,irrklang::ESM_AUTO_DETECT,true);
 
             }
 
-            //Esperamos pela escolha de nível, e carregamos estruturas do nível de acordo com a escolha feita
+
+            //Porta 2
             if  (hasBoxBoxCollision( g_VirtualScene["plane"],
                                   glm::vec4(-5.0f,3.0f,-2.0f,1.0f),
                                   glm::vec3(2.0f,5.0f,2.0f),
@@ -1012,6 +1026,7 @@ int main(int argc, char* argv[])
                 /*TODO*/
             }
         }
+
         /*---------------------------------------------------------------------------------------------------------
                                         DESENHANDO OS OBJETOS DA CENA
         ---------------------------------------------------------------------------------------------------------*/
@@ -1052,14 +1067,14 @@ int main(int argc, char* argv[])
             //Se o inimigo está vivo
             if (enemy_alive) {
                 //Inimigo
-                model = Matrix_Translate(testEnemy->body->position_world.x,testEnemy->body->position_world.y,testEnemy->body->position_world.z)
-                        * Matrix_Scale(testEnemy->body->scale.x,testEnemy->body->scale.y,testEnemy->body->scale.z)
-                        * Matrix_Rotate_Z(testEnemy->body->rotation.x)
-                        * Matrix_Rotate_Y(testEnemy->body->rotation.y)
-                        * Matrix_Rotate_X(testEnemy->body->rotation.z);
+                model = Matrix_Translate(activeEnemy->body->position_world.x,activeEnemy->body->position_world.y,activeEnemy->body->position_world.z)
+                        * Matrix_Scale(activeEnemy->body->scale.x,activeEnemy->body->scale.y,activeEnemy->body->scale.z)
+                        * Matrix_Rotate_Z(activeEnemy->body->rotation.x)
+                        * Matrix_Rotate_Y(activeEnemy->body->rotation.y)
+                        * Matrix_Rotate_X(activeEnemy->body->rotation.z);
                 glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
                 glUniform1i(object_id_uniform, ENEMY);
-                DrawVirtualObject(testEnemy->body->name.c_str());
+                DrawVirtualObject(activeEnemy->body->name.c_str());
 
                 //Bullets
                 for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); it != g_BulletsOnPlay.end(); it++)
@@ -1089,9 +1104,9 @@ int main(int argc, char* argv[])
             {
                 model = Matrix_Translate(0.0f,3.0f,0.0f)
                         * Matrix_Scale(1.0f,1.0f,1.0f)
-                        * Matrix_Rotate_X(-3.14/2)
-                        * Matrix_Rotate_Y(0.0)
-                        * Matrix_Rotate_Z(0.0);
+                        * Matrix_Rotate_Z(0.0)
+                        * Matrix_Rotate_Y(current_time)
+                        * Matrix_Rotate_X(2*-3.14/3);
                 glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
                 glUniform1i(object_id_uniform, MEDAL);
                 DrawVirtualObject("19320_5_small_stars_arranged_in_a_circle_v1");
