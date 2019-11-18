@@ -16,13 +16,16 @@ uniform mat4 view;
 uniform mat4 projection;
 
 // Identificador que define qual objeto está sendo desenhado no momento
-#define BACKGROUND 0
-#define BUNNY  1
-#define FLOOR  2
-#define MIKU   3
-#define BULLET 4
-#define WALL   5
-#define ENEMY  6
+#define BACKGROUND  0
+#define BUNNY       1
+#define FLOOR       2
+#define MIKU        3
+#define BULLET      4
+#define WALL        5
+#define ENEMY       6
+#define PROJECTILE  7
+#define MEDAL       8
+#define DOOR        9
 
 uniform int object_id;
 
@@ -35,6 +38,7 @@ uniform sampler2D TextureImage0;
 uniform sampler2D TextureImage1;
 uniform sampler2D TextureImage2;
 uniform sampler2D TextureImage3;
+uniform sampler2D TextureImage4;
 
 // O valor de saída ("out") de um Fragment Shader é a cor final do fragmento.
 out vec3 color;
@@ -168,6 +172,34 @@ void main()
         Ks = vec3(0.0f,0.0f,0.0f);
         Ka = vec3(0.0f,0.0f,0.0f);
         q = 1.0;
+
+    }
+    else if (object_id == PROJECTILE)
+    {
+        /*TODO*/
+        Kd = vec3(0.0,0.0,0.0);
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 1.0;
+    }
+    else if (object_id == MEDAL)
+    {
+        Kd = vec3(1.,223/255,0.0);
+        Ks = vec3(0.5,0.5,0.5);
+        Ka = vec3(1.0,1.0,1.0);
+        q = 20.0;
+    }
+    else if (object_id == DOOR)
+    {
+
+        /*TODO Arrumar textura da porta*/
+        U = position_model.x/2;// - minx)/(maxx - minx);
+        V = position_model.z/2;// - minz)/(maxz - minz);
+
+        //Computa a cor da textura neste ponto
+        Kd = texture(TextureImage4, vec2(U,V)).rgb;
+        Ka = vec3(1.0,1.0,1.0);
+        q = 10.0;
 
     }
     else // Objeto desconhecido = preto

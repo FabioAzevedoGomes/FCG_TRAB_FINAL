@@ -468,6 +468,7 @@ int main(int argc, char* argv[])
     LoadTextureImage("../../data/textures/background_texture.jpg"); //TextureImage1
     LoadTextureImage("../../data/textures/wall.bpm");   // TextureImage2
     LoadTextureImage("../../data/textures/cow_texture.jpg"); //TextureImage3
+    LoadTextureImage("../../data/textures/door_texture.jpg"); //TextureImage4
 
     ObjModel backgroundmodel("../../data/sphere.obj");
     ComputeNormals(&backgroundmodel);
@@ -492,6 +493,10 @@ int main(int argc, char* argv[])
     ObjModel enemy0model("../../data/cow.obj");
     ComputeNormals(&enemy0model);
     BuildTrianglesAndAddToVirtualScene(&enemy0model);
+
+    ObjModel medalmodel("../../data/medal.obj");
+    ComputeNormals(&medalmodel);
+    BuildTrianglesAndAddToVirtualScene(&medalmodel);
 
     if ( argc > 1 )
     {
@@ -520,11 +525,6 @@ int main(int argc, char* argv[])
     glm::mat4 the_model;
     glm::mat4 the_view;
 
-    //Controle de movimentação do 'pet'
-    float pet_curve_t = 0.0f;           //Parâmetro para a curva de Bézier do 'pet'
-    float pet_update_speed = 1;        //Velocidade de variação do t do 'pet'
-    float pet_random_movement = 1;
-
     /*---------------------------------------------------------------------------------------------------------
                                     INICIALIZAÇÃO DA ENGINE DE SOM
     ---------------------------------------------------------------------------------------------------------*/
@@ -550,6 +550,15 @@ int main(int argc, char* argv[])
     float last_player_attack_time = glfwGetTime();
 
     /*---------------------------------------------------------------------------------------------------------
+                                            VARIÁVEIS DE CONTROLE DO JOGO
+    ---------------------------------------------------------------------------------------------------------*/
+
+    float player_health = 100;
+    bool enemy_alive = false;
+    int current_level = 0;  /*0: Menu, 1: Vaca, 2: ...*/
+    bool beaten[3] = {false,false,false};    /*Níveis que o usuário venceu*/
+
+    /*---------------------------------------------------------------------------------------------------------
                                             INICIALIZANDO OBJETOS FIXOS NA CENA
     ---------------------------------------------------------------------------------------------------------*/
         #define BACKGROUND 0
@@ -560,70 +569,44 @@ int main(int argc, char* argv[])
         #define WALL       5
         #define ENEMY      6
         #define PROJECTILE 7
+        #define MEDAL      8
+        #define DOOR       9
+
+        /*Menu inicial*/
+        PlacedObject object = {
+            FLOOR,
+            "plane",
+            glm::vec3(20.0f,1.0f,20.0f),
+            glm::vec4(0.0f,-1.0f,0.0f,1.0f),
+            glm::vec3(0.0f,0.0f,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+
+        //Porta 1
+        object = {
+            DOOR,
+            "plane",
+            glm::vec3(2.0f,5.0f,5.0f),
+            glm::vec4(5.0f,3.0f,-2.0f,1.0f),
+            glm::vec3(3.14/2,0.0f,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+
+        //Porta 2
+        object = {
+            DOOR,
+            "plane",
+            glm::vec3(2.0f,5.0f,5.0f),
+            glm::vec4(-5.0f,3.0f,-2.0f,1.0f),
+            glm::vec3(3.14/2,0.0f,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
 
         float farplane = -500.0f;
         /*-------------------------------------------
                     MODELO DO CHÃO
         -------------------------------------------*/
         float arena_size = -farplane/(2*sqrt(2));
-        PlacedObject object = {
-            FLOOR,
-            "plane",
-            glm::vec3(arena_size,1.0f,arena_size),
-            glm::vec4(0.0f,-1.0f,0.0f,1.0f),
-            glm::vec3(0.0f,0.0f,0.0f)
-        };
-        g_PlacedObjects.push_back(object);
-
-        /*-------------------------------------------
-                    MODELO DAS PAREDES
-        -------------------------------------------*/
-        object = {
-            WALL,
-            "wall",
-            glm::vec3(5.0f,5.0f,arena_size/4),
-            glm::vec4(arena_size/2,2.0f,0.0f,1.0f),
-            glm::vec3(0.0f,3.14/2,0.0f)
-        };
-        g_PlacedObjects.push_back(object);
-        object = {
-            WALL,
-            "wall",
-            glm::vec3(5.0f,5.0f,arena_size/4),
-            glm::vec4(-arena_size/2,2.0f,0.0f,1.0f),
-            glm::vec3(0.0f,-3.14/2,0.0f)
-        };
-        g_PlacedObjects.push_back(object);
-        object = {
-            WALL,
-            "wall",
-            glm::vec3(arena_size/4,5.0f,5.0f),
-            glm::vec4(0.0f,2.0f,arena_size/2,1.0f),
-            glm::vec3(0.0f,0.0f,0.0f)
-        };
-        g_PlacedObjects.push_back(object);
-        object = {
-            WALL,
-            "wall",
-            glm::vec3(arena_size/4,5.0f,5.0f),
-            glm::vec4(0.0f,2.0f,-arena_size/2,1.0f),
-            glm::vec3(0.0f,3.14,0.0f)
-        };
-        g_PlacedObjects.push_back(object);
-
-        /*-------------------------------------------
-                    ESFERA DE TESTES
-        -------------------------------------------*/
-        /*
-        object = {
-            BACKGROUND,
-            "sphere",
-            glm::vec3(1.0f,1.0f,1.0f),
-            glm::vec4(0.0f,3.0f,0.0f,1.0f),
-            glm::vec3(0.0f,0.0f,0.0f)
-        };
-        g_PlacedObjects.push_back(object);
-        */
 
     /*---------------------------------------------------------------------------------------------------------
                                 INICIALIZANDO ESTRUTURA REFERENTES À LÓGICA DE JOGO
@@ -738,125 +721,297 @@ int main(int argc, char* argv[])
         /*---------------------------------------------------------------------------------------------------------
                                                     LÓGICA DO JOGO
         ---------------------------------------------------------------------------------------------------------*/
-        /*-------------------------------------------
-          PROCESSA O ATAQUE DO JOGADOR SE HOUVER UM
-        -------------------------------------------*/
-        if (g_LeftMouseButtonPressed)
+
+        //Apenas processa ataques caso esteja fora do "menu"
+        if (current_level != 0)
         {
-            //Se o jogar puder atacar
-            if (current_time - last_player_attack_time >= 0.2)
-            {
-
-                float projectile_speed = 20.0;
-                //Cria um novo projétil
-                PlacedObject* new_proj_obj = new PlacedObject();
-                new_proj_obj->id = PROJECTILE;
-                new_proj_obj->name = "miku";
-                new_proj_obj->position_world = character_position;
-                new_proj_obj->rotation = glm::vec4(0.0f,0.0f,0.0f,1.0f);
-                new_proj_obj->scale = glm::vec3(0.5f,0.5f,0.5f);
-
-                //Inicializa um ProjectileObject
-                ProjectileObject new_projectile =
-                    {g_ProjectilesOnPlay.size(),
-                     1.0f,
-                     projectile_speed*(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f)/norm(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f))),
-                     new_proj_obj,
-                     0.0f};
-                //Adiciona à lista de projéteis
-                g_ProjectilesOnPlay.push_back(new_projectile);
-
-                //Reseta o tempo de ataque
-                last_player_attack_time = current_time;
-            }
-        }
-
-        /*-------------------------------------------
-                PROCESSA O ATAQUE DO INIMIGO
-        -------------------------------------------*/
-        //Testando ataques
-        if (current_time - last_enemy_attack_time >= 0.8)
-        {
-            //Executa o ataque de acordo com o cycle em que o inimigo se encontra
-            testEnemy->attack(testEnemy->attack_patterns[(int)(testEnemy->attack_cycle/10)]);
-            sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
-            //Atualiza a contagem de tempo desde o ultimo ataque
-            last_enemy_attack_time = current_time;
-            testEnemy->attack_cycle ++;
-
-            //Ao chegar no final tem uma pequena pausa e volta ao primeiro
-            if (testEnemy->attack_cycle > 30) testEnemy->attack_cycle = 0;
-        }
-
-        /*-------------------------------------------
-                PROCESSA A MOVIMENTAÇÃO DO INIMIGO
-        -------------------------------------------*/
-         testEnemy->compute_movement((current_time - previous_time),arena_size);
-
-        /*-------------------------------------------
-         PROCESSA O MOVIMENTO DOS PROJÉTEIS DO JOGADOR
-        -------------------------------------------*/
-        int ctr = 0;    //Contador para evitar segmentation fault ao deletar o ultimo elemento
-        for (std::vector<ProjectileObject>::iterator it = g_ProjectilesOnPlay.begin();ctr < g_ProjectilesOnPlay.size() && it != g_ProjectilesOnPlay.end(); it ++)
-        {
-            ctr++;
-            it->model->position_world = it->model->position_world + it->velocity*(float)(current_time - previous_time);
-
-            //Projeteis que chegaram na distancia máxima são descartados
-            it->traveled_distance = it->traveled_distance + norm(it->velocity*(float)(current_time - previous_time));
-            if (it->traveled_distance > 20)
-            {
-                g_ProjectilesOnPlay.erase(it);
-            }
-            else
-            {
-                //TODO Teste de colisao com o inimigo
-                continue;
-
-            }
-        }
-
-        /*-------------------------------------------
-                PROCESSA MOVIMENTO DAS BULLETS
-        -------------------------------------------*/
-        bool collided;
-        ctr = 0;
-        for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); ctr < g_BulletsOnPlay.size() && it != g_BulletsOnPlay.end(); it++)
-        {
-            ctr++;
-            collided = false;
-
-            //Bullets que saíram do ambiente são descartadas
-            it->position_world = it->position_world + it->velocity*(float)(current_time-previous_time);
-            if (norm(it->position_world - glm::vec4(0.0f,0.0f,0.0f,1.0f)) >= arena_size)
-            {
-                g_BulletsOnPlay.erase(it);
-                collided = true;
-            }
-            else
-            {
-                for (std::vector<PlacedObject>::iterator obj_it = g_PlacedObjects.begin(); !collided && obj_it != g_PlacedObjects.end(); obj_it++)
+            if (enemy_alive) {
+                /*-------------------------------------------
+                  PROCESSA O ATAQUE DO JOGADOR SE HOUVER UM
+                -------------------------------------------*/
+                if (g_LeftMouseButtonPressed)
                 {
-                    if (hasPointBoxCollision(it->position_world,
-                                             g_VirtualScene[obj_it->name],
-                                             obj_it->position_world,
-                                             obj_it->scale,
-                                             obj_it->rotation))
+                    //Se o jogar puder atacar
+                    if (current_time - last_player_attack_time >= 0.2)
                     {
-                        g_BulletsOnPlay.erase(it);
-                        collided  = true;
+
+                        float projectile_speed = 20.0;
+                        //Cria um novo projétil
+                        PlacedObject* new_proj_obj = new PlacedObject();
+                        new_proj_obj->id = PROJECTILE;
+                        new_proj_obj->name = "miku";
+                        new_proj_obj->position_world = character_position;
+                        new_proj_obj->rotation = glm::vec4(0.0f,0.0f,0.0f,1.0f);
+                        new_proj_obj->scale = glm::vec3(0.5f,0.5f,0.5f);
+
+                        //Inicializa um ProjectileObject
+                        ProjectileObject new_projectile =
+                            {g_ProjectilesOnPlay.size(),
+                             40.0f,
+                             projectile_speed*(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f)/norm(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f))),
+                             new_proj_obj,
+                             0.0f};
+                        //Adiciona à lista de projéteis
+                        g_ProjectilesOnPlay.push_back(new_projectile);
+
+                        //Reseta o tempo de ataque
+                        last_player_attack_time = current_time;
                     }
                 }
-            }
 
-            if (!collided)
+                /*-------------------------------------------
+                        PROCESSA O ATAQUE DO INIMIGO
+                -------------------------------------------*/
+                //Testando ataques
+                if (current_time - last_enemy_attack_time >= 0.8)
+                {
+                    //Executa o ataque de acordo com o cycle em que o inimigo se encontra
+                    testEnemy->attack(testEnemy->attack_patterns[(int)(testEnemy->attack_cycle/10)]);
+                    sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
+                    //Atualiza a contagem de tempo desde o ultimo ataque
+                    last_enemy_attack_time = current_time;
+                    testEnemy->attack_cycle ++;
+
+                    //Ao chegar no final tem uma pequena pausa e volta ao primeiro
+                    if (testEnemy->attack_cycle > 30) testEnemy->attack_cycle = 0;
+                }
+
+                /*-------------------------------------------
+                        PROCESSA A MOVIMENTAÇÃO DO INIMIGO
+                -------------------------------------------*/
+                //testEnemy->compute_movement((current_time - previous_time),arena_size);
+
+                /*-------------------------------------------
+                 PROCESSA O MOVIMENTO DOS PROJÉTEIS DO JOGADOR
+                -------------------------------------------*/
+                int ctr = 0;    //Contador para evitar segmentation fault ao deletar o ultimo elemento
+                for (std::vector<ProjectileObject>::iterator it = g_ProjectilesOnPlay.begin();ctr < g_ProjectilesOnPlay.size() && it != g_ProjectilesOnPlay.end(); it ++)
+                {
+                    ctr++;
+                    it->model->position_world = it->model->position_world + it->velocity*(float)(current_time - previous_time);
+
+                    //Projeteis que chegaram na distancia máxima são descartados
+                    it->traveled_distance = it->traveled_distance + norm(it->velocity*(float)(current_time - previous_time));
+                    if (it->traveled_distance > 20)
+                    {
+                        g_ProjectilesOnPlay.erase(it);
+                    }
+                    else if (hasPointBoxCollision(it->model->position_world,
+                                                  g_VirtualScene[testEnemy->body->name],
+                                                  testEnemy->body->position_world,
+                                                  testEnemy->body->scale,
+                                                  testEnemy->body->rotation))
+                    {
+                        //Remove vida do inimigo e deleta o projetil
+                        testEnemy->health_points = testEnemy->health_points - it->damage;
+                        g_ProjectilesOnPlay.erase(it);
+                        fprintf(stderr,"Vida do inimigo: %.2f\n",testEnemy->health_points);
+                    }
+                }
+
+                /*-------------------------------------------
+                        PROCESSA MOVIMENTO DAS BULLETS
+                -------------------------------------------*/
+                bool collided;
+                ctr = 0;
+                for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); ctr < g_BulletsOnPlay.size() && it != g_BulletsOnPlay.end(); it++)
+                {
+                    ctr++;
+                    collided = false;
+
+                    //Bullets que saíram do ambiente são descartadas
+                    it->position_world = it->position_world + it->velocity*(float)(current_time-previous_time);
+                    if (norm(it->position_world - glm::vec4(0.0f,0.0f,0.0f,1.0f)) >= arena_size)
+                    {
+                        g_BulletsOnPlay.erase(it);
+                        collided = true;
+                    }
+                    else
+                    {
+                        for (std::vector<PlacedObject>::iterator obj_it = g_PlacedObjects.begin(); !collided && obj_it != g_PlacedObjects.end(); obj_it++)
+                        {
+                            if (hasPointBoxCollision(it->position_world,
+                                                     g_VirtualScene[obj_it->name],
+                                                     obj_it->position_world,
+                                                     obj_it->scale,
+                                                     obj_it->rotation))
+                            {
+                                g_BulletsOnPlay.erase(it);
+                                collided  = true;
+                            }
+                        }
+                    }
+
+                    if (!collided && hasPointBoxCollision(it->position_world,
+                                                        mikuSceneObj,
+                                                        glm::vec4(character_position.x,character_position.y - 4.0f,character_position.z,1.0f),
+                                                        glm::vec3(1.0f,1.0f,1.0f),
+                                                        glm::vec3(0.0f, g_CameraTheta, 0.0f)
+                                                        ))
+                    {
+                        player_health = player_health - it->damage;
+                        g_BulletsOnPlay.erase(it);
+                        fprintf(stderr,"Vida do jogador: %.2f\n",player_health);
+                    }
+
+                }
+
+                //Verificamos se o inimigo morreu
+                if (testEnemy->health_points <= 0)
+                {
+                    enemy_alive = false;
+                }
+
+                /*TODO Aqui tambem verificaremos se o jogador morreu*/
+            }
+            //Se o inimigo está morto esperamos o usuário coletar a medalha e o colocamos devolta no menu
+            else
             {
-                //TODO Teste de colisão com o personagem
-                continue;
-            }
+                if (hasBoxBoxCollision( g_VirtualScene["19320_5_small_stars_arranged_in_a_circle_v1"],
+                                  glm::vec4(0.0f,3.0f,0.0f,1.0f),
+                                  glm::vec3(1.0f,1.0f,1.0f),
+                                  glm::vec3(-3.14/2,0.0f,0.0f),
+                                  mikuSceneObj,
+                                  character_position,
+                                  glm::vec3(1.0f,1.0f,1.0f),
+                                  glm::vec3(0.0f, g_CameraTheta, g_CameraPhi))
+                    )
+                {
+                    /*Atualizamos o status deste nível*/
+                    beaten[current_level] = true;
 
+                    /*Limpamos os objetos deste nível*/
+                    g_PlacedObjects.clear();
+
+                    /*Recarregamos os objetos do menu principal*/
+                    PlacedObject object = {
+                        FLOOR,
+                        "plane",
+                        glm::vec3(20.0f,1.0f,20.0f),
+                        glm::vec4(0.0f,-1.0f,0.0f,1.0f),
+                        glm::vec3(0.0f,0.0f,0.0f)
+                    };
+                    g_PlacedObjects.push_back(object);
+
+                    //Porta 1
+                    object = {
+                        DOOR,
+                        "plane",
+                        glm::vec3(2.0f,5.0f,5.0f),
+                        glm::vec4(5.0f,3.0f,-2.0f,1.0f),
+                        glm::vec3(3.14/2,0.0f,0.0f)
+                    };
+                    g_PlacedObjects.push_back(object);
+
+                    //Porta 2
+                    object = {
+                        DOOR,
+                        "plane",
+                        glm::vec3(2.0f,5.0f,5.0f),
+                        glm::vec4(-5.0f,3.0f,-2.0f,1.0f),
+                        glm::vec3(3.14/2,0.0f,0.0f)
+                    };
+                    g_PlacedObjects.push_back(object);
+
+
+                    /*Voltamos ao menu*/
+                    soundEngine->stopAllSounds();
+                    current_level = 0;
+
+                    character_position = glm::vec4(0.0f,3.0f,5.0f,1.0f);
+                }
         }
 
+        }
+        //Se o jogador está no menu
+        else
+        {
+            //Esperamos pela escolha de nível, e carregamos estruturas do nível de acordo com a escolha feita
+            if  (hasBoxBoxCollision( g_VirtualScene["plane"],
+                                  glm::vec4(5.0f,3.0f,-2.0f,1.0f),
+                                  glm::vec3(2.0f,5.0f,2.0f),
+                                  glm::vec3(3.14/2,0.0f,0.0f),
+                                  mikuSceneObj,
+                                  glm::vec4(character_position.x,character_position.y -3.0f,character_position.z,1.0f),
+                                  glm::vec3(1.0f,1.0f,1.0f),
+                                  glm::vec3(0.0f, g_CameraTheta, 0.0f))
+                    )
+            {
+                //Limpamos os objetos colocados
+                g_PlacedObjects.clear();
+
+                //Repopulamos o vetor com os objetos da nova cena
+                PlacedObject object = {
+                    FLOOR,
+                    "plane",
+                    glm::vec3(arena_size,1.0f,arena_size),
+                    glm::vec4(0.0f,-1.0f,0.0f,1.0f),
+                    glm::vec3(0.0f,0.0f,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+
+                /*-------------------------------------------
+                            MODELO DAS PAREDES
+                -------------------------------------------*/
+                object = {
+                    WALL,
+                    "wall",
+                    glm::vec3(5.0f,5.0f,arena_size/4),
+                    glm::vec4(arena_size/2,2.0f,0.0f,1.0f),
+                    glm::vec3(0.0f,3.14/2,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+                object = {
+                    WALL,
+                    "wall",
+                    glm::vec3(5.0f,5.0f,arena_size/4),
+                    glm::vec4(-arena_size/2,2.0f,0.0f,1.0f),
+                    glm::vec3(0.0f,-3.14/2,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+                object = {
+                    WALL,
+                    "wall",
+                    glm::vec3(arena_size/4,5.0f,5.0f),
+                    glm::vec4(0.0f,2.0f,arena_size/2,1.0f),
+                    glm::vec3(0.0f,0.0f,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+                object = {
+                    WALL,
+                    "wall",
+                    glm::vec3(arena_size/4,5.0f,5.0f),
+                    glm::vec4(0.0f,2.0f,-arena_size/2,1.0f),
+                    glm::vec3(0.0f,3.14,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+
+                //Atualizamos o nível atual
+                current_level = 1;
+
+                //Atualizamos os staus do inimigo
+                enemy_alive = true;
+
+                /*TODO Aqui iremos incializar o inimigo também para manter o corpo de processamento da lógica de jogo modularizado,
+                permitindo implementar múltiplos inimigos*/
+
+            }
+
+            //Esperamos pela escolha de nível, e carregamos estruturas do nível de acordo com a escolha feita
+            if  (hasBoxBoxCollision( g_VirtualScene["plane"],
+                                  glm::vec4(-5.0f,3.0f,-2.0f,1.0f),
+                                  glm::vec3(2.0f,5.0f,2.0f),
+                                  glm::vec3(3.14/2,0.0f,0.0f),
+                                  mikuSceneObj,
+                                  glm::vec4(character_position.x,character_position.y -3.0f,character_position.z,1.0f),
+                                  glm::vec3(1.0f,1.0f,1.0f),
+                                  glm::vec3(0.0f, g_CameraTheta, 0.0f))
+                    )
+            {
+                fprintf(stderr,"porta2");
+                /*TODO*/
+            }
+        }
         /*---------------------------------------------------------------------------------------------------------
                                         DESENHANDO OS OBJETOS DA CENA
         ---------------------------------------------------------------------------------------------------------*/
@@ -873,43 +1028,8 @@ int main(int argc, char* argv[])
             glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
             glUniform1i(object_id_uniform, MIKU);
             DrawVirtualObject("miku");
-
-            /*
-            //Atualizamos os pontos da curva de Beziér do 'pet':
-            glm::vec4 a = glm::vec4( character_position.x + 0.0, character_position.y + 1.0, character_position.z - 0.5, 1.0f);
-            glm::vec4 b = glm::vec4( character_position.x + 6.0, character_position.y - pet_random_movement, character_position.z + 1.0, 1.0f);
-            glm::vec4 c = glm::vec4( character_position.x - 6.0, character_position.y + pet_random_movement, character_position.z + 1.0, 1.0f);
-            glm::vec4 d = glm::vec4( character_position.x + 0.0, character_position.y + 1.0, character_position.z - 0.5, 1.0f);
-
-            //Atualizamos T do 'pet'
-            pet_curve_t = pet_curve_t + pet_update_speed*(current_time - previous_time);
-
-            //Invertemos se chegamos ao final da curva
-            if (pet_curve_t >= 1)
-            {
-                pet_curve_t = 0;
-                pet_random_movement = 2*rand()/(RAND_MAX + 1.);
-            }
-
-            //Curva de Bézier de grau 3:
-            //c(t) = (1-t)^3 * p1 + 3t(1-t)^2 * p2 + 3t^2(1-t) * p3 + t^3 * p4
-            float point_x = (pow((1-pet_curve_t),3) * a.x) + (3*pet_curve_t*pow((1-pet_curve_t),2) * b.x) + (3*pow(pet_curve_t,2)*(1-pet_curve_t) * c.x) + (pow(pet_curve_t,3) * d.x);
-            float point_y = (pow((1-pet_curve_t),3) * a.y) + (3*pet_curve_t*pow((1-pet_curve_t),2) * b.y) + (3*pow(pet_curve_t,2)*(1-pet_curve_t) * c.y) + (pow(pet_curve_t,3) * d.y);
-            float point_z = (pow((1-pet_curve_t),3) * a.z) + (3*pet_curve_t*pow((1-pet_curve_t),2) * b.z) + (3*pow(pet_curve_t,2)*(1-pet_curve_t) * c.z) + (pow(pet_curve_t,3) * d.z);
-
-            -------------------------------------------
-                        PET DO PERSONGEM
-            -------------------------------------------
-            model = Matrix_Translate(point_x,point_y,point_z)
-                    * Matrix_Scale(0.5,0.5,0.5)
-                    * Matrix_Rotate_Z(g_AngleZ)
-                    * Matrix_Rotate_Y(g_AngleY)
-                    * Matrix_Rotate_X(g_AngleX);
-            glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-            glUniform1i(object_id_uniform, BUNNY);
-            DrawVirtualObject("bunny");
-            */
         }
+
         /*-------------------------------------------
                  MODELOS DE OBJETOS FIXOS
         -------------------------------------------*/
@@ -928,38 +1048,54 @@ int main(int argc, char* argv[])
        /*-------------------------------------------
         MODELOS DO JOGO (INIMIGOS, BULLETS E PROJÉTEIS)
         -------------------------------------------*/
+        if (current_level != 0) {
+            //Se o inimigo está vivo
+            if (enemy_alive) {
+                //Inimigo
+                model = Matrix_Translate(testEnemy->body->position_world.x,testEnemy->body->position_world.y,testEnemy->body->position_world.z)
+                        * Matrix_Scale(testEnemy->body->scale.x,testEnemy->body->scale.y,testEnemy->body->scale.z)
+                        * Matrix_Rotate_Z(testEnemy->body->rotation.x)
+                        * Matrix_Rotate_Y(testEnemy->body->rotation.y)
+                        * Matrix_Rotate_X(testEnemy->body->rotation.z);
+                glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
+                glUniform1i(object_id_uniform, ENEMY);
+                DrawVirtualObject(testEnemy->body->name.c_str());
 
-        //Inimigo
-        model = Matrix_Translate(testEnemy->body->position_world.x,testEnemy->body->position_world.y,testEnemy->body->position_world.z)
-                * Matrix_Scale(testEnemy->body->scale.x,testEnemy->body->scale.y,testEnemy->body->scale.z)
-                * Matrix_Rotate_Z(testEnemy->body->rotation.x)
-                * Matrix_Rotate_Y(testEnemy->body->rotation.y)
-                * Matrix_Rotate_X(testEnemy->body->rotation.z);
-        glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
-        glUniform1i(object_id_uniform, ENEMY);
-        DrawVirtualObject(testEnemy->body->name.c_str());
+                //Bullets
+                for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); it != g_BulletsOnPlay.end(); it++)
+                {
+                    model = Matrix_Translate(it->position_world.x,it->position_world.y,it->position_world.z)
+                            * Matrix_Scale(1.0f,1.0f,1.0f);
+                    glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
+                    glUniform1i(object_id_uniform, BULLET);
+                    DrawVirtualObject("sphere");
+                }
 
-        //Bullets
-        for (std::vector<BulletObject>::iterator it = g_BulletsOnPlay.begin(); it != g_BulletsOnPlay.end(); it++)
-        {
-            model = Matrix_Translate(it->position_world.x,it->position_world.y,it->position_world.z)
-                    * Matrix_Scale(1.0f,1.0f,1.0f);
-            glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
-            glUniform1i(object_id_uniform, BULLET);
-            DrawVirtualObject("sphere");
-        }
-
-        //Projéteis
-        for (std::vector<ProjectileObject>::iterator it = g_ProjectilesOnPlay.begin(); it != g_ProjectilesOnPlay.end(); it++)
-        {
-            model = Matrix_Translate(it->model->position_world.x,it->model->position_world.y,it->model->position_world.z)
-                    * Matrix_Scale(it->model->scale.x,it->model->scale.y,it->model->scale.z)
-                    * Matrix_Rotate_X(it->model->rotation.x)
-                    * Matrix_Rotate_Y(it->model->rotation.y)
-                    * Matrix_Rotate_Z(it->model->rotation.z);
-            glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
-            glUniform1i(object_id_uniform, it->model->id);
-            DrawVirtualObject(it->model->name.c_str());
+                //Projéteis
+                for (std::vector<ProjectileObject>::iterator it = g_ProjectilesOnPlay.begin(); it != g_ProjectilesOnPlay.end(); it++)
+                {
+                    model = Matrix_Translate(it->model->position_world.x,it->model->position_world.y,it->model->position_world.z)
+                            * Matrix_Scale(it->model->scale.x,it->model->scale.y,it->model->scale.z)
+                            * Matrix_Rotate_X(it->model->rotation.x)
+                            * Matrix_Rotate_Y(it->model->rotation.y)
+                            * Matrix_Rotate_Z(it->model->rotation.z);
+                    glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
+                    glUniform1i(object_id_uniform, it->model->id);
+                    DrawVirtualObject(it->model->name.c_str());
+                }
+            }
+            //Se o inimigo foi derrotado
+            else
+            {
+                model = Matrix_Translate(0.0f,3.0f,0.0f)
+                        * Matrix_Scale(1.0f,1.0f,1.0f)
+                        * Matrix_Rotate_X(-3.14/2)
+                        * Matrix_Rotate_Y(0.0)
+                        * Matrix_Rotate_Z(0.0);
+                glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
+                glUniform1i(object_id_uniform, MEDAL);
+                DrawVirtualObject("19320_5_small_stars_arranged_in_a_circle_v1");
+            }
         }
 
        /*-------------------------------------------
@@ -1218,6 +1354,7 @@ void LoadShadersFromFiles()
     glUniform1i(glGetUniformLocation(program_id, "TextureImage1"), 1);
     glUniform1i(glGetUniformLocation(program_id, "TextureImage2"), 2);
     glUniform1i(glGetUniformLocation(program_id, "TextureImage3"), 3);
+    glUniform1i(glGetUniformLocation(program_id, "TextureImage4"), 4);
     glUseProgram(0);
 }
 
@@ -1384,6 +1521,7 @@ void BuildTrianglesAndAddToVirtualScene(ObjModel* model)
         size_t last_index = indices.size() - 1;
 
         SceneObject theobject;
+        fprintf(stderr,(model->shapes[shape].name).c_str());
         theobject.name           = model->shapes[shape].name;
         theobject.first_index    = first_index; // Primeiro índice
         theobject.num_indices    = last_index - first_index + 1; // Número de indices
