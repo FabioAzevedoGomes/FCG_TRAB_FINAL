@@ -190,10 +190,18 @@ void main()
     }
     else if (object_id == DOOR)
     {
+        float minx = bbox_min.x;
+        float maxx = bbox_max.x;
+
+        float miny = bbox_min.y;
+        float maxy = bbox_max.y;
+
+        float minz = bbox_min.z;
+        float maxz = bbox_max.z;
 
         /*TODO Arrumar textura da porta*/
-        U = position_model.x/2;// - minx)/(maxx - minx);
-        V = position_model.z/2;// - minz)/(maxz - minz);
+        U = -(position_model.x - minx)/(maxx - minx);
+        V = -(position_model.z - minz)/(maxz - minz);
 
         //Computa a cor da textura neste ponto
         Kd = texture(TextureImage4, vec2(U,V)).rgb;

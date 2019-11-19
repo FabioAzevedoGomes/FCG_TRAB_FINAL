@@ -253,9 +253,11 @@ std::vector<struct ProjectileObject> g_ProjectilesOnPlay;
 
 /*Attack patterns dos inimigos*/
 #define ATK_EXPANDING_CIRCLE 0  /*Gera N bullets ao mesmo tempo em um circulo, com vetores velocidade perpendiculares ao círculo*/
-#define ATK_RANDOM_SPREAD    1
-#define ATK_DIRECTED_CONE    2 /*Gera N bullets lançadas em um cone de abertura theta com velocidade perpendicular ao centro*/
-#define ATK_EXPANDING_SPIRAL 3
+#define ATK_RANDOM_SPREAD    1  /*Gera N bullets em formação pseudo-aleatoria com vetores de velocidade em circulo*/
+#define ATK_DIRECTED_CONE    2  /*Gera N bullets lançadas em um cone de abertura theta com velocidade perpendicular ao centro*/
+#define ATK_EXPANDING_SPIRAL 3  /*Geran N bullets em formação espiral em torno do inimigo*/
+#define ATK_CLOSING_CIRCLE   4
+#define ATK_BREAKING_CIRCLE  5
 
 /*Um inimigo do jogo. Pode ser interpretado como uma source de bullets*/
 struct EnemyObject {
@@ -274,16 +276,22 @@ struct EnemyObject {
         attack_cycle = 0;   //Inicia no primeiro ciclo de ataques
         bezier_t = 0.5;     // Inicia no meio da curva
         movement_speed = 0.3;
+        health_points = 100;
 
         /*Definimos as attack patterns e vida total com base em qual inimigo é*/
         switch (enemyId) {
         case 0:
-            attack_patterns[0] =    ATK_EXPANDING_CIRCLE;
-            attack_patterns[1] =    ATK_RANDOM_SPREAD;
-            attack_patterns[2] =    ATK_DIRECTED_CONE;
-            health_points = 100.0;
+            attack_patterns[0] = ATK_EXPANDING_CIRCLE;
+            attack_patterns[1] = ATK_EXPANDING_SPIRAL;
+            attack_patterns[2] = ATK_DIRECTED_CONE;
+            break;
+        case 1:
+            attack_patterns[0] = ATK_DIRECTED_CONE
+            attack_patterns[1] = ATK_BREAKING_CIRCLE
+            attack_patterns[2] = ATK_RANDOM_SPREAD
             break;
         default:
+
             break;
         }
     }
@@ -294,6 +302,7 @@ struct EnemyObject {
         BulletObject bullet;
 
         //fprintf(stderr,"Bullet vector size: %d\n",g_BulletsOnPlay.size());
+        float initial_angle = rand()%360;
         float angle = rand();
         glm::vec4 vel = glm::vec4(20.0f,0.0f,0.0f,0.0f);
 
@@ -342,7 +351,50 @@ struct EnemyObject {
             }
             break;
         case ATK_EXPANDING_SPIRAL:
-            /*TODO*/
+            angle = 3.14*2/50;
+            for (int i = 0; i < 50; i++)
+            {
+                bullet = {g_BulletsOnPlay.size(),
+                                       glm::vec4(body->position_world.x,body->position_world.y,body->position_world.z,1.0f),
+                                       glm::vec4(1.0f,0.0f,0.0f,0.0f),
+                                       10.0f,
+                                       i/2,
+                                       Matrix_Rotate_Y(initial_angle + angle*i)*vel};
+
+                //fprintf(stderr,"Pushing bullet %d ...",i);
+                g_BulletsOnPlay.push_back(bullet);
+                //fprintf(stderr,"Pushed bullet\n");
+            }
+            break;
+        case ATK_CLOSING_CIRCLE:
+            for (int i = 0; i < 20; i++)
+            {
+                bullet = {g_BulletsOnPlay.size(),
+                                       character_position + Matrix_Rotate_Y(angle*i)*glm::vec4(30,0,0,0),
+                                       glm::vec4(1.0f,0.0f,0.0f,0.0f),
+                                       10.0f,
+                                       15,
+                                       Matrix_Rotate_Y(angle*i)*(-vel)};
+
+                //fprintf(stderr,"Pushing bullet %d ...",i);
+                g_BulletsOnPlay.push_back(bullet);
+                //fprintf(stderr,"Pushed bullet\n");
+            }
+            break;
+        case ATK_BREAKING_CIRCLE:
+            for (int i = 0; i < 20; i++)
+            {
+                bullet = {g_BulletsOnPlay.size(),
+                                       character_position + Matrix_Rotate_Y(angle*i)*glm::vec4(30,0,0,0),
+                                       glm::vec4(1.0f,0.0f,0.0f,0.0f),
+                                       10.0f,
+                                       15,
+                                       Matrix_Rotate_Y(angle*rand())*(-vel)};
+
+                //fprintf(stderr,"Pushing bullet %d ...",i);
+                g_BulletsOnPlay.push_back(bullet);
+                //fprintf(stderr,"Pushed bullet\n");
+            }
             break;
         default:
             //fprintf(stderr,"Invalid attack pattern\n");
@@ -468,7 +520,7 @@ int main(int argc, char* argv[])
     LoadShadersFromFiles();
 
     LoadTextureImage("../../data/textures/grass_texture.jpg");      // TextureImage0
-    LoadTextureImage("../../data/textures/background_texture.jpg"); //TextureImage1
+    LoadTextureImage("../../data/textures/background_test.jpg"); //TextureImage1
     LoadTextureImage("../../data/textures/wall.bpm");   // TextureImage2
     LoadTextureImage("../../data/textures/cow_texture.jpg"); //TextureImage3
     LoadTextureImage("../../data/textures/door_texture.jpg"); //TextureImage4
@@ -532,6 +584,8 @@ int main(int argc, char* argv[])
                                     INICIALIZAÇÃO DA ENGINE DE SOM
     ---------------------------------------------------------------------------------------------------------*/
 
+    /*
+
     irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
     irrklang::ISoundEngine* sfxEngine = irrklang::createIrrKlangDevice();
     if (!soundEngine || !sfxEngine)
@@ -541,6 +595,9 @@ int main(int argc, char* argv[])
     }
     sfxEngine->setSoundVolume(0.01);
     soundEngine->setSoundVolume(0.1);
+
+    */
+
     /*---------------------------------------------------------------------------------------------------------
                                             VARIÁVEIS DE TEMPO
     ---------------------------------------------------------------------------------------------------------*/
@@ -589,7 +646,7 @@ int main(int argc, char* argv[])
             "plane",
             glm::vec3(2.0f,5.0f,5.0f),
             glm::vec4(5.0f,3.0f,-2.0f,1.0f),
-            glm::vec3(3.14/2,0.0f,0.0f)
+            glm::vec3(-3.14/2,3.14,0.0f)
         };
         g_PlacedObjects.push_back(object);
 
@@ -599,7 +656,7 @@ int main(int argc, char* argv[])
             "plane",
             glm::vec3(2.0f,5.0f,5.0f),
             glm::vec4(-5.0f,3.0f,-2.0f,1.0f),
-            glm::vec3(3.14/2,0.0f,0.0f)
+            glm::vec3(-3.14/2,3.14,0.0f)
         };
         g_PlacedObjects.push_back(object);
 
@@ -766,7 +823,7 @@ int main(int argc, char* argv[])
                 {
                     //Executa o ataque de acordo com o cycle em que o inimigo se encontra
                     activeEnemy->attack(activeEnemy->attack_patterns[(int)(activeEnemy->attack_cycle/10)]);
-                    sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
+                    //sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
                     //Atualiza a contagem de tempo desde o ultimo ataque
                     last_enemy_attack_time = current_time;
                     activeEnemy->attack_cycle ++;
@@ -818,41 +875,49 @@ int main(int argc, char* argv[])
                     ctr++;
                     collided = false;
 
-                    //Bullets que saíram do ambiente são descartadas
-                    it->position_world = it->position_world + it->velocity*(float)(current_time-previous_time);
-                    if (norm(it->position_world - glm::vec4(0.0f,0.0f,0.0f,1.0f)) >= arena_size)
+                    //Se a bala não pode começar a se mover
+                    if (it->bullet_t  > 0)
                     {
-                        g_BulletsOnPlay.erase(it);
-                        collided = true;
+                        it->bullet_t--;
                     }
                     else
                     {
-                        for (std::vector<PlacedObject>::iterator obj_it = g_PlacedObjects.begin(); !collided && obj_it != g_PlacedObjects.end(); obj_it++)
+                        //Bullets que saíram do ambiente são descartadas
+                        it->position_world = it->position_world + it->velocity*(float)(current_time-previous_time);
+                        if (norm(it->position_world - glm::vec4(0.0f,0.0f,0.0f,1.0f)) >= arena_size)
                         {
-                            if (hasPointBoxCollision(it->position_world,
-                                                     g_VirtualScene[obj_it->name],
-                                                     obj_it->position_world,
-                                                     obj_it->scale,
-                                                     obj_it->rotation))
+                            g_BulletsOnPlay.erase(it);
+                            collided = true;
+                        }
+                        else
+                        {
+                            for (std::vector<PlacedObject>::iterator obj_it = g_PlacedObjects.begin(); !collided && obj_it != g_PlacedObjects.end(); obj_it++)
                             {
-                                g_BulletsOnPlay.erase(it);
-                                collided  = true;
+                                if (hasPointBoxCollision(it->position_world,
+                                                         g_VirtualScene[obj_it->name],
+                                                         obj_it->position_world,
+                                                         obj_it->scale,
+                                                         obj_it->rotation))
+                                {
+                                    g_BulletsOnPlay.erase(it);
+                                    collided  = true;
+                                }
                             }
                         }
-                    }
 
-                    if (!collided && hasPointBoxCollision(it->position_world,
-                                                        mikuSceneObj,
-                                                        glm::vec4(character_position.x,character_position.y - 4.0f,character_position.z,1.0f),
-                                                        glm::vec3(1.0f,1.0f,1.0f),
-                                                        glm::vec3(0.0f, g_CameraTheta, 0.0f)
-                                                        ))
-                    {
-                        player_health = player_health - it->damage;
-                        g_BulletsOnPlay.erase(it);
-                        fprintf(stderr,"Vida do jogador: %.2f\n",player_health);
-                    }
+                        if (!collided && hasPointBoxCollision(it->position_world,
+                                                            mikuSceneObj,
+                                                            glm::vec4(character_position.x,character_position.y - 4.0f,character_position.z,1.0f),
+                                                            glm::vec3(1.0f,1.0f,1.0f),
+                                                            glm::vec3(0.0f, g_CameraTheta, 0.0f)
+                                                            ))
+                        {
+                            player_health = player_health - it->damage;
+                            g_BulletsOnPlay.erase(it);
+                            fprintf(stderr,"Vida do jogador: %.2f\n",player_health);
+                        }
 
+                    }
                 }
 
                 //Verificamos se o inimigo morreu
@@ -916,9 +981,10 @@ int main(int argc, char* argv[])
 
 
                     /*Voltamos ao menu*/
-                    soundEngine->stopAllSounds();
+                    //soundEngine->stopAllSounds();
                     current_level = 0;
                     character_position = glm::vec4(0.0f,3.0f,5.0f,1.0f);
+                    firstPersonView = true;
 
                 }
         }
@@ -994,7 +1060,7 @@ int main(int argc, char* argv[])
                 character_position = glm::vec4(20.0f,3.0f,20.0f,1.0f);
                 player_health = 100;
                 firstPersonView = false;
-                g_CameraDistance = 100;
+                g_CameraDistance = 40;
 
                 /*Inicializamos o inimigo COW*/
                 testEnemyObject->id = ENEMY;
@@ -1006,7 +1072,7 @@ int main(int argc, char* argv[])
                 activeEnemy->attack_cycle = -10;
 
                 /*Começamos a música*/
-                soundEngine->play2D("../../media/polkka.wav",true,false,false,irrklang::ESM_AUTO_DETECT,true);
+                //soundEngine->play2D("../../media/polkka.wav",true,false,false,irrklang::ESM_AUTO_DETECT,true);
 
             }
 
@@ -1060,6 +1126,7 @@ int main(int argc, char* argv[])
             glUniform1i(object_id_uniform, it->id);
             DrawVirtualObject(it->name.c_str());
         }
+
        /*-------------------------------------------
         MODELOS DO JOGO (INIMIGOS, BULLETS E PROJÉTEIS)
         -------------------------------------------*/
@@ -1151,11 +1218,12 @@ int main(int argc, char* argv[])
 
         previous_time = current_time;
     }
+
     /*---------------------------------------------------------------------------------------------------------
                                         FIM DO PROGRAMA
     ---------------------------------------------------------------------------------------------------------*/
     /*Encerramos a engine de som IrrKlang*/
-    soundEngine->drop();
+    //soundEngine->drop();
 
     // Finalizamos o uso dos recursos do sistema operacional
     glfwTerminate();
@@ -1850,8 +1918,8 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
     float dy = ypos - g_LastCursorPosY;
 
     // Atualizamos parâmetros da câmera com os deslocamentos
-    g_CameraTheta -= 0.02f*dx;
-    g_CameraPhi   += 0.02f*dy;
+    g_CameraTheta -= 0.01f*dx;
+    g_CameraPhi   += 0.01f*dy;
 
     // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
     float phimax = 3.141592f/2 - 0.1;
