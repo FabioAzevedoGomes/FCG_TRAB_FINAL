@@ -4,9 +4,7 @@
 //
 //    INF01047 Fundamentos de Computação Gráfica
 //               Prof. Eduardo Gastal
-//
-//                   LABORATÓRIO 4
-//
+
 
 #include <cmath>
 #include <cstdio>
@@ -55,6 +53,8 @@ struct ObjModel
     ObjModel(const char* filename, const char* basepath = NULL, bool triangulate = true)
     {
         printf("Carregando modelo \"%s\"... ", filename);
+
+        //tinyobj::MaterialFileReader mtlReader("../../data/textures/");
 
         std::string err;
         bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename, basepath, triangulate);
@@ -268,6 +268,7 @@ struct EnemyObject {
     PlacedObject* body;         /*Informações espaciais sobre este inimigo (modelo, posição, rotação, etc)*/
     float bezier_t;             /*Posiçao atual na curva de beziér em que este inimigo se move*/
     float movement_speed;       /*Velocidade com a qual o inimigo se move na curva*/
+    int texture;
 
     /*Construtor TODO*/
     EnemyObject (int enemyId,PlacedObject* enemyBody) {
@@ -278,17 +279,19 @@ struct EnemyObject {
         movement_speed = 0.3;
         health_points = 100;
 
-        /*Definimos as attack patterns e vida total com base em qual inimigo é*/
+        /*Definimos as attack patterns e textura com base em qual inimigo é*/
         switch (enemyId) {
-        case 0:
+        case 0: // Vaca
             attack_patterns[0] = ATK_EXPANDING_CIRCLE;
             attack_patterns[1] = ATK_EXPANDING_SPIRAL;
             attack_patterns[2] = ATK_DIRECTED_CONE;
+            texture = 6;
             break;
-        case 1:
-            attack_patterns[0] = ATK_DIRECTED_CONE
-            attack_patterns[1] = ATK_BREAKING_CIRCLE
-            attack_patterns[2] = ATK_RANDOM_SPREAD
+        case 1: // Rin
+            attack_patterns[0] = ATK_DIRECTED_CONE;
+            attack_patterns[1] = ATK_BREAKING_CIRCLE;
+            attack_patterns[2] = ATK_RANDOM_SPREAD;
+            texture = 12;
             break;
         default:
 
@@ -338,10 +341,11 @@ struct EnemyObject {
             angle = 3.14/4;
             for (int i=0; i < 50; i++)
             {
-                vel = normalize(character_position - body->position_world);
+                glm::vec4 direction = normalize(character_position - body->position_world);
+                vel = normalize(glm::vec4(direction.x,0.0f,direction.z,0.0f));
                 vel = vel*Matrix_Scale(30.0f,30.0f,30.0f);
                 bullet = {g_BulletsOnPlay.size(),
-                                        glm::vec4(body->position_world.x,body->position_world.y,body->position_world.z,0.0f),
+                                        glm::vec4(body->position_world.x,body->position_world.y + 2,body->position_world.z,0.0f),
                                         glm::vec4(1.0f,1.0f,1.0f,0.0f),
                                         10.0f,
                                         0.0f,
@@ -520,14 +524,17 @@ int main(int argc, char* argv[])
     LoadShadersFromFiles();
 
     LoadTextureImage("../../data/textures/grass_texture.jpg");      // TextureImage0
-    LoadTextureImage("../../data/textures/background_test.jpg"); //TextureImage1
+    LoadTextureImage("../../data/textures/menu_background.jpg"); //TextureImage1
     LoadTextureImage("../../data/textures/wall.bpm");   // TextureImage2
     LoadTextureImage("../../data/textures/cow_texture.jpg"); //TextureImage3
     LoadTextureImage("../../data/textures/door_texture.jpg"); //TextureImage4
+    LoadTextureImage("../../data/textures/show_background.jpg"); //TextureImage 5
+    LoadTextureImage("../../data/textures/floor_texture.jpg"); //TextureImage6
+    LoadTextureImage("../../data/textures/Albedo.jpg");  //TextureImage7
 
-    ObjModel backgroundmodel("../../data/sphere.obj");
-    ComputeNormals(&backgroundmodel);
-    BuildTrianglesAndAddToVirtualScene(&backgroundmodel);
+    ObjModel menubackgroundmodel("../../data/sphere.obj");
+    ComputeNormals(&menubackgroundmodel);
+    BuildTrianglesAndAddToVirtualScene(&menubackgroundmodel);
 
     ObjModel bunnymodel("../../data/bunny.obj");
     ComputeNormals(&bunnymodel);
@@ -552,6 +559,10 @@ int main(int argc, char* argv[])
     ObjModel medalmodel("../../data/medal.obj");
     ComputeNormals(&medalmodel);
     BuildTrianglesAndAddToVirtualScene(&medalmodel);
+
+    ObjModel shinobumodel("../../data/shinobu.obj");
+    ComputeNormals(&shinobumodel);
+    BuildTrianglesAndAddToVirtualScene(&shinobumodel);
 
     if ( argc > 1 )
     {
@@ -619,20 +630,24 @@ int main(int argc, char* argv[])
     /*---------------------------------------------------------------------------------------------------------
                                             INICIALIZANDO OBJETOS FIXOS NA CENA
     ---------------------------------------------------------------------------------------------------------*/
-        #define BACKGROUND 0
-        #define BUNNY      1
-        #define FLOOR      2
-        #define MIKU       3
-        #define BULLET     4
-        #define WALL       5
-        #define ENEMY      6
-        #define PROJECTILE 7
-        #define MEDAL      8
-        #define DOOR       9
+
+        #define MENU_BACKGROUND  0
+        #define BUNNY            1
+        #define GRASS_FLOOR      2
+        #define MIKU             3
+        #define BULLET           4
+        #define WALL             5
+        #define ENEMY_COW        6
+        #define PROJECTILE       7
+        #define MEDAL            8
+        #define DOOR             9
+        #define SHOW_BACKGROUND 10
+        #define SHOW_FLOOR      11
+        #define ENEMY_SHINOBU   12
 
         /*Menu inicial*/
         PlacedObject object = {
-            FLOOR,
+            GRASS_FLOOR,
             "plane",
             glm::vec3(20.0f,1.0f,20.0f),
             glm::vec4(0.0f,-1.0f,0.0f,1.0f),
@@ -669,7 +684,7 @@ int main(int argc, char* argv[])
 
     /*Inicializamos um inimigo de placeholder*/
     PlacedObject* testEnemyObject = new PlacedObject();
-    testEnemyObject->id = ENEMY;
+    testEnemyObject->id = ENEMY_COW;
     testEnemyObject->name = "placeholder";
     testEnemyObject->position_world = glm::vec4(0.0,0.0,0.0,0.0);
     testEnemyObject->scale = glm::vec3(1.0f,1.0f,1.0f);
@@ -931,7 +946,7 @@ int main(int argc, char* argv[])
             //Se o inimigo está morto esperamos o usuário coletar a medalha e o colocamos devolta no menu
             else
             {
-                if (hasBoxBoxCollision( g_VirtualScene["19320_5_small_stars_arranged_in_a_circle_v1"],
+                if (hasBoxBoxCollision( g_VirtualScene["medal"],
                                   glm::vec4(0.0f,3.0f,0.0f,1.0f),
                                   glm::vec3(1.0f,1.0f,1.0f),
                                   glm::vec3(-3.14/2,0.0f,0.0f),
@@ -951,7 +966,7 @@ int main(int argc, char* argv[])
 
                     /*Recarregamos os objetos do menu principal*/
                     PlacedObject object = {
-                        FLOOR,
+                        GRASS_FLOOR,
                         "plane",
                         glm::vec3(20.0f,1.0f,20.0f),
                         glm::vec4(0.0f,-1.0f,0.0f,1.0f),
@@ -1014,7 +1029,7 @@ int main(int argc, char* argv[])
 
                 //Repopulamos o vetor com os objetos da nova cena
                 PlacedObject object = {
-                    FLOOR,
+                    GRASS_FLOOR,
                     "plane",
                     glm::vec3(arena_size,1.0f,arena_size),
                     glm::vec4(0.0f,-1.0f,0.0f,1.0f),
@@ -1063,7 +1078,7 @@ int main(int argc, char* argv[])
                 g_CameraDistance = 40;
 
                 /*Inicializamos o inimigo COW*/
-                testEnemyObject->id = ENEMY;
+                testEnemyObject->id = ENEMY_COW;
                 testEnemyObject->name = "cow";
                 testEnemyObject->position_world = glm::vec4(-5.0,2.0,-5.0,1.0);
                 testEnemyObject->scale = glm::vec3(5.0f,5.0f,5.0f);
@@ -1088,8 +1103,36 @@ int main(int argc, char* argv[])
                                   glm::vec3(0.0f, g_CameraTheta, 0.0f))
                     )
             {
-                fprintf(stderr,"porta2");
-                /*TODO*/
+                //Limpamos os objetos colocados
+                g_PlacedObjects.clear();
+
+                //Repopulamos o vetor com os objetos da nova cena
+                PlacedObject object = {
+                    SHOW_FLOOR,
+                    "plane",
+                    glm::vec3(arena_size,1.0f,arena_size),
+                    glm::vec4(0.0f,-1.0f,0.0f,1.0f),
+                    glm::vec3(0.0f,0.0f,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+
+                /*Atualizamos o nivel atual, status do inimigo, posição do personagem, vida e câmera*/
+                current_level = 2;
+                enemy_alive = true;
+                character_position = glm::vec4(20.0f,3.0f,20.0f,1.0f);
+                player_health = 100;
+                firstPersonView = false;
+                g_CameraDistance = 40;
+
+                /*Inicializamos o inimigo COW*/
+                testEnemyObject->id = ENEMY_SHINOBU;
+                testEnemyObject->name = "Main_pose";
+                testEnemyObject->position_world = glm::vec4(-5.0,-1.0,-5.0,1.0);
+                testEnemyObject->scale = glm::vec3(1.0f,1.0f,1.0f);
+                testEnemyObject->rotation = glm::vec3(0.0f,0.0f,0.0f);
+                activeEnemy = new EnemyObject(1,testEnemyObject);
+                activeEnemy->attack_cycle = -10;
+
             }
         }
 
@@ -1140,7 +1183,7 @@ int main(int argc, char* argv[])
                         * Matrix_Rotate_Y(activeEnemy->body->rotation.y)
                         * Matrix_Rotate_X(activeEnemy->body->rotation.z);
                 glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
-                glUniform1i(object_id_uniform, ENEMY);
+                glUniform1i(object_id_uniform, activeEnemy->texture);
                 DrawVirtualObject(activeEnemy->body->name.c_str());
 
                 //Bullets
@@ -1176,17 +1219,21 @@ int main(int argc, char* argv[])
                         * Matrix_Rotate_X(2*-3.14/3);
                 glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
                 glUniform1i(object_id_uniform, MEDAL);
-                DrawVirtualObject("19320_5_small_stars_arranged_in_a_circle_v1");
+                DrawVirtualObject("medal");
             }
         }
 
        /*-------------------------------------------
                  MODELO DA SKYBOX (SPHERE)
         -------------------------------------------*/
+
+        int bg = MENU_BACKGROUND;
+        if (current_level == 2) bg = SHOW_BACKGROUND;
+
         model = Matrix_Translate(camera_position_c.x,camera_position_c.y,camera_position_c.z)
                 * Matrix_Scale(farplane,farplane,farplane);
         glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1i(object_id_uniform, BACKGROUND);
+        glUniform1i(object_id_uniform, bg);
         DrawVirtualObject("sphere");
 
         /*---------------------------------------------------------------------------------------------------------
@@ -1438,6 +1485,10 @@ void LoadShadersFromFiles()
     glUniform1i(glGetUniformLocation(program_id, "TextureImage2"), 2);
     glUniform1i(glGetUniformLocation(program_id, "TextureImage3"), 3);
     glUniform1i(glGetUniformLocation(program_id, "TextureImage4"), 4);
+    glUniform1i(glGetUniformLocation(program_id, "TextureImage5"), 5);
+    glUniform1i(glGetUniformLocation(program_id, "TextureImage6"), 6);
+    glUniform1i(glGetUniformLocation(program_id, "TextureImage7"), 7);
+
     glUseProgram(0);
 }
 
@@ -1604,7 +1655,7 @@ void BuildTrianglesAndAddToVirtualScene(ObjModel* model)
         size_t last_index = indices.size() - 1;
 
         SceneObject theobject;
-        fprintf(stderr,(model->shapes[shape].name).c_str());
+        fprintf(stderr,"%s \n",(model->shapes[shape].name).c_str());
         theobject.name           = model->shapes[shape].name;
         theobject.first_index    = first_index; // Primeiro índice
         theobject.num_indices    = last_index - first_index + 1; // Número de indices

@@ -16,16 +16,19 @@ uniform mat4 view;
 uniform mat4 projection;
 
 // Identificador que define qual objeto está sendo desenhado no momento
-#define BACKGROUND  0
-#define BUNNY       1
-#define FLOOR       2
-#define MIKU        3
-#define BULLET      4
-#define WALL        5
-#define ENEMY       6
-#define PROJECTILE  7
-#define MEDAL       8
-#define DOOR        9
+#define MENU_BACKGROUND  0
+#define BUNNY            1
+#define GRASS_FLOOR      2
+#define MIKU             3
+#define BULLET           4
+#define WALL             5
+#define ENEMY_COW        6
+#define PROJECTILE       7
+#define MEDAL            8
+#define DOOR             9
+#define SHOW_BACKGROUND 10
+#define SHOW_FLOOR      11
+#define ENEMY_SHINOBU   12
 
 uniform int object_id;
 
@@ -35,10 +38,13 @@ uniform vec4 bbox_max;
 
 //Textures
 uniform sampler2D TextureImage0;
-uniform sampler2D TextureImage1;
+uniform sampler2D TextureImage1; // Fundo menu
 uniform sampler2D TextureImage2;
 uniform sampler2D TextureImage3;
 uniform sampler2D TextureImage4;
+uniform sampler2D TextureImage5; // Fundo show
+uniform sampler2D TextureImage6; // Chão do show
+uniform sampler2D TextureImage7; // shinobu
 
 // O valor de saída ("out") de um Fragment Shader é a cor final do fragmento.
 out vec3 color;
@@ -85,7 +91,7 @@ void main()
     float U;    //Coordenadas de textura u e v
     float V;
 
-    if ( object_id == BACKGROUND )
+    if ( object_id == MENU_BACKGROUND )
     {
 
         vec4 p_lin = camera_position + ((position_world - camera_position)/length(position_world - camera_position));
@@ -114,7 +120,7 @@ void main()
         Ka = vec3(0.04,0.2,0.4);
         q = 32.0;
     }
-    else if ( object_id == FLOOR )
+    else if ( object_id == GRASS_FLOOR )
     {
 
         U = position_model.x;// - minx)/(maxx - minx);
@@ -127,13 +133,15 @@ void main()
         Ka = vec3(0.0,0.0,0.0);
         q = 20.0;
     }
-    else if ( object_id == MIKU) {
+    else if ( object_id == MIKU)
+    {
         Kd = vec3(0.1,0.4,0.6);
         Ks = vec3(0.8,0.8,0.8);
         Ka = vec3(0.05,0.2,0.3);
         q = 30.0;
     }
-    else if (object_id == WALL) {
+    else if ( object_id == WALL)
+    {
 
         U = position_model.x;// - minx)/(maxx - minx);
         V = position_model.y;// - minz)/(maxz - minz);
@@ -145,7 +153,8 @@ void main()
         Ka = vec3(0.05,0.2,0.3);
         q = 30.0;
     }
-    else if (object_id == ENEMY) {
+    else if ( object_id == ENEMY_COW)
+    {
 
         vec4 bbox_mid = (bbox_max + bbox_min) / 2;
 
@@ -165,7 +174,8 @@ void main()
 
 
     }
-    else if (object_id == BULLET) {
+    else if ( object_id == BULLET)
+    {
 
         Kd = vec3(1.0f,0.0f,0.0f);
         Ks = vec3(0.0f,0.0f,0.0f);
@@ -173,7 +183,7 @@ void main()
         q = 1.0;
 
     }
-    else if (object_id == PROJECTILE)
+    else if ( object_id == PROJECTILE)
     {
         /*TODO*/
         Kd = vec3(0.0,0.0,0.0);
@@ -181,20 +191,17 @@ void main()
         Ka = vec3(0.0,0.0,0.0);
         q = 1.0;
     }
-    else if (object_id == MEDAL)
+    else if ( object_id == MEDAL)
     {
         Kd = vec3(0.8431f,0.7176f,0.25f);
         Ks = vec3(0.0,0.0,0.0);
         Ka = vec3(0.0,0.0,0.0);
         q = 10.0;
     }
-    else if (object_id == DOOR)
+    else if ( object_id == DOOR)
     {
         float minx = bbox_min.x;
         float maxx = bbox_max.x;
-
-        float miny = bbox_min.y;
-        float maxy = bbox_max.y;
 
         float minz = bbox_min.z;
         float maxz = bbox_max.z;
@@ -206,8 +213,58 @@ void main()
         //Computa a cor da textura neste ponto
         Kd = texture(TextureImage4, vec2(U,V)).rgb;
         Ka = vec3(1.0,1.0,1.0);
-        q = 10.0;
+        Ks = vec3(1.0,1.0,1.0);
+        q = 20.0;
 
+    }
+    else if ( object_id == SHOW_BACKGROUND)
+    {
+        vec4 p_lin = camera_position + ((position_world - camera_position)/length(position_world - camera_position));
+        vec4 coord_vector = (p_lin - camera_position);
+        float theta = atan(coord_vector.x,coord_vector.z);
+        float phi = asin(coord_vector.y);
+
+        U = (theta + M_PI)/(2*M_PI);
+        V = (phi + M_PI_2)/M_PI;
+
+        Kd = texture(TextureImage5, vec2(U,V)).rgb;
+
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 1.0;
+
+        //nvertemos a normal da esfera, para que ela esteja "virada para dentro"
+        n = -n;
+    }
+    else if ( object_id == SHOW_FLOOR)
+    {
+        U = position_model.x;// - minx)/(maxx - minx);
+        V = position_model.z;// - minz)/(maxz - minz);
+
+        //Computa a cor da textura neste ponto
+        Kd = texture(TextureImage6, vec2(U,V)).rgb;
+
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 1.0;
+    }
+    else if ( object_id == ENEMY_SHINOBU)
+    {
+        vec4 bbox_mid = (bbox_max + bbox_min) / 2;
+
+        vec4 p_lin = bbox_mid + ((position_model - bbox_mid)/length(position_model - bbox_mid));
+        vec4 coord_vector = (p_lin - bbox_mid);
+        float theta = atan(coord_vector.x,coord_vector.z);
+        float phi = asin(coord_vector.y);
+
+        U = -(theta + M_PI)/(2*M_PI);
+        V = -(phi + M_PI_2)/M_PI;
+
+        Kd = texture(TextureImage7, vec2(U,V)).rgb;
+
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 20.0;
     }
     else // Objeto desconhecido = preto
     {
@@ -221,7 +278,7 @@ void main()
     vec3 I = vec3(1.0,1.0,1.0); // PREENCH AQUI o espectro da fonte de luz
 
     // Espectro da luz ambiente
-    vec3 Ia = vec3(1.0,1.0,1.0); // PREENCHA AQUI o espectro da luz ambiente
+    vec3 Ia = vec3(0.5,0.5,0.5); // PREENCHA AQUI o espectro da luz ambiente
 
     // Termo difuso utilizando a lei dos cossenos de Lambert
     vec3 lambert_diffuse_term = Kd*I*max(0,dot(n,l));//vec3(0.0,0.0,0.0); // PREENCHA AQUI o termo difuso de Lambert

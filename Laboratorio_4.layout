@@ -14,20 +14,29 @@
 	</File>
 	<File name="src/main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="41755" topLine="613" />
+			<Cursor1 position="55459" topLine="618" />
 		</Cursor>
 		<Folding>
-			<Collapse line="242" />
+			<Collapse line="119" />
+			<Collapse line="130" />
+			<Collapse line="240" />
 			<Collapse line="260" />
 			<Collapse line="270" />
-			<Collapse line="291" />
-			<Collapse line="354" />
-			<Collapse line="424" />
-			<Collapse line="727" />
-			<Collapse line="732" />
-			<Collapse line="766" />
-			<Collapse line="927" />
-			<Collapse line="1050" />
+			<Collapse line="279" />
+			<Collapse line="297" />
+			<Collapse line="306" />
+			<Collapse line="404" />
+			<Collapse line="782" />
+			<Collapse line="997" />
+			<Collapse line="1101" />
+			<Collapse line="1132" />
+			<Collapse line="1243" />
+			<Collapse line="1286" />
+			<Collapse line="1311" />
+			<Collapse line="1364" />
+			<Collapse line="1398" />
+			<Collapse line="1450" />
+			<Collapse line="1471" />
 		</Folding>
 	</File>
 	<File name="include/matrices.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -42,7 +51,20 @@
 	</File>
 	<File name="src/shader_fragment.glsl" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5858" topLine="178" />
+			<Cursor1 position="7148" topLine="103" />
 		</Cursor>
+		<Folding>
+			<Collapse line="90" />
+			<Collapse line="110" />
+			<Collapse line="119" />
+			<Collapse line="132" />
+			<Collapse line="139" />
+			<Collapse line="152" />
+			<Collapse line="173" />
+			<Collapse line="182" />
+			<Collapse line="190" />
+			<Collapse line="197" />
+			<Collapse line="218" />
+		</Folding>
 	</File>
 </CodeBlocks_layout_file>
