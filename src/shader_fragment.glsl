@@ -207,8 +207,8 @@ void main()
         float maxz = bbox_max.z;
 
         /*TODO Arrumar textura da porta*/
-        U = -(position_model.x - minx)/(maxx - minx);
-        V = -(position_model.z - minz)/(maxz - minz);
+        U = (position_model.x - minx)/(maxx - minx);
+        V = (position_model.z - minz)/(maxz - minz);
 
         //Computa a cor da textura neste ponto
         Kd = texture(TextureImage4, vec2(U,V)).rgb;
@@ -250,17 +250,8 @@ void main()
     }
     else if ( object_id == ENEMY_SHINOBU)
     {
-        vec4 bbox_mid = (bbox_max + bbox_min) / 2;
 
-        vec4 p_lin = bbox_mid + ((position_model - bbox_mid)/length(position_model - bbox_mid));
-        vec4 coord_vector = (p_lin - bbox_mid);
-        float theta = atan(coord_vector.x,coord_vector.z);
-        float phi = asin(coord_vector.y);
-
-        U = -(theta + M_PI)/(2*M_PI);
-        V = -(phi + M_PI_2)/M_PI;
-
-        Kd = texture(TextureImage7, vec2(U,V)).rgb;
+        Kd = texture(TextureImage7, texcoords).rgb;
 
         Ks = vec3(0.0,0.0,0.0);
         Ka = vec3(0.0,0.0,0.0);

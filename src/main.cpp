@@ -167,10 +167,6 @@ float g_AngleX = 0.0f;
 float g_AngleY = 0.0f;
 float g_AngleZ = 0.0f;
 
-//Posição inicial do personagem
-glm::vec4 character_position(10.0f,3.0f,10.0f,1.0f);
-//Posição do frame anterior do personagem
-glm::vec4 last_character_position(10.0f,3.0f,10.0f,1.0f);
 
 //Velocidade com a qual a câmera se move na cena
 float camera_speed = 100;
@@ -225,6 +221,60 @@ GLuint g_NumLoadedTextures = 0;
 /*---------------------------------------------------------------------------------------------------------
                             ESTRUTURAS REFERENTES À LÓGICA DO JOGO
 ---------------------------------------------------------------------------------------------------------*/
+
+/* Representa o personagem do jogador*/
+struct Player {
+    float health_points;
+    glm::vec4 last_position_world;
+    glm::vec4 position_world;
+    glm::vec4 velocity;
+    float movement_speed;
+
+    Player()
+    {
+        health_points       = 100.0;
+        last_position_world = glm::vec4(0.0f,3.0f,0.0f,1.0f);
+        position_world      = glm::vec4(0.0f,3.0f,0.0f,1.0f);
+        velocity            = glm::vec4(0.0f,0.0f,0.0f,0.0f);
+        movement_speed = 100;
+    }
+
+    void compute_movement(double delta_t)
+    {
+        last_position_world = position_world;
+        position_world = position_world + velocity*(float)delta_t*(float)movement_speed;
+    }
+
+    void reset_stats()
+    {
+        health_points       = 100.0;
+        last_position_world = glm::vec4(0.0f,3.0f,0.0f,1.0f);
+        position_world      = glm::vec4(0.0f,3.0f,0.0f,1.0f);
+        velocity            = glm::vec4(0.0f,0.0f,0.0f,0.0f);
+    }
+
+    void process_movement_input(glm::vec4 camera_view_vector)
+    {
+        glm::vec4 view_projection = (camera_view_vector*glm::vec4(1.0f,0.0f,1.0,0.0f));
+        view_projection = view_projection/norm(view_projection);
+
+        glm::vec4 side_vector = crossproduct(glm::vec4(0.0f,1.0f,0.0f,0.0f),-view_projection);
+        side_vector = side_vector/norm(side_vector);
+
+        velocity = glm::vec4(0.0f,0.0f,0.0f,0.0f);
+
+        if (pressed[GLFW_KEY_W]) velocity += view_projection;
+        if (pressed[GLFW_KEY_A]) velocity -= side_vector;
+        if (pressed[GLFW_KEY_S]) velocity -= view_projection;
+        if (pressed[GLFW_KEY_D]) velocity += side_vector;
+
+        velocity = velocity != glm::vec4(0.0,0.0,0.0,0.0) ? velocity / norm(velocity) : velocity;
+    }
+
+};
+
+// Personagem do jogador
+Player* player = new Player();
 
 /* Uma bullet do jogo. Representa um objeto que danifica o jogador caso se encostem */
 struct BulletObject {
@@ -300,7 +350,7 @@ struct EnemyObject {
     }
 
     /*Executa o ataque descrito por pattern*/
-    void attack (int pattern) {
+    void attack (int pattern,Player* player) {
 
         BulletObject bullet;
 
@@ -341,7 +391,7 @@ struct EnemyObject {
             angle = 3.14/4;
             for (int i=0; i < 50; i++)
             {
-                glm::vec4 direction = normalize(character_position - body->position_world);
+                glm::vec4 direction = normalize(player->position_world - body->position_world);
                 vel = normalize(glm::vec4(direction.x,0.0f,direction.z,0.0f));
                 vel = vel*Matrix_Scale(30.0f,30.0f,30.0f);
                 bullet = {g_BulletsOnPlay.size(),
@@ -374,7 +424,7 @@ struct EnemyObject {
             for (int i = 0; i < 20; i++)
             {
                 bullet = {g_BulletsOnPlay.size(),
-                                       character_position + Matrix_Rotate_Y(angle*i)*glm::vec4(30,0,0,0),
+                                       player->position_world + Matrix_Rotate_Y(angle*i)*glm::vec4(30,0,0,0),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
                                        15,
@@ -389,7 +439,7 @@ struct EnemyObject {
             for (int i = 0; i < 20; i++)
             {
                 bullet = {g_BulletsOnPlay.size(),
-                                       character_position + Matrix_Rotate_Y(angle*i)*glm::vec4(30,0,0,0),
+                                       player->position_world + Matrix_Rotate_Y(angle*i)*glm::vec4(30,0,0,0),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
                                        15,
@@ -440,6 +490,7 @@ struct EnemyObject {
 
             //fprintf(stderr,"\nDONE\n");
     }
+
 };
 
 
@@ -622,9 +673,8 @@ int main(int argc, char* argv[])
                                             VARIÁVEIS DE CONTROLE DO JOGO
     ---------------------------------------------------------------------------------------------------------*/
 
-    float player_health = 100;
     bool enemy_alive = false;
-    int current_level = 0;  /*0: Menu, 1: Vaca, 2: ...*/
+    int current_level = 0;  /*0: Menu, 1: Vaca, 2: Shinobu, 3: ...*/
     bool beaten[3] = {false,false,false};    /*Níveis que o usuário venceu*/
 
     /*---------------------------------------------------------------------------------------------------------
@@ -728,17 +778,17 @@ int main(int argc, char* argv[])
         if (!firstPersonView)
         {
             float r = g_CameraDistance;
-            float y = r*sin(g_CameraPhi)                    + character_position.y;
-            float z = r*cos(g_CameraPhi)*cos(g_CameraTheta) + character_position.z;
-            float x = r*cos(g_CameraPhi)*sin(g_CameraTheta) + character_position.x;
+            float y = r*sin(g_CameraPhi)                    + player->position_world.y;
+            float z = r*cos(g_CameraPhi)*cos(g_CameraTheta) + player->position_world.z;
+            float x = r*cos(g_CameraPhi)*sin(g_CameraTheta) + player->position_world.x;
             // Abaixo definimos as varáveis que efetivamente definem a câmera virtual.
             camera_position_c  = glm::vec4(x,y,z,1.0f); // Ponto "c", centro da câmera
-            camera_lookat_l = character_position;//glm::vec4(0.0f,0.0f,0.0f,1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
+            camera_lookat_l = player->position_world;//glm::vec4(0.0f,0.0f,0.0f,1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
             camera_view_vector = camera_lookat_l - camera_position_c; // Vetor "view", sentido para onde a câmera está virada
         }
         else
         {
-            camera_position_c  = character_position;
+            camera_position_c  = player->position_world;
             camera_view_vector = (Matrix_Rotate_Y(g_CameraTheta)*Matrix_Rotate_X(-g_CameraPhi))*glm::vec4(0.0f,0.0f,-1.0f,0.0f);
         }
 
@@ -778,14 +828,13 @@ int main(int argc, char* argv[])
                               it->scale,
                               it->rotation,
                               mikuSceneObj,
-                              character_position,
+                              player->position_world,
                               glm::vec3(1.0f,1.0f,1.0f),
                               glm::vec3(0.0f, g_CameraTheta, g_CameraPhi))
                 ) {
-                character_position = last_character_position;
+                player->position_world = player->last_position_world;
             }
         }
-
         current_time = glfwGetTime();
         /*---------------------------------------------------------------------------------------------------------
                                                     LÓGICA DO JOGO
@@ -807,11 +856,12 @@ int main(int argc, char* argv[])
                     {
 
                         float projectile_speed = 20.0;
+
                         //Cria um novo projétil
                         PlacedObject* new_proj_obj = new PlacedObject();
                         new_proj_obj->id = PROJECTILE;
                         new_proj_obj->name = "miku";
-                        new_proj_obj->position_world = character_position;
+                        new_proj_obj->position_world = player->position_world;
                         new_proj_obj->rotation = glm::vec4(0.0f,0.0f,0.0f,1.0f);
                         new_proj_obj->scale = glm::vec3(0.5f,0.5f,0.5f);
 
@@ -837,7 +887,7 @@ int main(int argc, char* argv[])
                 if (current_time - last_enemy_attack_time >= 0.8)
                 {
                     //Executa o ataque de acordo com o cycle em que o inimigo se encontra
-                    activeEnemy->attack(activeEnemy->attack_patterns[(int)(activeEnemy->attack_cycle/10)]);
+                    activeEnemy->attack(activeEnemy->attack_patterns[(int)(activeEnemy->attack_cycle/10)],player);
                     //sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
                     //Atualiza a contagem de tempo desde o ultimo ataque
                     last_enemy_attack_time = current_time;
@@ -922,14 +972,14 @@ int main(int argc, char* argv[])
 
                         if (!collided && hasPointBoxCollision(it->position_world,
                                                             mikuSceneObj,
-                                                            glm::vec4(character_position.x,character_position.y - 4.0f,character_position.z,1.0f),
+                                                            glm::vec4(player->position_world.x,player->position_world.y - 4.0f,player->position_world.z,1.0f),
                                                             glm::vec3(1.0f,1.0f,1.0f),
                                                             glm::vec3(0.0f, g_CameraTheta, 0.0f)
                                                             ))
                         {
-                            player_health = player_health - it->damage;
+                            player->health_points = player->health_points - it->damage;
                             g_BulletsOnPlay.erase(it);
-                            fprintf(stderr,"Vida do jogador: %.2f\n",player_health);
+                            fprintf(stderr,"Vida do jogador: %.2f\n",player->health_points);
                         }
 
                     }
@@ -951,7 +1001,7 @@ int main(int argc, char* argv[])
                                   glm::vec3(1.0f,1.0f,1.0f),
                                   glm::vec3(-3.14/2,0.0f,0.0f),
                                   mikuSceneObj,
-                                  character_position,
+                                  player->position_world,
                                   glm::vec3(1.0f,1.0f,1.0f),
                                   glm::vec3(0.0f, g_CameraTheta, g_CameraPhi))
                     )
@@ -980,7 +1030,7 @@ int main(int argc, char* argv[])
                         "plane",
                         glm::vec3(2.0f,5.0f,5.0f),
                         glm::vec4(5.0f,3.0f,-2.0f,1.0f),
-                        glm::vec3(3.14/2,0.0f,0.0f)
+                        glm::vec3(-3.14/2,3.14,0.0f)
                     };
                     g_PlacedObjects.push_back(object);
 
@@ -990,7 +1040,7 @@ int main(int argc, char* argv[])
                         "plane",
                         glm::vec3(2.0f,5.0f,5.0f),
                         glm::vec4(-5.0f,3.0f,-2.0f,1.0f),
-                        glm::vec3(3.14/2,0.0f,0.0f)
+                        glm::vec3(-3.14/2,3.14,0.0f)
                     };
                     g_PlacedObjects.push_back(object);
 
@@ -998,7 +1048,7 @@ int main(int argc, char* argv[])
                     /*Voltamos ao menu*/
                     //soundEngine->stopAllSounds();
                     current_level = 0;
-                    character_position = glm::vec4(0.0f,3.0f,5.0f,1.0f);
+                    player->position_world = glm::vec4(0.0f,3.0f,5.0f,1.0f);
                     firstPersonView = true;
 
                 }
@@ -1019,7 +1069,7 @@ int main(int argc, char* argv[])
                                   glm::vec3(2.0f,5.0f,2.0f),
                                   glm::vec3(3.14/2,0.0f,0.0f),
                                   mikuSceneObj,
-                                  glm::vec4(character_position.x,character_position.y -3.0f,character_position.z,1.0f),
+                                  glm::vec4(player->position_world.x,player->position_world.y -3.0f,player->position_world.z,1.0f),
                                   glm::vec3(1.0f,1.0f,1.0f),
                                   glm::vec3(0.0f, g_CameraTheta, 0.0f))
                     )
@@ -1069,11 +1119,10 @@ int main(int argc, char* argv[])
                 };
                 g_PlacedObjects.push_back(object);
 
-                /*Atualizamos o nivel atual, status do inimigo, posição do personagem, vida e câmera*/
+                /*Atualizamos o nivel atual, status do inimigo, status do jogador e câmera*/
                 current_level = 1;
                 enemy_alive = true;
-                character_position = glm::vec4(20.0f,3.0f,20.0f,1.0f);
-                player_health = 100;
+                player->reset_stats();
                 firstPersonView = false;
                 g_CameraDistance = 40;
 
@@ -1083,6 +1132,7 @@ int main(int argc, char* argv[])
                 testEnemyObject->position_world = glm::vec4(-5.0,2.0,-5.0,1.0);
                 testEnemyObject->scale = glm::vec3(5.0f,5.0f,5.0f);
                 testEnemyObject->rotation = glm::vec3(0.0f,0.0f,0.0f);
+
                 activeEnemy = new EnemyObject(0,testEnemyObject);
                 activeEnemy->attack_cycle = -10;
 
@@ -1098,7 +1148,7 @@ int main(int argc, char* argv[])
                                   glm::vec3(2.0f,5.0f,2.0f),
                                   glm::vec3(3.14/2,0.0f,0.0f),
                                   mikuSceneObj,
-                                  glm::vec4(character_position.x,character_position.y -3.0f,character_position.z,1.0f),
+                                  glm::vec4(player->position_world.x,player->position_world.y -3.0f,player->position_world.z,1.0f),
                                   glm::vec3(1.0f,1.0f,1.0f),
                                   glm::vec3(0.0f, g_CameraTheta, 0.0f))
                     )
@@ -1116,19 +1166,18 @@ int main(int argc, char* argv[])
                 };
                 g_PlacedObjects.push_back(object);
 
-                /*Atualizamos o nivel atual, status do inimigo, posição do personagem, vida e câmera*/
+                /*Atualizamos o nivel atual, status do inimigo, status do jogador e câmera*/
                 current_level = 2;
                 enemy_alive = true;
-                character_position = glm::vec4(20.0f,3.0f,20.0f,1.0f);
-                player_health = 100;
+                player->reset_stats();
                 firstPersonView = false;
                 g_CameraDistance = 40;
 
                 /*Inicializamos o inimigo COW*/
                 testEnemyObject->id = ENEMY_SHINOBU;
                 testEnemyObject->name = "Main_pose";
-                testEnemyObject->position_world = glm::vec4(-5.0,-1.0,-5.0,1.0);
-                testEnemyObject->scale = glm::vec3(1.0f,1.0f,1.0f);
+                testEnemyObject->position_world = glm::vec4(-5.0,-1.2,-5.0,1.0);
+                testEnemyObject->scale = glm::vec3(0.05f,0.05f,0.05f);
                 testEnemyObject->rotation = glm::vec3(0.0f,0.0f,0.0f);
                 activeEnemy = new EnemyObject(1,testEnemyObject);
                 activeEnemy->attack_cycle = -10;
@@ -1146,7 +1195,7 @@ int main(int argc, char* argv[])
             /*-------------------------------------------
                         PERSONAGEM DO USUÀRIO
             -------------------------------------------*/
-            model = Matrix_Translate(character_position.x,character_position.y - 4.0f,character_position.z)
+            model = Matrix_Translate(player->position_world.x,player->position_world.y - 4.0f,player->position_world.z)
                     *Matrix_Rotate_Y(g_CameraTheta)
                     *Matrix_Scale(-1.0f,1.0f,-1.0f);
             glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
@@ -1258,10 +1307,12 @@ int main(int argc, char* argv[])
         // pela biblioteca GLFW.
 
         //Atualizamos a referência da útlima posição onde o personagem estava
-        last_character_position = character_position;
+        //player->position_world = player->last_position_world;
 
         glfwPollEvents();
-        ProcessUserMovement(camera_view_vector,camera_up_vector,current_time - previous_time);
+
+        player->process_movement_input(camera_view_vector);
+        player->compute_movement(current_time - previous_time);
 
         previous_time = current_time;
     }
@@ -2116,33 +2167,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
     }
 }
 
-//Função que processa os comandos de movimentação do usuário
-void ProcessUserMovement(glm::vec4 camera_view_vector,glm::vec4 camera_up_vector,float delta_time)
-{
-    glm::vec4 view_projection = camera_view_vector*glm::vec4(1.0f,0.0f,1.0f,0.0f)/norm(camera_view_vector*glm::vec4(1.0f,0.0f,1.0f,0.0f));
-    glm::vec4 side_vector = crossproduct(camera_up_vector,-camera_view_vector)/norm(crossproduct(camera_up_vector,-camera_view_vector));
-    for(int i = 0; i < GLFW_KEY_MENU; i++)
-    {
-        if(!pressed[i])
-            continue;
-        switch(i)
-        {
-        case GLFW_KEY_W:
-            character_position = character_position + delta_time*camera_speed*view_projection;
-            break;
-        case GLFW_KEY_A:
-            character_position = character_position - delta_time*camera_speed*side_vector;
-            break;
-        case GLFW_KEY_S:
-            character_position = character_position - delta_time*camera_speed*view_projection;
-            break;
-        case GLFW_KEY_D:
-            character_position = character_position + delta_time*camera_speed*side_vector;
-            break;
-        }
-    }
 
-}
 
 // Definimos o callback para impressão de erros da GLFW no terminal
 void ErrorCallback(int error, const char* description)
