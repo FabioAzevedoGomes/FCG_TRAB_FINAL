@@ -623,9 +623,13 @@ int main(int argc, char* argv[])
     ComputeNormals(&shinobumodel);
     BuildTrianglesAndAddToVirtualScene(&shinobumodel);
 
-    ObjModel cubemodel("../../data/cube.obj");
-    ComputeNormals(&cubemodel);
-    BuildTrianglesAndAddToVirtualScene(&cubemodel);
+    ObjModel crossmodel("../../data/cross.obj");
+    ComputeNormals(&crossmodel);
+    BuildTrianglesAndAddToVirtualScene(&crossmodel);
+
+    ObjModel checkmodel("../../data/check.obj");
+    ComputeNormals(&checkmodel);
+    BuildTrianglesAndAddToVirtualScene(&checkmodel);
 
     if ( argc > 1 )
     {
@@ -689,6 +693,7 @@ int main(int argc, char* argv[])
     bool enemy_alive = false;
     int current_level = 0;  /*0: Menu, 1: Vaca, 2: Shinobu, 3: ...*/
     bool beaten[3] = {false,false,false};    /*Níveis que o usuário venceu*/
+    int damage_cooldown = 0; /*Intervalo de tempo entre ataques que o jogador pode levar*/
 
     /*---------------------------------------------------------------------------------------------------------
                                             INICIALIZANDO OBJETOS FIXOS NA CENA
@@ -732,18 +737,10 @@ int main(int argc, char* argv[])
         g_PlacedObjects.push_back(object);
         object = {
             CROSS_BAR,
-            "cube",
-            glm::vec3(5.0f,1.0f,1.0f),
-            glm::vec4(4.5f,7.0f,-2.0f,1.0f),
-            glm::vec3(0.0f,0.0f,0.0f)
-        };
-        g_PlacedObjects.push_back(object);
-        object = {
-            CROSS_BAR,
-            "cube",
-            glm::vec3(5.0f,1.0f,1.0f),
-            glm::vec4(5.5f,7.0f,-2.0f,1.0f),
-            glm::vec3(0.0f,0.0f,0.0f)
+            "cross",
+            glm::vec3(1.0f,1.0f,1.0f),
+            glm::vec4(5.0f,9.0f,-2.0f,1.0f),
+            glm::vec3(0.0f,3.14/2,0.0f)
         };
         g_PlacedObjects.push_back(object);
         //Porta 2
@@ -753,6 +750,15 @@ int main(int argc, char* argv[])
             glm::vec3(2.0f,5.0f,5.0f),
             glm::vec4(-5.0f,3.0f,-2.0f,1.0f),
             glm::vec3(-3.14/2,3.14,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+        //Status porta 2
+        object = {
+            CROSS_BAR,
+            "cross",
+            glm::vec3(1.0f,1.0f,1.0f),
+            glm::vec4(-5.0f,9.0f,-2.0f,1.0f),
+            glm::vec3(0.0f,3.14/2,0.0f)
         };
         g_PlacedObjects.push_back(object);
 
@@ -871,6 +877,9 @@ int main(int argc, char* argv[])
                                                     LÓGICA DO JOGO
         ---------------------------------------------------------------------------------------------------------*/
 
+        if (damage_cooldown != 0)
+            damage_cooldown--;
+
         /*-------------------------------------------
               PROCESSAMENTO DENTRO DE UM NIVEL
         -------------------------------------------*/
@@ -957,7 +966,7 @@ int main(int argc, char* argv[])
                         //Remove vida do inimigo e deleta o projetil
                         activeEnemy->health_points = activeEnemy->health_points - it->damage;
                         g_ProjectilesOnPlay.erase(it);
-                        fprintf(stderr,"Vida do inimigo: %.2f\n",activeEnemy->health_points);
+                        //fprintf(stderr,"Vida do inimigo: %.2f\n",activeEnemy->health_points);
                     }
                 }
 
@@ -1003,16 +1012,21 @@ int main(int argc, char* argv[])
 
                         //hasSphereBoxCollision
                         if (!collided && hasSphereBoxCollision(it->position_world,
-                                                            1.0f,
+                                                            0.5f,
                                                             mikuSceneObj,
                                                             glm::vec4(player->position_world.x,player->position_world.y - 4.0f,player->position_world.z,1.0f),
                                                             glm::vec3(1.0f,1.0f,1.0f),
                                                             glm::vec3(0.0f, g_CameraTheta, 0.0f)
                                                             ))
                         {
-                            player->health_points = player->health_points - it->damage;
+                            // Se o jogador pode levar dano
+                            if (damage_cooldown == 0)
+                            {
+                                player->health_points = player->health_points - it->damage;
+                                damage_cooldown =  100;
+                            }
                             g_BulletsOnPlay.erase(it);
-                            fprintf(stderr,"Vida do jogador: %.2f\n",player->health_points);
+                            //fprintf(stderr,"Vida do jogador: %.2f\n",player->health_points);
                         }
 
                     }
@@ -1028,7 +1042,7 @@ int main(int argc, char* argv[])
                 if (player->health_points <= 0)
                 {
                     //Reset player and go back to hub
-
+                    player->reset_stats();
                 }
 
             }
@@ -1073,27 +1087,26 @@ int main(int argc, char* argv[])
                     };
                     g_PlacedObjects.push_back(object);
 
-                    //Se este nível foi vencido desenhamos um checkmark, senão uma cruz
+                    //Se este nível foi vencido desenhamos um checkmark, senão um X
                     if (beaten[1])
                     {
-
+                        object = {
+                            CHECK_PIECE,
+                            "check",
+                            glm::vec3(1.0f,1.0f,1.0f),
+                            glm::vec4(4.8f,9.0f,-2.0f,1.0f),
+                            glm::vec3(0.0f,-3.14/2,0.0f)
+                        };
+                        g_PlacedObjects.push_back(object);
                     }
                     else
                     {
                         object = {
                             CROSS_BAR,
-                            "cube",
-                            glm::vec3(2.0f,5.0f,2.0f),
-                            glm::vec4(5.0f,5.0f,-2.0f,1.0f),
-                            glm::vec3(-3.14/2,3.14,3.14/4)
-                        };
-                        g_PlacedObjects.push_back(object);
-                        object = {
-                            CROSS_BAR,
-                            "cube",
-                            glm::vec3(2.0f,5.0f,2.0f),
-                            glm::vec4(5.0f,5.0f,-2.0f,1.0f),
-                            glm::vec3(-3.14/2,3.14,-3.14/4)
+                            "cross",
+                            glm::vec3(1.0f,1.0f,1.0f),
+                            glm::vec4(5.0f,9.0f,-2.0f,1.0f),
+                            glm::vec3(0.0f,3.14/2,0.0f)
                         };
                         g_PlacedObjects.push_back(object);
                     }
@@ -1108,9 +1121,33 @@ int main(int argc, char* argv[])
                     };
                     g_PlacedObjects.push_back(object);
 
+                    //Se este nível foi vencido desenhamos um checkmark, senão um X
+                    if (beaten[2])
+                    {
+                        object = {
+                            CHECK_PIECE,
+                            "check",
+                            glm::vec3(1.0f,1.0f,1.0f),
+                            glm::vec4(-5.2f,9.0f,-2.0f,1.0f),
+                            glm::vec3(0.0f,-3.14/2,0.0f)
+                        };
+                        g_PlacedObjects.push_back(object);
+                    }
+                    else
+                    {
+                        object = {
+                            CROSS_BAR,
+                            "cross",
+                            glm::vec3(1.0f,1.0f,1.0f),
+                            glm::vec4(-5.0f,9.0f,-2.0f,1.0f),
+                            glm::vec3(0.0f,3.14/2,0.0f)
+                        };
+                        g_PlacedObjects.push_back(object);
+                    }
 
                     /*Voltamos ao menu*/
                     //soundEngine->stopAllSounds();
+                    player->reset_stats();
                     current_level = 0;
                     player->position_world = glm::vec4(0.0f,3.0f,5.0f,1.0f);
                     firstPersonView = true;
@@ -1200,6 +1237,8 @@ int main(int argc, char* argv[])
                 activeEnemy = new EnemyObject(0,testEnemyObject);
                 activeEnemy->attack_cycle = -10;
 
+                damage_cooldown = 100;
+
                 /*Começamos a música*/
                 //soundEngine->play2D("../../media/polkka.wav",true,false,false,irrklang::ESM_AUTO_DETECT,true);
 
@@ -1246,6 +1285,8 @@ int main(int argc, char* argv[])
                 activeEnemy = new EnemyObject(1,testEnemyObject);
                 activeEnemy->attack_cycle = -10;
 
+                damage_cooldown = 100;
+
             }
         }
 
@@ -1259,12 +1300,14 @@ int main(int argc, char* argv[])
             /*-------------------------------------------
                         PERSONAGEM DO USUÀRIO
             -------------------------------------------*/
-            model = Matrix_Translate(player->position_world.x,player->position_world.y - 4.0f,player->position_world.z)
-                    *Matrix_Rotate_Y(g_CameraTheta)
-                    *Matrix_Scale(-1.0f,1.0f,-1.0f);
-            glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-            glUniform1i(object_id_uniform, MIKU);
-            DrawVirtualObject("miku");
+            if (damage_cooldown % 3 == 0) {
+                model = Matrix_Translate(player->position_world.x,player->position_world.y - 4.0f,player->position_world.z)
+                        *Matrix_Rotate_Y(g_CameraTheta)
+                        *Matrix_Scale(-1.0f,1.0f,-1.0f);
+                glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+                glUniform1i(object_id_uniform, MIKU);
+                DrawVirtualObject("miku");
+            }
         }
 
         /*-------------------------------------------
@@ -1361,7 +1404,6 @@ int main(int argc, char* argv[])
         TextRendering_ShowPlayerHealth(window);
         if (enemy_alive)
             TextRendering_ShowEnemyHealth(window,activeEnemy->health_points);
-
 
         // O framebuffer onde OpenGL executa as operações de renderização não
         // é o mesmo que está sendo mostrado para o usuário, caso contrário
