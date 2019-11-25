@@ -29,6 +29,9 @@ uniform mat4 projection;
 #define SHOW_BACKGROUND 10
 #define SHOW_FLOOR      11
 #define ENEMY_SHINOBU   12
+#define CROSS_BAR       13
+#define CHECK_PIECE     14
+
 
 uniform int object_id;
 
@@ -256,6 +259,20 @@ void main()
         Ks = vec3(0.0,0.0,0.0);
         Ka = vec3(0.0,0.0,0.0);
         q = 20.0;
+    }
+    else if ( object_id == CROSS_BAR)
+    {
+        Kd = vec3(1.0,0.0,0.0);
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 1.0;
+    }
+    else if ( object_id == CHECK_PIECE)
+    {
+        Kd = vec3(0.0,1.0,0.0);
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 1.0;
     }
     else // Objeto desconhecido = preto
     {

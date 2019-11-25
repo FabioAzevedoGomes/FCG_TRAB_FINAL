@@ -105,6 +105,7 @@ void TextRendering_ShowModelViewProjection(GLFWwindow* window, glm::mat4 project
 void TextRendering_ShowEulerAngles(GLFWwindow* window);
 void TextRendering_ShowProjection(GLFWwindow* window);
 void TextRendering_ShowFramesPerSecond(GLFWwindow* window);
+void TextRendering_ShowPlayerHealth(GLFWwindow* window);
 
 // Funções callback para comunicação com o sistema operacional e interação do
 // usuário. Veja mais comentários nas definições das mesmas, abaixo.
@@ -141,10 +142,16 @@ struct PlacedObject {
 /*-------------------------------------------
     FUNÇÕES RELATIVAS À LÓGICA DO JOGO
 -------------------------------------------*/
+
+//Testes de colisão
+
 bool hasBoxBoxCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, glm::vec3 rttn_obj1,
                    SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2,glm::vec3 rttn_obj2);
+
 bool hasPointBoxCollision(glm::vec4 point,SceneObject obj, glm::vec4 pos_obj, glm::vec3 scale_obj, glm::vec3 rttn_obj);
 
+bool hasSphereBoxCollision(glm::vec4 sphere_center, float sphere_radius,
+                   SceneObject obj, glm::vec4 pos_obj, glm::vec3 scale_obj, glm::vec3 rttn_obj);
 // Abaixo definimos variáveis globais utilizadas em várias funções do código.
 
 // A cena virtual é uma lista de objetos nomeados, guardados em um dicionário
@@ -395,7 +402,7 @@ struct EnemyObject {
                 vel = normalize(glm::vec4(direction.x,0.0f,direction.z,0.0f));
                 vel = vel*Matrix_Scale(30.0f,30.0f,30.0f);
                 bullet = {g_BulletsOnPlay.size(),
-                                        glm::vec4(body->position_world.x,body->position_world.y + 2,body->position_world.z,0.0f),
+                                        glm::vec4(body->position_world.x,body->position_world.y + 1,body->position_world.z,0.0f),
                                         glm::vec4(1.0f,1.0f,1.0f,0.0f),
                                         10.0f,
                                         0.0f,
@@ -615,6 +622,10 @@ int main(int argc, char* argv[])
     ComputeNormals(&shinobumodel);
     BuildTrianglesAndAddToVirtualScene(&shinobumodel);
 
+    ObjModel cubemodel("../../data/cube.obj");
+    ComputeNormals(&cubemodel);
+    BuildTrianglesAndAddToVirtualScene(&cubemodel);
+
     if ( argc > 1 )
     {
         ObjModel model(argv[1]);
@@ -627,6 +638,7 @@ int main(int argc, char* argv[])
 
     // Inicializamos o código para renderização de texto.
     TextRendering_Init();
+
 
     // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
     glEnable(GL_DEPTH_TEST);
@@ -694,6 +706,8 @@ int main(int argc, char* argv[])
         #define SHOW_BACKGROUND 10
         #define SHOW_FLOOR      11
         #define ENEMY_SHINOBU   12
+        #define CROSS_BAR       13
+        #define CHECK_PIECE     14
 
         /*Menu inicial*/
         PlacedObject object = {
@@ -713,8 +727,24 @@ int main(int argc, char* argv[])
             glm::vec4(5.0f,3.0f,-2.0f,1.0f),
             glm::vec3(-3.14/2,3.14,0.0f)
         };
+        //Status porta1
         g_PlacedObjects.push_back(object);
-
+        object = {
+            CROSS_BAR,
+            "cube",
+            glm::vec3(5.0f,1.0f,1.0f),
+            glm::vec4(4.5f,7.0f,-2.0f,1.0f),
+            glm::vec3(0.0f,0.0f,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
+        object = {
+            CROSS_BAR,
+            "cube",
+            glm::vec3(5.0f,1.0f,1.0f),
+            glm::vec4(5.5f,7.0f,-2.0f,1.0f),
+            glm::vec3(0.0f,0.0f,0.0f)
+        };
+        g_PlacedObjects.push_back(object);
         //Porta 2
         object = {
             DOOR,
@@ -970,7 +1000,9 @@ int main(int argc, char* argv[])
                             }
                         }
 
-                        if (!collided && hasPointBoxCollision(it->position_world,
+                        //hasSphereBoxCollision
+                        if (!collided && hasSphereBoxCollision(it->position_world,
+                                                            1.0f,
                                                             mikuSceneObj,
                                                             glm::vec4(player->position_world.x,player->position_world.y - 4.0f,player->position_world.z,1.0f),
                                                             glm::vec3(1.0f,1.0f,1.0f),
@@ -991,7 +1023,13 @@ int main(int argc, char* argv[])
                     enemy_alive = false;
                 }
 
-                /*TODO Aqui tambem verificaremos se o jogador morreu*/
+                //Verificamos se o jogador morreu
+                if (player->health_points <= 0)
+                {
+                    //Reset player and go back to hub
+
+                }
+
             }
             //Se o inimigo está morto esperamos o usuário coletar a medalha e o colocamos devolta no menu
             else
@@ -1033,6 +1071,31 @@ int main(int argc, char* argv[])
                         glm::vec3(-3.14/2,3.14,0.0f)
                     };
                     g_PlacedObjects.push_back(object);
+
+                    //Se este nível foi vencido desenhamos um checkmark, senão uma cruz
+                    if (beaten[1])
+                    {
+
+                    }
+                    else
+                    {
+                        object = {
+                            CROSS_BAR,
+                            "cube",
+                            glm::vec3(2.0f,5.0f,2.0f),
+                            glm::vec4(5.0f,5.0f,-2.0f,1.0f),
+                            glm::vec3(-3.14/2,3.14,3.14/4)
+                        };
+                        g_PlacedObjects.push_back(object);
+                        object = {
+                            CROSS_BAR,
+                            "cube",
+                            glm::vec3(2.0f,5.0f,2.0f),
+                            glm::vec4(5.0f,5.0f,-2.0f,1.0f),
+                            glm::vec3(-3.14/2,3.14,-3.14/4)
+                        };
+                        g_PlacedObjects.push_back(object);
+                    }
 
                     //Porta 2
                     object = {
@@ -1293,6 +1356,9 @@ int main(int argc, char* argv[])
         // por segundo (frames per second).
         TextRendering_ShowFramesPerSecond(window);
 
+        //Imprimimos na tela a vida do jogador
+        TextRendering_ShowPlayerHealth(window);
+
         // O framebuffer onde OpenGL executa as operações de renderização não
         // é o mesmo que está sendo mostrado para o usuário, caso contrário
         // seria possível ver artefatos conhecidos como "screen tearing". A
@@ -1394,6 +1460,46 @@ bool hasPointBoxCollision(glm::vec4 point,SceneObject obj, glm::vec4 pos_obj, gl
             && (point.z > (obj.bbox_min.z*scale_obj.z) + pos_obj.z && point.z < (obj.bbox_max.z*scale_obj.z) + pos_obj.z);
 
     }
+
+}
+
+bool hasSphereBoxCollision(glm::vec4 sphere_center, float sphere_radius,SceneObject obj, glm::vec4 pos_obj, glm::vec3 scale_obj, glm::vec3 rttn_obj)
+{
+
+    float r_sq = sphere_radius*sphere_radius;
+    float d_min = 0;
+
+    if (( rttn_obj.y >=    3.14/4 && rttn_obj.y <=  3*3.14/4)
+     || ( rttn_obj.y >= 3*-3.14/4 && rttn_obj.y <=   -3.14/4))
+    {
+            //X
+            if (sphere_center.x < (obj.bbox_min.z*scale_obj.x) + pos_obj.x)
+                d_min += sqrt(sphere_center.x - obj.bbox_min.z);
+            else if (sphere_center.x > (obj.bbox_max.z*scale_obj.x) + pos_obj.x)
+                d_min += sqrt( sphere_center.x - obj.bbox_max.z);
+            //Y
+            if (sphere_center.y < (obj.bbox_min.y*scale_obj.y) + pos_obj.y)
+                d_min += sqrt( sphere_center.y - obj.bbox_min.y);
+            else if (sphere_center.y > (obj.bbox_max.y*scale_obj.y) + pos_obj.y)
+                d_min += sqrt( sphere_center.y - obj.bbox_max.y);
+            //Z
+            if (sphere_center.z < (obj.bbox_min.x*scale_obj.z) + pos_obj.z)
+                d_min += sqrt( sphere_center.z - obj.bbox_min.x);
+            else if (sphere_center.z > (obj.bbox_max.x*scale_obj.z) + pos_obj.z)
+                d_min += sqrt( sphere_center.z - obj.bbox_max.x);
+    }
+    else
+    {
+        for (int i =0; i < 3; i++)
+        {
+            if (sphere_center[i] < (obj.bbox_min[i]*scale_obj[i]) + pos_obj[i])
+                d_min += sqrt( sphere_center[i] - obj.bbox_min[i]);
+            else if (sphere_center[i] > (obj.bbox_max[i]*scale_obj[i]) + pos_obj[i])
+                d_min += sqrt( sphere_center[i] - obj.bbox_max[i]);
+        }
+    }
+
+    return d_min <= r_sq;
 
 }
 
@@ -2472,6 +2578,20 @@ void PrintObjModelInfo(ObjModel* model)
     }
 }
 
+//Escrevemos na tela a vida do jogador
+void TextRendering_ShowPlayerHealth(GLFWwindow* window)
+{
+
+    static char  buffer[20] = "Player health: ???";
+    static int   numchars = 19;
+
+    numchars = snprintf(buffer, 20, "Player health: %d",(int)player->health_points);
+
+    float lineheight = TextRendering_LineHeight(window);
+    float charwidth = TextRendering_CharWidth(window);
+
+    TextRendering_PrintString(window, buffer, -((numchars + 1)*charwidth + 0.5), 0.9-lineheight, 2.0f);
+}
+
 // set makeprg=cd\ ..\ &&\ make\ run\ >/dev/null
 // vim: set spell spelllang=pt_br :
-
