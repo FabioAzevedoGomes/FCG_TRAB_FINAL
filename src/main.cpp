@@ -106,6 +106,7 @@ void TextRendering_ShowEulerAngles(GLFWwindow* window);
 void TextRendering_ShowProjection(GLFWwindow* window);
 void TextRendering_ShowFramesPerSecond(GLFWwindow* window);
 void TextRendering_ShowPlayerHealth(GLFWwindow* window);
+void TextRendering_ShowEnemyHealth(GLFWwindow*, float enemy_health);
 
 // Funções callback para comunicação com o sistema operacional e interação do
 // usuário. Veja mais comentários nas definições das mesmas, abaixo.
@@ -1358,6 +1359,9 @@ int main(int argc, char* argv[])
 
         //Imprimimos na tela a vida do jogador
         TextRendering_ShowPlayerHealth(window);
+        if (enemy_alive)
+            TextRendering_ShowEnemyHealth(window,activeEnemy->health_points);
+
 
         // O framebuffer onde OpenGL executa as operações de renderização não
         // é o mesmo que está sendo mostrado para o usuário, caso contrário
@@ -2591,6 +2595,20 @@ void TextRendering_ShowPlayerHealth(GLFWwindow* window)
     float charwidth = TextRendering_CharWidth(window);
 
     TextRendering_PrintString(window, buffer, -((numchars + 1)*charwidth + 0.5), 0.9-lineheight, 2.0f);
+}
+
+void TextRendering_ShowEnemyHealth(GLFWwindow* window, float enemy_health)
+{
+
+    static char  buffer[20] = "Enemy health: ???";
+    static int   numchars = 18;
+
+    numchars = snprintf(buffer, 20, "Enemy health: %d",(int)enemy_health);
+
+    float lineheight = TextRendering_LineHeight(window);
+    float charwidth = TextRendering_CharWidth(window);
+
+    TextRendering_PrintString(window, buffer, 0.5 - ((numchars + 1)*charwidth), 0.9-lineheight, 2.0f);
 }
 
 // set makeprg=cd\ ..\ &&\ make\ run\ >/dev/null
