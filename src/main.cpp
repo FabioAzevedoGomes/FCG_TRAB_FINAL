@@ -242,9 +242,11 @@ struct Player {
     {
         health_points       = 100.0;
         last_position_world = glm::vec4(0.0f,3.0f,0.0f,1.0f);
-        position_world      = glm::vec4(0.0f,3.0f,0.0f,1.0f);
+        position_world      = glm::vec4(0.0f,3.0f,15.0f,1.0f);
+        g_CameraPhi         = 0.0f;
+        g_CameraTheta       = 0.0f;
         velocity            = glm::vec4(0.0f,0.0f,0.0f,0.0f);
-        movement_speed = 100;
+        movement_speed      = 100;
     }
 
     void compute_movement(double delta_t)
@@ -328,13 +330,13 @@ struct EnemyObject {
     float movement_speed;       /*Velocidade com a qual o inimigo se move na curva*/
     int texture;
 
-    /*Construtor TODO*/
+
     EnemyObject (int enemyId,PlacedObject* enemyBody) {
         id = enemyId;
         body = enemyBody;
         attack_cycle = 0;   //Inicia no primeiro ciclo de ataques
         bezier_t = 0.5;     // Inicia no meio da curva
-        movement_speed = 0.3;
+        movement_speed = 0.2;
         health_points = 100;
 
         /*Definimos as attack patterns e textura com base em qual inimigo é*/
@@ -369,9 +371,9 @@ struct EnemyObject {
 
         switch (pattern) {
         case ATK_EXPANDING_CIRCLE:
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 20; i++)
             {
-                bullet = {g_BulletsOnPlay.size(),
+                bullet = {(int)g_BulletsOnPlay.size(),
                                        glm::vec4(body->position_world.x,body->position_world.y,body->position_world.z,0.0f),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
@@ -384,9 +386,9 @@ struct EnemyObject {
             }
             break;
         case ATK_RANDOM_SPREAD:
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 20; i++)
             {
-                bullet = {g_BulletsOnPlay.size(),
+                bullet = {(int)g_BulletsOnPlay.size(),
                                        glm::vec4(body->position_world.x + (i/10),body->position_world.y,body->position_world.z + (i/10),0.0f),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
@@ -397,30 +399,30 @@ struct EnemyObject {
             break;
         case ATK_DIRECTED_CONE:
             angle = 3.14/4;
-            for (int i=0; i < 50; i++)
+            for (int i=0; i < 20; i++)
             {
                 glm::vec4 direction = normalize(player->position_world - body->position_world);
                 vel = normalize(glm::vec4(direction.x,0.0f,direction.z,0.0f));
                 vel = vel*Matrix_Scale(30.0f,30.0f,30.0f);
-                bullet = {g_BulletsOnPlay.size(),
+                bullet = {(int)g_BulletsOnPlay.size(),
                                         glm::vec4(body->position_world.x,body->position_world.y + 1,body->position_world.z,0.0f),
                                         glm::vec4(1.0f,1.0f,1.0f,0.0f),
                                         10.0f,
                                         0.0f,
                                         Matrix_Rotate_Y(angle)*vel};
-                angle = angle - ((3.14/2)/40);
+                angle = angle - ((3.14/2)/20);
                 g_BulletsOnPlay.push_back(bullet);
             }
             break;
         case ATK_EXPANDING_SPIRAL:
-            angle = 3.14*2/50;
-            for (int i = 0; i < 50; i++)
+            angle = 3.14*2/20;
+            for (int i = 0; i < 20; i++)
             {
-                bullet = {g_BulletsOnPlay.size(),
+                bullet = {(int)g_BulletsOnPlay.size(),
                                        glm::vec4(body->position_world.x,body->position_world.y,body->position_world.z,1.0f),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
-                                       i/2,
+                                       (float)i/2,
                                        Matrix_Rotate_Y(initial_angle + angle*i)*vel};
 
                 //fprintf(stderr,"Pushing bullet %d ...",i);
@@ -431,7 +433,7 @@ struct EnemyObject {
         case ATK_CLOSING_CIRCLE:
             for (int i = 0; i < 20; i++)
             {
-                bullet = {g_BulletsOnPlay.size(),
+                bullet = {(int)g_BulletsOnPlay.size(),
                                        player->position_world + Matrix_Rotate_Y(angle*i)*glm::vec4(30,0,0,0),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
@@ -446,7 +448,7 @@ struct EnemyObject {
         case ATK_BREAKING_CIRCLE:
             for (int i = 0; i < 20; i++)
             {
-                bullet = {g_BulletsOnPlay.size(),
+                bullet = {(int)g_BulletsOnPlay.size(),
                                        player->position_world + Matrix_Rotate_Y(angle*i)*glm::vec4(30,0,0,0),
                                        glm::vec4(1.0f,0.0f,0.0f,0.0f),
                                        10.0f,
@@ -590,6 +592,7 @@ int main(int argc, char* argv[])
     LoadTextureImage("../../data/textures/show_background.jpg"); //TextureImage 5
     LoadTextureImage("../../data/textures/floor_texture.jpg"); //TextureImage6
     LoadTextureImage("../../data/textures/Albedo.jpg");  //TextureImage7
+    LoadTextureImage("../../data/textures/concrete_wall.jpg"); //TextureImage8
 
     ObjModel menubackgroundmodel("../../data/sphere.obj");
     ComputeNormals(&menubackgroundmodel);
@@ -630,6 +633,10 @@ int main(int argc, char* argv[])
     ObjModel checkmodel("../../data/check.obj");
     ComputeNormals(&checkmodel);
     BuildTrianglesAndAddToVirtualScene(&checkmodel);
+
+    ObjModel swordmodel("../../data/sword.obj");
+    ComputeNormals(&swordmodel);
+    BuildTrianglesAndAddToVirtualScene(&swordmodel);
 
     if ( argc > 1 )
     {
@@ -714,6 +721,7 @@ int main(int argc, char* argv[])
         #define ENEMY_SHINOBU   12
         #define CROSS_BAR       13
         #define CHECK_PIECE     14
+        #define CONCRETE_WALL   15
 
         /*Menu inicial*/
         PlacedObject object = {
@@ -895,20 +903,20 @@ int main(int argc, char* argv[])
                     if (current_time - last_player_attack_time >= 0.2)
                     {
 
-                        float projectile_speed = 20.0;
+                        float projectile_speed = 30.0;
 
                         //Cria um novo projétil
                         PlacedObject* new_proj_obj = new PlacedObject();
                         new_proj_obj->id = PROJECTILE;
-                        new_proj_obj->name = "miku";
+                        new_proj_obj->name = "sword";
                         new_proj_obj->position_world = player->position_world;
-                        new_proj_obj->rotation = glm::vec4(0.0f,0.0f,0.0f,1.0f);
-                        new_proj_obj->scale = glm::vec3(0.5f,0.5f,0.5f);
+                        new_proj_obj->rotation = glm::vec4(3.14/2,g_CameraTheta - (3.14/2),0.0f,1.0f);
+                        new_proj_obj->scale = glm::vec3(0.4f,0.4f,0.4f);
 
                         //Inicializa um ProjectileObject
                         ProjectileObject new_projectile =
-                            {g_ProjectilesOnPlay.size(),
-                             40.0f,
+                            {(int)g_ProjectilesOnPlay.size(),
+                             5.0f,
                              projectile_speed*(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f)/norm(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f))),
                              new_proj_obj,
                              0.0f};
@@ -945,19 +953,23 @@ int main(int argc, char* argv[])
                 /*-------------------------------------------
                  PROCESSA O MOVIMENTO DOS PROJÉTEIS DO JOGADOR
                 -------------------------------------------*/
-                int ctr = 0;    //Contador para evitar segmentation fault ao deletar o ultimo elemento
+                unsigned int ctr = 0;    //Contador para evitar segmentation fault ao deletar o ultimo elemento
                 for (std::vector<ProjectileObject>::iterator it = g_ProjectilesOnPlay.begin();ctr < g_ProjectilesOnPlay.size() && it != g_ProjectilesOnPlay.end(); it ++)
                 {
                     ctr++;
                     it->model->position_world = it->model->position_world + it->velocity*(float)(current_time - previous_time);
+                    //it->model->rotation = glm::vec3(it->model->rotation.x,current_time,it->model->rotation.z);
 
                     //Projeteis que chegaram na distancia máxima são descartados
                     it->traveled_distance = it->traveled_distance + norm(it->velocity*(float)(current_time - previous_time));
-                    if (it->traveled_distance > 20)
+                    if (it->traveled_distance > 50)
                     {
                         g_ProjectilesOnPlay.erase(it);
                     }
-                    else if (hasPointBoxCollision(it->model->position_world,
+                    else if (hasBoxBoxCollision(g_VirtualScene["sword"],
+                                                  it->model->position_world,
+                                                  it->model->scale,
+                                                  it->model->rotation,
                                                   g_VirtualScene[activeEnemy->body->name],
                                                   activeEnemy->body->position_world,
                                                   activeEnemy->body->scale,
@@ -1041,8 +1053,97 @@ int main(int argc, char* argv[])
                 //Verificamos se o jogador morreu
                 if (player->health_points <= 0)
                 {
-                    //Reset player and go back to hub
+                    /*Limpamos os objetos deste nível*/
+                    g_PlacedObjects.clear();
+                    g_BulletsOnPlay.clear();
+                    g_ProjectilesOnPlay.clear();
+
+                    /*Recarregamos os objetos do menu principal*/
+                    PlacedObject object = {
+                        GRASS_FLOOR,
+                        "plane",
+                        glm::vec3(20.0f,1.0f,20.0f),
+                        glm::vec4(0.0f,-1.0f,0.0f,1.0f),
+                        glm::vec3(0.0f,0.0f,0.0f)
+                    };
+                    g_PlacedObjects.push_back(object);
+
+                    //Porta 1
+                    object = {
+                        DOOR,
+                        "plane",
+                        glm::vec3(2.0f,5.0f,5.0f),
+                        glm::vec4(5.0f,3.0f,-2.0f,1.0f),
+                        glm::vec3(-3.14/2,3.14,0.0f)
+                    };
+                    g_PlacedObjects.push_back(object);
+
+                    //Se este nível foi vencido desenhamos um checkmark, senão um X
+                    if (beaten[1])
+                    {
+                        object = {
+                            CHECK_PIECE,
+                            "check",
+                            glm::vec3(1.0f,1.0f,1.0f),
+                            glm::vec4(4.8f,9.0f,-2.0f,1.0f),
+                            glm::vec3(0.0f,-3.14/2,0.0f)
+                        };
+                        g_PlacedObjects.push_back(object);
+                    }
+                    else
+                    {
+                        object = {
+                            CROSS_BAR,
+                            "cross",
+                            glm::vec3(1.0f,1.0f,1.0f),
+                            glm::vec4(5.0f,9.0f,-2.0f,1.0f),
+                            glm::vec3(0.0f,3.14/2,0.0f)
+                        };
+                        g_PlacedObjects.push_back(object);
+                    }
+
+                    //Porta 2
+                    object = {
+                        DOOR,
+                        "plane",
+                        glm::vec3(2.0f,5.0f,5.0f),
+                        glm::vec4(-5.0f,3.0f,-2.0f,1.0f),
+                        glm::vec3(-3.14/2,3.14,0.0f)
+                    };
+                    g_PlacedObjects.push_back(object);
+
+                    //Se este nível foi vencido desenhamos um checkmark, senão um X
+                    if (beaten[2])
+                    {
+                        object = {
+                            CHECK_PIECE,
+                            "check",
+                            glm::vec3(1.0f,1.0f,1.0f),
+                            glm::vec4(-5.2f,9.0f,-2.0f,1.0f),
+                            glm::vec3(0.0f,-3.14/2,0.0f)
+                        };
+                        g_PlacedObjects.push_back(object);
+                    }
+                    else
+                    {
+                        object = {
+                            CROSS_BAR,
+                            "cross",
+                            glm::vec3(1.0f,1.0f,1.0f),
+                            glm::vec4(-5.0f,9.0f,-2.0f,1.0f),
+                            glm::vec3(0.0f,3.14/2,0.0f)
+                        };
+                        g_PlacedObjects.push_back(object);
+                    }
+
+                    /*Voltamos ao menu*/
+                    //soundEngine->stopAllSounds();
                     player->reset_stats();
+                    current_level = 0;
+                    player->position_world = glm::vec4(0.0f,3.0f,15.0f,1.0f);
+                    g_CameraPhi = 0.0f;
+                    g_CameraTheta = 0.0f;
+                    firstPersonView = true;
                 }
 
             }
@@ -1149,7 +1250,9 @@ int main(int argc, char* argv[])
                     //soundEngine->stopAllSounds();
                     player->reset_stats();
                     current_level = 0;
-                    player->position_world = glm::vec4(0.0f,3.0f,5.0f,1.0f);
+                    player->position_world = glm::vec4(0.0f,3.0f,15.0f,1.0f);
+                    g_CameraPhi = 0.0f;
+                    g_CameraTheta = 0.0f;
                     firstPersonView = true;
 
                 }
@@ -1268,7 +1371,38 @@ int main(int argc, char* argv[])
                     glm::vec3(0.0f,0.0f,0.0f)
                 };
                 g_PlacedObjects.push_back(object);
-
+                object = {
+                    CONCRETE_WALL,
+                    "wall",
+                    glm::vec3(5.0f,5.0f,arena_size/4),
+                    glm::vec4(arena_size/2,2.0f,0.0f,1.0f),
+                    glm::vec3(0.0f,3.14/2,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+                object = {
+                    CONCRETE_WALL,
+                    "wall",
+                    glm::vec3(5.0f,5.0f,arena_size/4),
+                    glm::vec4(-arena_size/2,2.0f,0.0f,1.0f),
+                    glm::vec3(0.0f,-3.14/2,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+                object = {
+                    CONCRETE_WALL,
+                    "wall",
+                    glm::vec3(arena_size/4,5.0f,5.0f),
+                    glm::vec4(0.0f,2.0f,arena_size/2,1.0f),
+                    glm::vec3(0.0f,0.0f,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
+                object = {
+                    CONCRETE_WALL,
+                    "wall",
+                    glm::vec3(arena_size/4,5.0f,5.0f),
+                    glm::vec4(0.0f,2.0f,-arena_size/2,1.0f),
+                    glm::vec3(0.0f,3.14,0.0f)
+                };
+                g_PlacedObjects.push_back(object);
                 /*Atualizamos o nivel atual, status do inimigo, status do jogador e câmera*/
                 current_level = 2;
                 enemy_alive = true;
@@ -1357,9 +1491,9 @@ int main(int argc, char* argv[])
                 {
                     model = Matrix_Translate(it->model->position_world.x,it->model->position_world.y,it->model->position_world.z)
                             * Matrix_Scale(it->model->scale.x,it->model->scale.y,it->model->scale.z)
-                            * Matrix_Rotate_X(it->model->rotation.x)
+                            * Matrix_Rotate_Z(it->model->rotation.z)
                             * Matrix_Rotate_Y(it->model->rotation.y)
-                            * Matrix_Rotate_Z(it->model->rotation.z);
+                            * Matrix_Rotate_X(it->model->rotation.x);
                     glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model));
                     glUniform1i(object_id_uniform, it->model->id);
                     DrawVirtualObject(it->model->name.c_str());
@@ -1452,28 +1586,12 @@ bool hasBoxBoxCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_ob
     if (( rttn_obj1.y >=    3.14/4 && rttn_obj1.y <=  3*3.14/4)
      || ( rttn_obj1.y >= 3*-3.14/4 && rttn_obj1.y <=   -3.14/4))
     {
-    return
-        //X
-           ((obj1.bbox_min.z*scale_obj1.x) + pos_obj1.x
-                                                        <=
-                                                            (obj2.bbox_max.x*scale_obj2.x) + pos_obj2.x
-         && (obj1.bbox_max.z*scale_obj1.x) + pos_obj1.x
-                                                        >=
-                                                            (obj2.bbox_min.x*scale_obj2.x) + pos_obj2.x)
-        //Y
-        && ((obj1.bbox_min.y*scale_obj1.y) + pos_obj1.y
-                                                        <=
-                                                            (obj2.bbox_max.y*scale_obj2.y) + pos_obj2.y
-         && (obj1.bbox_max.y*scale_obj1.y) + pos_obj1.y
-                                                        >=
-                                                            (obj2.bbox_min.y*scale_obj2.y) + pos_obj2.y)
-        //Z
-        && ((obj1.bbox_min.x*scale_obj1.z) + pos_obj1.z
-                                                        <=
-                                                            (obj2.bbox_max.z*scale_obj2.z) + pos_obj2.z
-         && (obj1.bbox_max.x*scale_obj1.z) + pos_obj1.z
-                                                        >=
-                                                            (obj2.bbox_min.z*scale_obj2.z) + pos_obj2.z);
+    return ((obj1.bbox_min.z*scale_obj1.x) + pos_obj1.x <= (obj2.bbox_max.x*scale_obj2.x) + pos_obj2.x
+         && (obj1.bbox_max.z*scale_obj1.x) + pos_obj1.x >= (obj2.bbox_min.x*scale_obj2.x) + pos_obj2.x)
+         &&((obj1.bbox_min.y*scale_obj1.y) + pos_obj1.y <= (obj2.bbox_max.y*scale_obj2.y) + pos_obj2.y
+         && (obj1.bbox_max.y*scale_obj1.y) + pos_obj1.y >= (obj2.bbox_min.y*scale_obj2.y) + pos_obj2.y)
+         &&((obj1.bbox_min.x*scale_obj1.z) + pos_obj1.z <= (obj2.bbox_max.z*scale_obj2.z) + pos_obj2.z
+         && (obj1.bbox_max.x*scale_obj1.z) + pos_obj1.z >= (obj2.bbox_min.z*scale_obj2.z) + pos_obj2.z);
 
     }
     else
@@ -1504,7 +1622,6 @@ bool hasPointBoxCollision(glm::vec4 point,SceneObject obj, glm::vec4 pos_obj, gl
         return (point.x > (obj.bbox_min.x*scale_obj.x) + pos_obj.x && point.x < (obj.bbox_max.x*scale_obj.x) + pos_obj.x)
             && (point.y > (obj.bbox_min.y*scale_obj.y) + pos_obj.y && point.y < (obj.bbox_max.y*scale_obj.y) + pos_obj.y)
             && (point.z > (obj.bbox_min.z*scale_obj.z) + pos_obj.z && point.z < (obj.bbox_max.z*scale_obj.z) + pos_obj.z);
-
     }
 
 }
@@ -1691,6 +1808,8 @@ void LoadShadersFromFiles()
     glUniform1i(glGetUniformLocation(program_id, "TextureImage5"), 5);
     glUniform1i(glGetUniformLocation(program_id, "TextureImage6"), 6);
     glUniform1i(glGetUniformLocation(program_id, "TextureImage7"), 7);
+    glUniform1i(glGetUniformLocation(program_id, "TextureImage8"), 8);
+
 
     glUseProgram(0);
 }
@@ -1858,7 +1977,7 @@ void BuildTrianglesAndAddToVirtualScene(ObjModel* model)
         size_t last_index = indices.size() - 1;
 
         SceneObject theobject;
-        fprintf(stderr,"%s \n",(model->shapes[shape].name).c_str());
+        //fprintf(stderr,"%s \n",(model->shapes[shape].name).c_str());
         theobject.name           = model->shapes[shape].name;
         theobject.first_index    = first_index; // Primeiro índice
         theobject.num_indices    = last_index - first_index + 1; // Número de indices
@@ -2325,83 +2444,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
 void ErrorCallback(int error, const char* description)
 {
     fprintf(stderr, "ERROR: GLFW: %s\n", description);
-}
-
-// Esta função recebe um vértice com coordenadas de modelo p_model e passa o
-// mesmo por todos os sistemas de coordenadas armazenados nas matrizes model,
-// view, e projection; e escreve na tela as matrizes e pontos resultantes
-// dessas transformações.
-void TextRendering_ShowModelViewProjection(
-    GLFWwindow* window,
-    glm::mat4 projection,
-    glm::mat4 view,
-    glm::mat4 model,
-    glm::vec4 p_model
-)
-{
-    if ( !g_ShowInfoText )
-        return;
-
-    glm::vec4 p_world = model*p_model;
-    glm::vec4 p_camera = view*p_world;
-    glm::vec4 p_clip = projection*p_camera;
-    glm::vec4 p_ndc = p_clip / p_clip.w;
-
-    float pad = TextRendering_LineHeight(window);
-
-    TextRendering_PrintString(window, " Model matrix             Model     In World Coords.", -1.0f, 1.0f-pad, 1.0f);
-    TextRendering_PrintMatrixVectorProduct(window, model, p_model, -1.0f, 1.0f-2*pad, 1.0f);
-
-    TextRendering_PrintString(window, "                                        |  ", -1.0f, 1.0f-6*pad, 1.0f);
-    TextRendering_PrintString(window, "                            .-----------'  ", -1.0f, 1.0f-7*pad, 1.0f);
-    TextRendering_PrintString(window, "                            V              ", -1.0f, 1.0f-8*pad, 1.0f);
-
-    TextRendering_PrintString(window, " View matrix              World     In Camera Coords.", -1.0f, 1.0f-9*pad, 1.0f);
-    TextRendering_PrintMatrixVectorProduct(window, view, p_world, -1.0f, 1.0f-10*pad, 1.0f);
-
-    TextRendering_PrintString(window, "                                        |  ", -1.0f, 1.0f-14*pad, 1.0f);
-    TextRendering_PrintString(window, "                            .-----------'  ", -1.0f, 1.0f-15*pad, 1.0f);
-    TextRendering_PrintString(window, "                            V              ", -1.0f, 1.0f-16*pad, 1.0f);
-
-    TextRendering_PrintString(window, " Projection matrix        Camera                    In NDC", -1.0f, 1.0f-17*pad, 1.0f);
-    TextRendering_PrintMatrixVectorProductDivW(window, projection, p_camera, -1.0f, 1.0f-18*pad, 1.0f);
-
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-
-    glm::vec2 a = glm::vec2(-1, -1);
-    glm::vec2 b = glm::vec2(+1, +1);
-    glm::vec2 p = glm::vec2( 0,  0);
-    glm::vec2 q = glm::vec2(width, height);
-
-    glm::mat4 viewport_mapping = Matrix(
-                                     (q.x - p.x)/(b.x-a.x), 0.0f, 0.0f, (b.x*p.x - a.x*q.x)/(b.x-a.x),
-                                     0.0f, (q.y - p.y)/(b.y-a.y), 0.0f, (b.y*p.y - a.y*q.y)/(b.y-a.y),
-                                     0.0f, 0.0f, 1.0f, 0.0f,
-                                     0.0f, 0.0f, 0.0f, 1.0f
-                                 );
-
-    TextRendering_PrintString(window, "                                                       |  ", -1.0f, 1.0f-22*pad, 1.0f);
-    TextRendering_PrintString(window, "                            .--------------------------'  ", -1.0f, 1.0f-23*pad, 1.0f);
-    TextRendering_PrintString(window, "                            V                           ", -1.0f, 1.0f-24*pad, 1.0f);
-
-    TextRendering_PrintString(window, " Viewport matrix           NDC      In Pixel Coords.", -1.0f, 1.0f-25*pad, 1.0f);
-    TextRendering_PrintMatrixVectorProductMoreDigits(window, viewport_mapping, p_ndc, -1.0f, 1.0f-26*pad, 1.0f);
-}
-
-// Escrevemos na tela os ângulos de Euler definidos nas variáveis globais
-// g_AngleX, g_AngleY, e g_AngleZ.
-void TextRendering_ShowEulerAngles(GLFWwindow* window)
-{
-    if ( !g_ShowInfoText )
-        return;
-
-    float pad = TextRendering_LineHeight(window);
-
-    char buffer[80];
-    snprintf(buffer, 80, "Euler Angles rotation matrix = Z(%.2f)*Y(%.2f)*X(%.2f)\n", g_AngleZ, g_AngleY, g_AngleX);
-
-    TextRendering_PrintString(window, buffer, -1.0f+pad/10, -1.0f+2*pad/10, 1.0f);
 }
 
 // Escrevemos na tela o número de quadros renderizados por segundo (frames per

@@ -31,7 +31,7 @@ uniform mat4 projection;
 #define ENEMY_SHINOBU   12
 #define CROSS_BAR       13
 #define CHECK_PIECE     14
-
+#define CONCRETE_WALL   15
 
 uniform int object_id;
 
@@ -47,7 +47,8 @@ uniform sampler2D TextureImage3;
 uniform sampler2D TextureImage4;
 uniform sampler2D TextureImage5; // Fundo show
 uniform sampler2D TextureImage6; // Chão do show
-uniform sampler2D TextureImage7; // shinobu
+uniform sampler2D TextureImage7; // Shinobu
+uniform sampler2D TextureImage8; // Parede de concreto
 
 // O valor de saída ("out") de um Fragment Shader é a cor final do fragmento.
 out vec3 color;
@@ -139,7 +140,7 @@ void main()
     else if ( object_id == MIKU)
     {
         Kd = vec3(0.1,0.4,0.6);
-        Ks = vec3(0.8,0.8,0.8);
+        Ks = vec3(0.2,0.2,0.2);
         Ka = vec3(0.05,0.2,0.3);
         q = 30.0;
     }
@@ -152,8 +153,8 @@ void main()
         //Computa a cor da textura neste ponto
         Kd = texture(TextureImage2, vec2(U,V)).rgb;
 
+        Ka = vec3(0.2,0.1,0.1);
         Ks = vec3(0.0,0.0,0.0);
-        Ka = vec3(0.05,0.2,0.3);
         q = 30.0;
     }
     else if ( object_id == ENEMY_COW)
@@ -215,7 +216,7 @@ void main()
 
         //Computa a cor da textura neste ponto
         Kd = texture(TextureImage4, vec2(U,V)).rgb;
-        Ka = vec3(1.0,1.0,1.0);
+        Ka = vec3(0.0,0.0,0.0);
         Ks = vec3(1.0,1.0,1.0);
         q = 20.0;
 
@@ -274,6 +275,18 @@ void main()
         Ka = vec3(0.0,0.0,0.0);
         q = 1.0;
     }
+    else if( object_id == CONCRETE_WALL)
+    {
+        U = position_model.x;
+        V = position_model.y;
+
+        //Computa a cor da textura neste ponto
+        Kd = texture(TextureImage8, vec2(U,V)).rgb;
+
+        Ka = vec3(0.2,0.1,0.1);
+        Ks = vec3(0.0,0.0,0.0);
+        q = 30.0;
+    }
     else // Objeto desconhecido = preto
     {
         Kd = vec3(0.0,0.0,0.0);
@@ -286,7 +299,7 @@ void main()
     vec3 I = vec3(1.0,1.0,1.0); // PREENCH AQUI o espectro da fonte de luz
 
     // Espectro da luz ambiente
-    vec3 Ia = vec3(0.5,0.5,0.5); // PREENCHA AQUI o espectro da luz ambiente
+    vec3 Ia = vec3(0.1,0.1,0.1); // PREENCHA AQUI o espectro da luz ambiente
 
     // Termo difuso utilizando a lei dos cossenos de Lambert
     vec3 lambert_diffuse_term = Kd*I*max(0,dot(n,l));//vec3(0.0,0.0,0.0); // PREENCHA AQUI o termo difuso de Lambert
@@ -295,11 +308,17 @@ void main()
     vec3 ambient_term = Ka*Ia;
 
     // Termo especular utilizando o modelo de iluminação de Phong
-    vec3 phong_specular_term  = Ks*I*pow(max(0,dot(r,v)),q);
+    //vec3 phong_specular_term  = Ks*I*pow(max(0,dot(r,v)),q);
+
+    vec4 h = l + v;
+    h = h/length(h);
+
+    // Termo especular utilizando o modelo de iluminação de Blinn - Phong
+    vec3 blinn_phong_specular_term = Ks*I*pow(max(0,dot(n,h)),q);
 
     // Cor final do fragmento calculada com uma combinação dos termos difuso,
     // especular, e ambiente. Veja slide 133 do documento "Aula_17_e_18_Modelos_de_Iluminacao.pdf".
-    color = lambert_diffuse_term + phong_specular_term;
+    color = lambert_diffuse_term + ambient_term + blinn_phong_specular_term;
 
     // Cor final com correção gamma, considerando monitor sRGB.
     // Veja https://en.wikipedia.org/w/index.php?title=Gamma_correction&oldid=751281772#Windows.2C_Mac.2C_sRGB_and_TV.2Fvideo_standard_gammas
