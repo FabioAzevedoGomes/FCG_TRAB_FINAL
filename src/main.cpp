@@ -38,7 +38,6 @@
 // Headers locais, definidos na pasta "include/"
 #include "utils.h"
 #include "matrices.h"
-#include "irrKlang.h"
 
 // Estrutura que representa um modelo geométrico carregado a partir de um
 // arquivo ".obj". Veja https://en.wikipedia.org/wiki/Wavefront_.obj_file .
@@ -665,24 +664,6 @@ int main(int argc, char* argv[])
     glm::mat4 the_projection;
     glm::mat4 the_model;
     glm::mat4 the_view;
-
-    /*---------------------------------------------------------------------------------------------------------
-                                    INICIALIZAÇÃO DA ENGINE DE SOM
-    ---------------------------------------------------------------------------------------------------------*/
-
-    /*
-
-    irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
-    irrklang::ISoundEngine* sfxEngine = irrklang::createIrrKlangDevice();
-    if (!soundEngine || !sfxEngine)
-    {
-        printf("Erro inicializando a engine de som irrKlang");
-        std::exit(EXIT_FAILURE);
-    }
-    sfxEngine->setSoundVolume(0.01);
-    soundEngine->setSoundVolume(0.1);
-
-    */
 
     /*---------------------------------------------------------------------------------------------------------
                                             VARIÁVEIS DE TEMPO

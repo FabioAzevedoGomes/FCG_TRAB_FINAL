@@ -34,8 +34,8 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="lib/Win32-gcc/libirrKlang.a" />
-					<Add library="lib-linux/libglfw3.a" />
+					<Add library="lib/libglfw3.a" />
+					<Add library="lib/libglfw3dll.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -68,7 +68,6 @@
 		<Unit filename="include/KHR/khrplatform.h" />
 		<Unit filename="include/dejavufont.h" />
 		<Unit filename="include/glad/glad.h" />
-		<Unit filename="include/glm/CMakeLists.txt" />
 		<Unit filename="include/glm/common.hpp" />
 		<Unit filename="include/glm/detail/_features.hpp" />
 		<Unit filename="include/glm/detail/_fixes.hpp" />
