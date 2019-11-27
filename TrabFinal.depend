@@ -24,7 +24,7 @@
 	<inttypes.h>
 	<stdint.h>
 
-1574792478 source:/home/fabio/Documents/UFRGS/FCG/src/main.cpp
+1574864064 source:/home/fabio/Documents/UFRGS/FCG/src/main.cpp
 	<cmath>
 	<cstdio>
 	<cstdlib>
@@ -46,7 +46,6 @@
 	"stb_image.h"
 	"utils.h"
 	"matrices.h"
-	"irrKlang.h"
 
 1573138972 /home/fabio/Documents/UFRGS/FCG/include/GLFW/glfw3.h
 	<stddef.h>

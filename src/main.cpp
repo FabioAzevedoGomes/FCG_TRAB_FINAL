@@ -2,8 +2,12 @@
 //             Instituto de Informática
 //       Departamento de Informática Aplicada
 //
+//          TRABALHO FINAL - CÓDIGO FONTE
+//
+//
 //    INF01047 Fundamentos de Computação Gráfica
-//               Prof. Eduardo Gastal
+//                   Componentes:
+//  Fábio de Azevedo Gomes, Felipe de Almeida Graeff
 
 
 #include <cmath>
@@ -38,10 +42,9 @@
 // Headers locais, definidos na pasta "include/"
 #include "utils.h"
 #include "matrices.h"
-#include "irrKlang.h"
 
 // Estrutura que representa um modelo geométrico carregado a partir de um
-// arquivo ".obj". Veja https://en.wikipedia.org/wiki/Wavefront_.obj_file .
+// arquivo ".obj".
 struct ObjModel
 {
     tinyobj::attrib_t                 attrib;
@@ -60,7 +63,7 @@ struct ObjModel
         bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename, basepath, triangulate);
 
         if (!err.empty())
-            fprintf(stderr, "\n%s\n", err.c_str());
+            fprintf(stderr, "%s\n", err.c_str());
 
         if (!ret)
             throw std::runtime_error("Erro ao carregar modelo.");
@@ -132,7 +135,8 @@ struct SceneObject
 };
 
 //Estrutura que representa um objeto posicionado físicamente na cena
-struct PlacedObject {
+struct PlacedObject
+{
     int id;                     //ID do objeto
     std::string name;           //Nome do objeto
     glm::vec3 scale;            //Escala do objeto
@@ -145,7 +149,6 @@ struct PlacedObject {
 -------------------------------------------*/
 
 //Testes de colisão
-
 bool hasBoxBoxCollision(SceneObject obj1, glm::vec4 pos_obj1, glm::vec3 scale_obj1, glm::vec3 rttn_obj1,
                    SceneObject obj2, glm::vec4 pos_obj2, glm::vec3 scale_obj2,glm::vec3 rttn_obj2);
 
@@ -153,6 +156,7 @@ bool hasPointBoxCollision(glm::vec4 point,SceneObject obj, glm::vec4 pos_obj, gl
 
 bool hasSphereBoxCollision(glm::vec4 sphere_center, float sphere_radius,
                    SceneObject obj, glm::vec4 pos_obj, glm::vec3 scale_obj, glm::vec3 rttn_obj);
+
 // Abaixo definimos variáveis globais utilizadas em várias funções do código.
 
 // A cena virtual é uma lista de objetos nomeados, guardados em um dicionário
@@ -174,7 +178,6 @@ float g_ScreenRatio = 1.0f;
 float g_AngleX = 0.0f;
 float g_AngleY = 0.0f;
 float g_AngleZ = 0.0f;
-
 
 //Velocidade com a qual a câmera se move na cena
 float camera_speed = 100;
@@ -224,7 +227,6 @@ GLint bbox_max_uniform;
 
 // Número de texturas carregadas pela função LoadTextureImage()
 GLuint g_NumLoadedTextures = 0;
-
 
 /*---------------------------------------------------------------------------------------------------------
                             ESTRUTURAS REFERENTES À LÓGICA DO JOGO
@@ -315,9 +317,9 @@ std::vector<struct ProjectileObject> g_ProjectilesOnPlay;
 #define ATK_EXPANDING_CIRCLE 0  /*Gera N bullets ao mesmo tempo em um circulo, com vetores velocidade perpendiculares ao círculo*/
 #define ATK_RANDOM_SPREAD    1  /*Gera N bullets em formação pseudo-aleatoria com vetores de velocidade em circulo*/
 #define ATK_DIRECTED_CONE    2  /*Gera N bullets lançadas em um cone de abertura theta com velocidade perpendicular ao centro*/
-#define ATK_EXPANDING_SPIRAL 3  /*Geran N bullets em formação espiral em torno do inimigo*/
-#define ATK_CLOSING_CIRCLE   4
-#define ATK_BREAKING_CIRCLE  5
+#define ATK_EXPANDING_SPIRAL 3  /*Gera N bullets em formação espiral em torno do inimigo*/
+#define ATK_CLOSING_CIRCLE   4  /*Gera N bullets em um círculo em torno do jogador que se fecha*/
+#define ATK_BREAKING_CIRCLE  5  /*Gera n bullets em um círculo em torno do jogador que se "quebra" em direções aleatórias*/
 
 /*Um inimigo do jogo. Pode ser interpretado como uma source de bullets*/
 struct EnemyObject {
@@ -537,7 +539,7 @@ int main(int argc, char* argv[])
     // Criamos uma janela do sistema operacional, com 800 colunas e 600 linhas
     // de pixels, e com título "INF01047 ...".
     GLFWwindow* window;
-    window = glfwCreateWindow(800, 600, "INF01047 - 287696 - Fábio de Azevedo Gomes", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "2hu", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -555,7 +557,7 @@ int main(int argc, char* argv[])
     // ... ou rolar a "rodinha" do mouse.
     glfwSetScrollCallback(window, ScrollCallback);
 
-    // Podemos?
+    // Prendemos o mouse na janela
     glfwSetInputMode(window,GLFW_CURSOR,GLFW_CURSOR_DISABLED);
 
     // Indicamos que as chamadas OpenGL deverão renderizar nesta janela
@@ -582,7 +584,15 @@ int main(int argc, char* argv[])
     /*---------------------------------------------------------------------------------------------------------
                                 CARREGANDO SHADERS, TEXTURAS E MODELOS
     ---------------------------------------------------------------------------------------------------------*/
+
+    /*-------------------------------------------
+                    SHADERS
+    -------------------------------------------*/
     LoadShadersFromFiles();
+
+    /*-------------------------------------------
+                    TEXTURAS
+    -------------------------------------------*/
 
     LoadTextureImage("../../data/textures/grass_texture.jpg");      // TextureImage0
     LoadTextureImage("../../data/textures/menu_background.jpg"); //TextureImage1
@@ -593,6 +603,10 @@ int main(int argc, char* argv[])
     LoadTextureImage("../../data/textures/floor_texture.jpg"); //TextureImage6
     LoadTextureImage("../../data/textures/Albedo.jpg");  //TextureImage7
     LoadTextureImage("../../data/textures/concrete_wall.jpg"); //TextureImage8
+
+    /*-------------------------------------------
+                    MODELOS
+    -----------------------------------------*/
 
     ObjModel menubackgroundmodel("../../data/sphere.obj");
     ComputeNormals(&menubackgroundmodel);
@@ -665,24 +679,6 @@ int main(int argc, char* argv[])
     glm::mat4 the_projection;
     glm::mat4 the_model;
     glm::mat4 the_view;
-
-    /*---------------------------------------------------------------------------------------------------------
-                                    INICIALIZAÇÃO DA ENGINE DE SOM
-    ---------------------------------------------------------------------------------------------------------*/
-
-    /*
-
-    irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
-    irrklang::ISoundEngine* sfxEngine = irrklang::createIrrKlangDevice();
-    if (!soundEngine || !sfxEngine)
-    {
-        printf("Erro inicializando a engine de som irrKlang");
-        std::exit(EXIT_FAILURE);
-    }
-    sfxEngine->setSoundVolume(0.01);
-    soundEngine->setSoundVolume(0.1);
-
-    */
 
     /*---------------------------------------------------------------------------------------------------------
                                             VARIÁVEIS DE TEMPO
@@ -770,11 +766,11 @@ int main(int argc, char* argv[])
         };
         g_PlacedObjects.push_back(object);
 
-        float farplane = -500.0f;
-        float arena_size = -farplane/(2*sqrt(2));
+        float farplane = -500.0f;   // Farplane
+        float arena_size = -farplane/(2*sqrt(2)); // Tamanho da arena
 
     /*---------------------------------------------------------------------------------------------------------
-                                INICIALIZANDO ESTRUTURA REFERENTES À LÓGICA DE JOGO
+                                INICIALIZANDO ESTRUTURAS REFERENTES À LÓGICA DE JOGO
     ---------------------------------------------------------------------------------------------------------*/
 
     /*Inicializamos um inimigo de placeholder*/
@@ -826,9 +822,10 @@ int main(int argc, char* argv[])
             float y = r*sin(g_CameraPhi)                    + player->position_world.y;
             float z = r*cos(g_CameraPhi)*cos(g_CameraTheta) + player->position_world.z;
             float x = r*cos(g_CameraPhi)*sin(g_CameraTheta) + player->position_world.x;
+
             // Abaixo definimos as varáveis que efetivamente definem a câmera virtual.
-            camera_position_c  = glm::vec4(x,y,z,1.0f); // Ponto "c", centro da câmera
-            camera_lookat_l = player->position_world;//glm::vec4(0.0f,0.0f,0.0f,1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
+            camera_position_c  = glm::vec4(x,y,z,1.0f);               // Ponto "c", centro da câmera
+            camera_lookat_l = player->position_world;                 // Ponto sendo visualizado pela câmera
             camera_view_vector = camera_lookat_l - camera_position_c; // Vetor "view", sentido para onde a câmera está virada
         }
         else
@@ -838,7 +835,7 @@ int main(int argc, char* argv[])
         }
 
         // Computamos a matriz "View" utilizando os parâmetros da câmera para
-        // definir o sistema de coordenadas da câmera.  Veja slide 186 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
+        // definir o sistema de coordenadas da câmera.
         glm::mat4 view = Matrix_Camera_View(camera_position_c, camera_view_vector, camera_up_vector);
 
         // Agora computamos a matriz de Projeção.
@@ -894,49 +891,46 @@ int main(int argc, char* argv[])
         if (current_level != 0)
         {
             if (enemy_alive) {
+
                 /*-------------------------------------------
-                  PROCESSA O ATAQUE DO JOGADOR SE HOUVER UM
+                        PROCESSA O ATAQUE DO JOGADOR
                 -------------------------------------------*/
-                if (g_LeftMouseButtonPressed)
+                //  Se o jogador quer atacar  e tempo atual - tempo do ultimo ataque >= intervalo de ataque (jogador)
+                if (g_LeftMouseButtonPressed && (current_time - last_player_attack_time) >= 0.2)
                 {
-                    //Se o jogar puder atacar
-                    if (current_time - last_player_attack_time >= 0.2)
-                    {
+                    float projectile_speed = 30.0;
 
-                        float projectile_speed = 30.0;
+                    //Cria um novo projétil
+                    PlacedObject* new_proj_obj = new PlacedObject();
+                    new_proj_obj->id = PROJECTILE;
+                    new_proj_obj->name = "sword";
+                    new_proj_obj->position_world = player->position_world;
+                    new_proj_obj->rotation = glm::vec4(3.14/2,g_CameraTheta - (3.14/2),0.0f,1.0f);
+                    new_proj_obj->scale = glm::vec3(0.4f,0.4f,0.4f);
 
-                        //Cria um novo projétil
-                        PlacedObject* new_proj_obj = new PlacedObject();
-                        new_proj_obj->id = PROJECTILE;
-                        new_proj_obj->name = "sword";
-                        new_proj_obj->position_world = player->position_world;
-                        new_proj_obj->rotation = glm::vec4(3.14/2,g_CameraTheta - (3.14/2),0.0f,1.0f);
-                        new_proj_obj->scale = glm::vec3(0.4f,0.4f,0.4f);
+                    //Inicializa um ProjectileObject
+                    ProjectileObject new_projectile =
+                        {(int)g_ProjectilesOnPlay.size(),
+                         5.0f,
+                         projectile_speed*(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f)/norm(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f))),
+                         new_proj_obj,
+                         0.0f};
+                    //Adiciona à lista de projéteis
+                    g_ProjectilesOnPlay.push_back(new_projectile);
 
-                        //Inicializa um ProjectileObject
-                        ProjectileObject new_projectile =
-                            {(int)g_ProjectilesOnPlay.size(),
-                             5.0f,
-                             projectile_speed*(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f)/norm(glm::vec4(camera_view_vector.x,0.0f,camera_view_vector.z,0.0f))),
-                             new_proj_obj,
-                             0.0f};
-                        //Adiciona à lista de projéteis
-                        g_ProjectilesOnPlay.push_back(new_projectile);
-
-                        //Reseta o tempo de ataque
-                        last_player_attack_time = current_time;
-                    }
+                    //Reseta o tempo de ataque
+                    last_player_attack_time = current_time;
                 }
 
                 /*-------------------------------------------
                         PROCESSA O ATAQUE DO INIMIGO
                 -------------------------------------------*/
-                //Testando ataques
+                // Se tempo atual - tempo do ultimo ataque >= intervalo de ataque (inimigo)
                 if (current_time - last_enemy_attack_time >= 0.8)
                 {
                     //Executa o ataque de acordo com o cycle em que o inimigo se encontra
                     activeEnemy->attack(activeEnemy->attack_patterns[(int)(activeEnemy->attack_cycle/10)],player);
-                    //sfxEngine->play2D("../../media/touhou/ATTACK3.wav",false,false,false,irrklang::ESM_AUTO_DETECT,true);
+
                     //Atualiza a contagem de tempo desde o ultimo ataque
                     last_enemy_attack_time = current_time;
                     activeEnemy->attack_cycle ++;
@@ -948,6 +942,7 @@ int main(int argc, char* argv[])
                 /*-------------------------------------------
                         PROCESSA A MOVIMENTAÇÃO DO INIMIGO
                 -------------------------------------------*/
+                //                                     delta_T             tamanho da arena
                 activeEnemy->compute_movement((current_time - previous_time),arena_size);
 
                 /*-------------------------------------------
@@ -957,15 +952,17 @@ int main(int argc, char* argv[])
                 for (std::vector<ProjectileObject>::iterator it = g_ProjectilesOnPlay.begin();ctr < g_ProjectilesOnPlay.size() && it != g_ProjectilesOnPlay.end(); it ++)
                 {
                     ctr++;
+
+                    //Atualiza a posição e distância viajada do projétil
                     it->model->position_world = it->model->position_world + it->velocity*(float)(current_time - previous_time);
-                    //it->model->rotation = glm::vec3(it->model->rotation.x,current_time,it->model->rotation.z);
+                    it->traveled_distance = it->traveled_distance + norm(it->velocity*(float)(current_time - previous_time));
 
                     //Projeteis que chegaram na distancia máxima são descartados
-                    it->traveled_distance = it->traveled_distance + norm(it->velocity*(float)(current_time - previous_time));
                     if (it->traveled_distance > 50)
                     {
                         g_ProjectilesOnPlay.erase(it);
                     }
+                    //Projéteis que colidiram com o inimigo danificam o mesmo
                     else if (hasBoxBoxCollision(g_VirtualScene["sword"],
                                                   it->model->position_world,
                                                   it->model->scale,
@@ -978,7 +975,6 @@ int main(int argc, char* argv[])
                         //Remove vida do inimigo e deleta o projetil
                         activeEnemy->health_points = activeEnemy->health_points - it->damage;
                         g_ProjectilesOnPlay.erase(it);
-                        //fprintf(stderr,"Vida do inimigo: %.2f\n",activeEnemy->health_points);
                     }
                 }
 
@@ -992,15 +988,17 @@ int main(int argc, char* argv[])
                     ctr++;
                     collided = false;
 
-                    //Se a bala não pode começar a se mover
+                    // Decresce o t das balas especiais
                     if (it->bullet_t  > 0)
                     {
                         it->bullet_t--;
                     }
                     else
                     {
-                        //Bullets que saíram do ambiente são descartadas
+                        // Atualiza a posição desta bullet
                         it->position_world = it->position_world + it->velocity*(float)(current_time-previous_time);
+
+                        // Bullets que se moveram para muito longe do centro são descartadas
                         if (norm(it->position_world - glm::vec4(0.0f,0.0f,0.0f,1.0f)) >= arena_size)
                         {
                             g_BulletsOnPlay.erase(it);
@@ -1008,6 +1006,7 @@ int main(int argc, char* argv[])
                         }
                         else
                         {
+                            // Verifica se a bullet colidiu com algum objeto fixo da cena
                             for (std::vector<PlacedObject>::iterator obj_it = g_PlacedObjects.begin(); !collided && obj_it != g_PlacedObjects.end(); obj_it++)
                             {
                                 if (hasPointBoxCollision(it->position_world,
@@ -1022,7 +1021,7 @@ int main(int argc, char* argv[])
                             }
                         }
 
-                        //hasSphereBoxCollision
+                        // Verifica se a bullet collidiu com o jogador
                         if (!collided && hasSphereBoxCollision(it->position_world,
                                                             0.5f,
                                                             mikuSceneObj,
@@ -1058,7 +1057,7 @@ int main(int argc, char* argv[])
                     g_BulletsOnPlay.clear();
                     g_ProjectilesOnPlay.clear();
 
-                    /*Recarregamos os objetos do menu principal*/
+                    /*Recarregamos os objetos da cena inicial*/
                     PlacedObject object = {
                         GRASS_FLOOR,
                         "plane",
@@ -1246,8 +1245,7 @@ int main(int argc, char* argv[])
                         g_PlacedObjects.push_back(object);
                     }
 
-                    /*Voltamos ao menu*/
-                    //soundEngine->stopAllSounds();
+                    // Resetamos os stats do jogador e retornamos à cena inicial
                     player->reset_stats();
                     current_level = 0;
                     player->position_world = glm::vec4(0.0f,3.0f,15.0f,1.0f);
@@ -1341,9 +1339,6 @@ int main(int argc, char* argv[])
                 activeEnemy->attack_cycle = -10;
 
                 damage_cooldown = 100;
-
-                /*Começamos a música*/
-                //soundEngine->play2D("../../media/polkka.wav",true,false,false,irrklang::ESM_AUTO_DETECT,true);
 
             }
 
@@ -1552,22 +1547,20 @@ int main(int argc, char* argv[])
         // definidas anteriormente usando glfwSet*Callback() serão chamadas
         // pela biblioteca GLFW.
 
-        //Atualizamos a referência da útlima posição onde o personagem estava
-        //player->position_world = player->last_position_world;
-
         glfwPollEvents();
 
+
+        //Processamos a movimentação do jogador
         player->process_movement_input(camera_view_vector);
         player->compute_movement(current_time - previous_time);
 
+        //Atualizamos delta t
         previous_time = current_time;
     }
 
     /*---------------------------------------------------------------------------------------------------------
                                         FIM DO PROGRAMA
     ---------------------------------------------------------------------------------------------------------*/
-    /*Encerramos a engine de som IrrKlang*/
-    //soundEngine->drop();
 
     // Finalizamos o uso dos recursos do sistema operacional
     glfwTerminate();

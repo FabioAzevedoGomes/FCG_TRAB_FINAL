@@ -6,10 +6,10 @@
 // "shader_vertex.glsl" e "main.cpp".
 in vec4 position_world;
 in vec4 normal;
-
+in vec3 gouraud_color;
 in vec4 position_model;
-
 in vec2 texcoords;
+
 // Matrizes computadas no código C++ e enviadas para a GPU
 uniform mat4 model;
 uniform mat4 view;
@@ -40,11 +40,11 @@ uniform vec4 bbox_min;
 uniform vec4 bbox_max;
 
 //Textures
-uniform sampler2D TextureImage0;
+uniform sampler2D TextureImage0; // Chão com grama
 uniform sampler2D TextureImage1; // Fundo menu
-uniform sampler2D TextureImage2;
-uniform sampler2D TextureImage3;
-uniform sampler2D TextureImage4;
+uniform sampler2D TextureImage2; // Parede de tijolos
+uniform sampler2D TextureImage3; // Vaca
+uniform sampler2D TextureImage4; // Porta
 uniform sampler2D TextureImage5; // Fundo show
 uniform sampler2D TextureImage6; // Chão do show
 uniform sampler2D TextureImage7; // Shinobu
@@ -64,11 +64,6 @@ void main()
     vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 camera_position = inverse(view) * origin;
 
-    // O fragmento atual é coberto por um ponto que percente à superfície de um
-    // dos objetos virtuais da cena. Este ponto, p, possui uma posição no
-    // sistema de coordenadas global (World coordinates). Esta posição é obtida
-    // através da interpolação, feita pelo rasterizador, da posição de cada
-    // vértice.
     vec4 p = position_world;
 
     // Normal do fragmento atual, interpolada pelo rasterizador a partir das
@@ -78,13 +73,13 @@ void main()
     vec4 light_pos = vec4(0.0f,10.0f,0.0f,1.0f);
 
     // Vetor que define o sentido da fonte de luz em relação ao ponto atual.
-    vec4 l = normalize(light_pos - p);//normalize(vec4(0.5,1.0,0.5,0.0));
+    vec4 l = normalize(light_pos - p);
 
     // Vetor que define o sentido da câmera em relação ao ponto atual.
     vec4 v = normalize(camera_position - p);
 
     // Vetor que define o sentido da reflexão especular ideal.
-    vec4 r = -l + 2*n*dot(n,l);//vec4(0.0,0.0,0.0,0.0); // PREENCHA AQUI o vetor de reflexão especular ideal
+    vec4 r = -l + 2*n*dot(n,l);
 
     // Parâmetros que definem as propriedades espectrais da superfície
     vec3 Kd; // Refletância difusa que será obtida da imagem de textura
@@ -204,6 +199,7 @@ void main()
     }
     else if ( object_id == DOOR)
     {
+
         float minx = bbox_min.x;
         float maxx = bbox_max.x;
 
@@ -263,10 +259,8 @@ void main()
     }
     else if ( object_id == CROSS_BAR)
     {
-        Kd = vec3(1.0,0.0,0.0);
-        Ks = vec3(0.0,0.0,0.0);
-        Ka = vec3(0.0,0.0,0.0);
-        q = 1.0;
+        // Utilizamos a cor calculada no vértice pelo modelo de gouraud
+        color = gouraud_color;
     }
     else if ( object_id == CHECK_PIECE)
     {
@@ -295,34 +289,35 @@ void main()
         q = 1.0;
     }
 
-    // Espectro da fonte de iluminação
-    vec3 I = vec3(1.0,1.0,1.0); // PREENCH AQUI o espectro da fonte de luz
 
-    // Espectro da luz ambiente
-    vec3 Ia = vec3(0.1,0.1,0.1); // PREENCHA AQUI o espectro da luz ambiente
+    // Só computamos a cor se for no modelo de iluminação de Phong
+    if (object_id != CROSS_BAR)
+    {
+        // Espectro da fonte de iluminação
+        vec3 I = vec3(1.0,1.0,1.0);
 
-    // Termo difuso utilizando a lei dos cossenos de Lambert
-    vec3 lambert_diffuse_term = Kd*I*max(0,dot(n,l));//vec3(0.0,0.0,0.0); // PREENCHA AQUI o termo difuso de Lambert
+        // Espectro da luz ambiente
+        vec3 Ia = vec3(0.1,0.1,0.1);
 
-    // Termo ambiente
-    vec3 ambient_term = Ka*Ia;
+        // Termo difuso utilizando a lei dos cossenos de Lambert
+        vec3 lambert_diffuse_term = Kd*I*max(0,dot(n,l));
 
-    // Termo especular utilizando o modelo de iluminação de Phong
-    //vec3 phong_specular_term  = Ks*I*pow(max(0,dot(r,v)),q);
+        // Termo ambiente
+        vec3 ambient_term = Ka*Ia;
 
-    vec4 h = l + v;
-    h = h/length(h);
+        vec4 h = l + v;
+        h = h/length(h);
 
-    // Termo especular utilizando o modelo de iluminação de Blinn - Phong
-    vec3 blinn_phong_specular_term = Ks*I*pow(max(0,dot(n,h)),q);
+        // Termo especular utilizando o modelo de iluminação de Blinn - Phong
+        vec3 blinn_phong_specular_term = Ks*I*pow(max(0,dot(n,h)),q);
 
-    // Cor final do fragmento calculada com uma combinação dos termos difuso,
-    // especular, e ambiente. Veja slide 133 do documento "Aula_17_e_18_Modelos_de_Iluminacao.pdf".
-    color = lambert_diffuse_term + ambient_term + blinn_phong_specular_term;
+        // Cor final do fragmento calculada com uma combinação dos termos difuso,
+        // especular, e ambiente. Veja slide 133 do documento "Aula_17_e_18_Modelos_de_Iluminacao.pdf".
+        color = lambert_diffuse_term + ambient_term + blinn_phong_specular_term;
 
-    // Cor final com correção gamma, considerando monitor sRGB.
-    // Veja https://en.wikipedia.org/w/index.php?title=Gamma_correction&oldid=751281772#Windows.2C_Mac.2C_sRGB_and_TV.2Fvideo_standard_gammas
-    color = pow(color, vec3(1.0,1.0,1.0)/2.2);
-
+        // Cor final com correção gamma, considerando monitor sRGB.
+        // Veja https://en.wikipedia.org/w/index.php?title=Gamma_correction&oldid=751281772#Windows.2C_Mac.2C_sRGB_and_TV.2Fvideo_standard_gammas
+        color = pow(color, vec3(1.0,1.0,1.0)/2.2);
+    }
 }
 
