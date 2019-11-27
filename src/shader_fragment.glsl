@@ -112,7 +112,6 @@ void main()
     }
     else if ( object_id == BUNNY )
     {
-        // PREENCHA AQUI
         // Propriedades espectrais do coelho
         Kd = vec3(0.08,0.4,0.8);
         Ks = vec3(0.8,0.8,0.8);

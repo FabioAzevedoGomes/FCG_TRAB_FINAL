@@ -6,7 +6,7 @@
 //
 //
 //    INF01047 Fundamentos de Computação Gráfica
-//                   Componentes:
+//                     Alunos:
 //  Fábio de Azevedo Gomes, Felipe de Almeida Graeff
 
 
